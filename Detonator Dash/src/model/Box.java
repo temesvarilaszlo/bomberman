@@ -1,0 +1,34 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+import java.awt.Image;
+import java.util.Random;
+
+/**
+ *
+ * @author tlasz
+ */
+public class Box extends Block{
+    private boolean containsDrop;
+    
+    public Box(int x, int y, int size, Image img, boolean mayContainDrop) {
+        super(x, y, size, img);
+        
+        if (mayContainDrop){
+            Random r = new Random();
+            containsDrop = r.nextBoolean();
+        }
+    }
+
+    public Box(int x, int y, int size, Image img) {
+        this(x, y, size, img, true);
+    }
+    
+    public void dropTheDrop(){
+        
+    }
+    
+}
