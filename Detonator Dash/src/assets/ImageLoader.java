@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package assets;
 
 import java.awt.Image;
@@ -16,6 +12,7 @@ import javax.imageio.ImageIO;
 public class ImageLoader {
     public static Image loadImage(String resName) throws IOException{
         URL url = ImageLoader.class.getClassLoader().getResource(resName);
+        //asd
         return ImageIO.read(url);
     }
 }
