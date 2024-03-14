@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 public class GameWindow extends JFrame{
     private GamePanel gamePanel;
 
-    public GameWindow() throws IOException {
+    public GameWindow() throws IOException{
         super();
         gamePanel = new GamePanel();
         
