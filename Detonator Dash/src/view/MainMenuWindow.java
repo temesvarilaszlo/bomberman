@@ -69,7 +69,8 @@ public class MainMenuWindow extends JFrame {
         maps.addItem("Map 2");
         maps.addItem("Map 3");
         maps.setBorder(new LineBorder(Color.BLACK));
-        maps.setBounds(345, 430, 60, 35);
+        maps.setFont(CUSTOM_FONT);
+        maps.setBounds(325, 430, 100, 35);
         maps.setFocusable(false);
 
         JLabel firstToWinLabel = new JLabel("First to win:");
@@ -79,7 +80,8 @@ public class MainMenuWindow extends JFrame {
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
         ((JSpinner.DefaultEditor)spinner.getEditor()).getTextField().setEditable(false); //so players cant edit with keyboard
         spinner.setBorder(new LineBorder(Color.BLACK));
-        spinner.setBounds(345, 550, 60, 35);
+        spinner.setFont(CUSTOM_FONT);
+        spinner.setBounds(335, 550, 80, 35);
         spinner.setFocusable(false);
         
         middlePanel.add(title);
