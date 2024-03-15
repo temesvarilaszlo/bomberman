@@ -1,6 +1,5 @@
 package view;
 
-import assets.FontLoader;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,10 +19,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.LineBorder;
+import static assets.FontLoader.CUSTOM_FONT;
 
 public class MainMenuWindow extends JFrame {
-    private static final Font CUSTOM_FONT = FontLoader.loadFont(15);
-    
     public MainMenuWindow(){
         init();
         setLookandFeel();
@@ -60,10 +58,7 @@ public class MainMenuWindow extends JFrame {
         selectMapLabel.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, 30));
         selectMapLabel.setBounds(265, 380, 215, 40);
         
-        JComboBox maps = new JComboBox();
-        maps.addItem("Map 1");
-        maps.addItem("Map 2");
-        maps.addItem("Map 3");
+        JComboBox maps = new JComboBox<>(new String[] { "Map 1", "Map 2", "Map 3" });
         maps.setBorder(new LineBorder(Color.BLACK));
         maps.setFont(CUSTOM_FONT);
         maps.setBounds(325, 430, 100, 35);

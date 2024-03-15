@@ -10,12 +10,14 @@ import java.net.URL;
 import java.nio.file.Paths;
 
 public class FontLoader {
+    public static final Font CUSTOM_FONT = loadFont(15);
+    
     /**
      * Loads the game's font
      * @param size
      * @return 
      */
-    public static Font loadFont(int size){
+    private static Font loadFont(int size){
         Font customFont = null;
         try {
             URL url = FontLoader.class.getClassLoader().getResource("assets/bm.ttf");

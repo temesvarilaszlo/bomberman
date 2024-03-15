@@ -1,6 +1,6 @@
 package view;
 
-import assets.FontLoader;
+import static assets.FontLoader.CUSTOM_FONT;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,60 +20,58 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.LineBorder;
 
 public class SettingsWindow extends JFrame {
-    private static final Font CUSTOM_FONT = FontLoader.loadFont(15);
-    private final JPanel middlePanel;
-    private final JComboBox players;
+    private final JPanel middlePanel = new JPanel();
+    private final JComboBox playersCombo = new JComboBox<>(new String[] { "Player 1", "Player 2", "Player 3" });
+    private JComboBox upCombo = new JComboBox();
+    private JComboBox downCombo = new JComboBox();
+    private JComboBox leftCombo = new JComboBox();
+    private JComboBox rightCombo = new JComboBox();
+    private JComboBox bombCombo = new JComboBox();
     
     public SettingsWindow(MainMenuWindow mainMenu){
-        middlePanel = new JPanel();
-        players = new JComboBox();
         init();
         setLookandFeel();
-
+        updateControlComboBoxes(); //calling it so it sets the default for player 1
+        
+        //Title
         JLabel title = new JLabel("Settings");
         setProperties(title, 50, 240, 60, 270, 45);
         
-        players.addItem("Player 1");
-        players.addItem("Player 2");
-        players.addItem("Player 3");
-        setProperties(players, 20, 305, 170, 140, 40);
+        //Players
+        setProperties(playersCombo, 20, 305, 170, 140, 40);
+        playersCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateControlComboBoxes();
+            }
+        });
         
-        
+        //Up
         JLabel upLabel = new JLabel("Up");
         setProperties(upLabel, 25, 200, 260, 50, 40);       
-        JComboBox upCombo = new JComboBox();
-        upCombo.addItem("W");
-        setProperties(upCombo, 20, 400, 260, 120, 35);
+        setProperties(upCombo, 20, 400, 260, 200, 35);
         
-        
+        //Down
         JLabel downLabel = new JLabel("Down");
         setProperties(downLabel, 25, 200, 320, 90, 40);
-        JComboBox downCombo = new JComboBox();
-        downCombo.addItem("S");
-        setProperties(downCombo, 20, 400, 320, 120, 35);
+        setProperties(downCombo, 20, 400, 320, 200, 35);
         
-        
+        //Left
         JLabel leftLabel = new JLabel("Left");
         setProperties(leftLabel, 25, 200, 380, 80, 40);
-        JComboBox leftCombo = new JComboBox();
-        leftCombo.addItem("A");
-        setProperties(leftCombo, 20, 400, 380, 120, 35);
+        setProperties(leftCombo, 20, 400, 380, 200, 35);
         
-        
+        //Right
         JLabel rightLabel = new JLabel("Right");
         setProperties(rightLabel, 25, 200, 440, 90, 40);
-        JComboBox rightCombo = new JComboBox();
-        rightCombo.addItem("D");
-        setProperties(rightCombo, 20, 400, 440, 120, 35);
+        setProperties(rightCombo, 20, 400, 440, 200, 35);
         
-        
+        //Place Bomb
         JLabel placeBombLabel = new JLabel("Place Bomb");
         setProperties(placeBombLabel, 25, 200, 500, 180, 40);
-        JComboBox bombCombo = new JComboBox();
-        bombCombo.addItem("Space");
-        setProperties(bombCombo, 20, 400, 500, 120, 35);
+        setProperties(bombCombo, 20, 400, 500, 200, 35);
         
-        
+        //Back to menu button
         JButton backToMenu = new JButton("Back to Menu");
         backToMenu.addActionListener(backToMenu(mainMenu));
         backToMenu.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, 30));
@@ -80,8 +79,9 @@ public class SettingsWindow extends JFrame {
         backToMenu.setBounds(235, 580, 280, 40);
         backToMenu.setFocusable(false);
         
+        //Adding everything to the JPanel
         middlePanel.add(title);
-        middlePanel.add(players);
+        middlePanel.add(playersCombo);
         middlePanel.add(upLabel);
         middlePanel.add(upCombo);
         middlePanel.add(downLabel);
@@ -144,6 +144,48 @@ public class SettingsWindow extends JFrame {
     private void setProperties(JLabel label, int fontSize, int x, int y, int width, int height){
         label.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, fontSize));
         label.setBounds(x, y, width, height);
+    }
+    
+    /**
+     * Updates control combo boxes based on which player is selected
+     */
+    private void updateControlComboBoxes() {
+        String selectedPlayer = (String) playersCombo.getSelectedItem();
+        clearControlComboBoxes();
+        switch (selectedPlayer) {
+            case "Player 1":
+                upCombo.setModel(new DefaultComboBoxModel<>(new String[]{"W"}));
+                downCombo.setModel(new DefaultComboBoxModel<>(new String[]{"S"}));
+                leftCombo.setModel(new DefaultComboBoxModel<>(new String[]{"A"}));
+                rightCombo.setModel(new DefaultComboBoxModel<>(new String[]{"D"}));
+                bombCombo.setModel(new DefaultComboBoxModel<>(new String[]{"L Shift"}));
+                break;
+            case "Player 2":
+                upCombo.setModel(new DefaultComboBoxModel<>(new String[]{"UP arrow"}));
+                downCombo.setModel(new DefaultComboBoxModel<>(new String[]{"DOWN arrow"}));
+                leftCombo.setModel(new DefaultComboBoxModel<>(new String[]{"LEFT arrow"}));
+                rightCombo.setModel(new DefaultComboBoxModel<>(new String[]{"RIGHT arrow"}));
+                bombCombo.setModel(new DefaultComboBoxModel<>(new String[]{"Space"}));
+                break;
+            case "Player 3":
+                upCombo.setModel(new DefaultComboBoxModel<>(new String[]{"NUM8"}));
+                downCombo.setModel(new DefaultComboBoxModel<>(new String[]{"NUM2"}));
+                leftCombo.setModel(new DefaultComboBoxModel<>(new String[]{"NUM4"}));
+                rightCombo.setModel(new DefaultComboBoxModel<>(new String[]{"NUM6"}));
+                bombCombo.setModel(new DefaultComboBoxModel<>(new String[]{"NUM5"}));
+                break;
+        }
+    }
+    
+    /**
+     * Clears comboBoxes
+     */
+    private void clearControlComboBoxes() {
+        upCombo.removeAllItems();
+        downCombo.removeAllItems();
+        leftCombo.removeAllItems();
+        rightCombo.removeAllItems();
+        bombCombo.removeAllItems();
     }
     
     private ActionListener backToMenu(MainMenuWindow mainMenu) {
