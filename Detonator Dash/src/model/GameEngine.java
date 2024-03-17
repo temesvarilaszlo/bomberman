@@ -1,11 +1,12 @@
 package model;
 
-import assets.ImageLoader;
-import java.awt.Color;
+import static assets.AssetLoader.loadImage;
+import static assets.AssetLoader.*;
 import java.awt.Graphics2D;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import javax.swing.Timer;
+import java.util.Scanner;
 import view.GamePanel;
 
 /**
@@ -13,25 +14,59 @@ import view.GamePanel;
  * @author tlasz
  */
 public class GameEngine {
-    private Block[][] gameMap;
-    private ArrayList<Player> players;
+    public static String[][] mapString;
+    private final Sprite[][] gameMap;
+    private final ArrayList<Player> players;
     private ArrayList<Monster> monsters;
 
     public GameEngine() throws IOException {
         players = new ArrayList<>();
-        players.add(new Player(100, 100, GamePanel.PLAYER_PIXEL_SIZE, ImageLoader.loadImage("assets/white.png")));
-        players.get(0).setDirection(Direction.RIGHT);
+        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, loadImage("assets/white.png")));
         
-        gameMap = new Block[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
+        gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
+        mapString = loadMap();  
+        initMap();  
+    }
+    
+    private String[][] loadMap(){
+        InputStream is = loadTxt("assets/map1.txt");
+        String[][] matrix = new String[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         
-        // initialize map
-        for (int i = 0; i < gameMap.length; i++) {
-            for (int j = 0; j < gameMap[i].length; j++) {
-                gameMap[i][j] = new Path(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE, 
-                        ImageLoader.loadImage("assets/white_frame.png"));
+        try (Scanner sc = new Scanner(is)){
+            int i = 0;
+            while (sc.hasNextLine()){
+                String line = sc.nextLine();
+                String[] stringArray = line.split("");
+                matrix[i] = stringArray;
+                i++;
             }
+        } catch (Exception e){
+            System.out.println("Ajaj");
         }
         
+        return matrix;
+    }
+    
+    private void initMap() throws IOException{
+        for (int i = 0; i < gameMap.length; i++) {
+            for (int j = 0; j < gameMap[i].length; j++) {
+                switch (mapString[i][j]) {
+                    case "W":
+                        gameMap[i][j] = new Block(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
+                                loadImage("assets/wall.png"));
+                        break;
+                    case "P":
+                        gameMap[i][j] = new Path(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
+                                loadImage("assets/path.png"));
+                        break;
+                    case "B":
+                        gameMap[i][j] = new Box(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
+                                loadImage("assets/Box.png"));
+                        break;
+                    default: break;
+                }
+            }
+        }
     }
     
     public void drawPlayers(Graphics2D g){
@@ -40,16 +75,10 @@ public class GameEngine {
         }
     }
     
-    public void movePlayers(){
-        for (Player p : players){
-            p.move();
-        }
-    }
-    
     public void drawMap(Graphics2D g){
-        for (Block[] row : gameMap) {
-            for (Block block : row) {
-                block.draw(g);
+        for (Sprite[] row : gameMap) {
+            for (Sprite sprite : row) {
+                sprite.draw(g);
             }
         }
     }
@@ -58,4 +87,7 @@ public class GameEngine {
         return players;
     }
     
+    public ArrayList<Monster> getMonsters(){
+        return monsters;
+    }
 }

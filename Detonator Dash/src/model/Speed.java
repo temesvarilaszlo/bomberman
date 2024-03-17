@@ -7,9 +7,9 @@ package model;
 public enum Speed {
     NORMAL(1), FAST(2);
     
-    public int speed;
+    public float speed;
 
-    Speed(int speed) {
+    Speed(float speed) {
         this.speed = speed;
     }
     

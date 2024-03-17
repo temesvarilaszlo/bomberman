@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import javax.swing.border.LineBorder;
-import static assets.FontLoader.CUSTOM_FONT;
+import static assets.AssetLoader.CUSTOM_FONT;
 
 public class MainMenuWindow extends JFrame {
     public MainMenuWindow(){
