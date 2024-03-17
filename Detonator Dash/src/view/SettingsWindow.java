@@ -1,6 +1,6 @@
 package view;
 
-import static assets.FontLoader.CUSTOM_FONT;
+import static assets.AssetLoader.CUSTOM_FONT;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
