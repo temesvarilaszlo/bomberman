@@ -1,6 +1,5 @@
 package model;
 
-import static assets.AssetLoader.loadImage;
 import static assets.AssetLoader.*;
 import java.awt.Graphics2D;
 import java.io.IOException;
@@ -90,6 +89,25 @@ public class GameEngine {
         for (Monster m : monsters){
             m.move();
         }
+    }
+    
+    public String[][] loadMap(){
+        InputStream is = loadTxt("assets/map1.txt");
+        String[][] matrix = new String[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
+        
+        try (Scanner sc = new Scanner(is)){
+            int i = 0;
+            while (sc.hasNextLine()){
+                String line = sc.nextLine();
+                String[] stringArray = line.split("");
+                matrix[i] = stringArray;
+                i++;
+            }
+        } catch (Exception e){
+            System.out.println("Ajaj");
+        }
+        
+        return matrix;
     }
     
     public void drawMap(Graphics2D g){
