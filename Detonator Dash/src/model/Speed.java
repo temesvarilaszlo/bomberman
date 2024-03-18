@@ -5,11 +5,11 @@ package model;
  * @author tlasz
  */
 public enum Speed {
-    NORMAL(1), FAST(2);
+    SLOW(1), NORMAL(2), FAST(3);
     
-    public int speed;
+    public float speed;
 
-    Speed(int speed) {
+    Speed(float speed) {
         this.speed = speed;
     }
     

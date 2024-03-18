@@ -101,7 +101,6 @@ public class SettingsWindow extends JFrame {
         setVisible(true);
     }
     
-    
     /**
      * Sets the window its starting properties
      */

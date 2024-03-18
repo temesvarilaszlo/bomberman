@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import model.Direction;
 import model.GameEngine;
+import model.KeyHandler;
 
 /**
  *
@@ -22,8 +24,9 @@ public class GamePanel extends JPanel{
     public static final int WIDTH = BLOCK_PIXEL_SIZE * MAP_SIZE;
     public static final int HEIGHT = BLOCK_PIXEL_SIZE * MAP_SIZE;
     
-    private GameEngine engine;
-    private Timer timer;
+    private final GameEngine engine;
+    private final Timer timer;
+    private final KeyHandler keyH = new KeyHandler();
 
     public GamePanel() throws IOException {
         super();
@@ -31,9 +34,11 @@ public class GamePanel extends JPanel{
         // GUI stuff
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setFocusable(true);
         
         // initialize engine related stuff
         engine = new GameEngine();
+        this.addKeyListener(keyH);
         
         timer = new Timer(10, new TimerListener());
         timer.start();
@@ -46,16 +51,42 @@ public class GamePanel extends JPanel{
         Graphics2D g = (Graphics2D) gr;
         super.paintComponent(g);
         
+        
         // the things that need to be drawn
         engine.drawMap(g);
         engine.drawPlayers(g);
+        engine.drawMonsters(g);
+        updatePos();
+    }
+    
+    private void updatePos(){
+        if(keyH.upPressed){
+            engine.getPlayers().get(0).setDirection(Direction.UP);
+            engine.getPlayers().get(0).move();
+        }
+        else if(keyH.downPressed){
+            engine.getPlayers().get(0).setDirection(Direction.DOWN);
+            engine.getPlayers().get(0).move();
+        }
+        else if(keyH.rightPressed){
+            engine.getPlayers().get(0).setDirection(Direction.RIGHT);
+            engine.getPlayers().get(0).move();
+        }
+        else if(keyH.leftPressed){
+            engine.getPlayers().get(0).setDirection(Direction.LEFT);
+            engine.getPlayers().get(0).move();
+        }
+        else{
+            engine.getPlayers().get(0).setDirection(Direction.STOPPED);
+        }
     }
     
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
-            engine.movePlayers();
-            System.out.println(engine.getPlayers().get(0).currentMatrixPosition());
+            //engine.movePlayers();
+            //System.out.println(engine.getPlayers().get(0).currentMatrixPosition());
+            engine.moveMonsters();
             repaint();
         }
             

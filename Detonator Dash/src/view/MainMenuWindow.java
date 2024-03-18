@@ -22,6 +22,8 @@ import javax.swing.border.LineBorder;
 import static assets.AssetLoader.CUSTOM_FONT;
 
 public class MainMenuWindow extends JFrame {
+    private static JComboBox maps = new JComboBox<>(new String[] { "map1", "map2", "map3" });
+    
     public MainMenuWindow(){
         init();
         setLookandFeel();
@@ -58,7 +60,6 @@ public class MainMenuWindow extends JFrame {
         selectMapLabel.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, 30));
         selectMapLabel.setBounds(265, 380, 215, 40);
         
-        JComboBox maps = new JComboBox<>(new String[] { "Map 1", "Map 2", "Map 3" });
         maps.setBorder(new LineBorder(Color.BLACK));
         maps.setFont(CUSTOM_FONT);
         maps.setBounds(325, 430, 100, 35);
@@ -91,6 +92,10 @@ public class MainMenuWindow extends JFrame {
         setVisible(true);
     }
     
+        
+    public static String getMap(){
+        return (String) maps.getSelectedItem();
+    }
     
     /**
      * Sets the window its starting properties
