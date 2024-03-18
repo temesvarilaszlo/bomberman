@@ -4,11 +4,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
-import java.util.TimerTask;
 import javax.swing.Timer;
-import static model.HelpMethods.canMoveHere;
-import static model.GameEngine.mapString;
-import view.GamePanel;
 
 /**
  *
@@ -48,7 +44,17 @@ public class Monster extends Character{
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
-            move();
+            passedTime++;
+            if(!move()){
+                direction = getRandomDirection();
+            }
+            else if(passedTime == 500){
+                direction = getRandomDirection();
+                passedTime = 0;
+            }
+            else{
+                move();
+            }
         }
             
     }

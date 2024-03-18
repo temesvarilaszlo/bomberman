@@ -11,7 +11,7 @@ public class Character extends Sprite{
     public Character(int x, int y, int size, Image img) {
         super(x, y, size, img);
         isAlive = true;
-        speed = Speed.FAST.speed;
+        speed = Speed.NORMAL.speed;
         direction = Direction.STOPPED;
     }
     
