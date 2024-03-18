@@ -86,6 +86,7 @@ public class GamePanel extends JPanel{
         public void actionPerformed(ActionEvent ae) {
             //engine.movePlayers();
             //System.out.println(engine.getPlayers().get(0).currentMatrixPosition());
+            engine.moveMonsters();
             repaint();
         }
             

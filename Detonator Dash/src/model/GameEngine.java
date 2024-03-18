@@ -86,6 +86,12 @@ public class GameEngine {
         }
     }
     
+    public void moveMonsters(){
+        for (Monster m : monsters){
+            m.move();
+        }
+    }
+    
     public void drawMap(Graphics2D g){
         for (Sprite[] row : gameMap) {
             for (Sprite sprite : row) {
