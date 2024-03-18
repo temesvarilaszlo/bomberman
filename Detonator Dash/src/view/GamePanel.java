@@ -24,9 +24,9 @@ public class GamePanel extends JPanel{
     public static final int WIDTH = BLOCK_PIXEL_SIZE * MAP_SIZE;
     public static final int HEIGHT = BLOCK_PIXEL_SIZE * MAP_SIZE;
     
-    private GameEngine engine;
-    private Timer timer;
-    private KeyHandler keyH = new KeyHandler();
+    private final GameEngine engine;
+    private final Timer timer;
+    private final KeyHandler keyH = new KeyHandler();
 
     public GamePanel() throws IOException {
         super();
@@ -55,6 +55,7 @@ public class GamePanel extends JPanel{
         // the things that need to be drawn
         engine.drawMap(g);
         engine.drawPlayers(g);
+        engine.drawMonsters(g);
         updatePos();
     }
     

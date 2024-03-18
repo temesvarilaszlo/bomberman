@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 import view.GamePanel;
+import view.MainMenuWindow;
 
 /**
  *
@@ -17,11 +18,13 @@ public class GameEngine {
     public static String[][] mapString;
     private final Sprite[][] gameMap;
     private final ArrayList<Player> players;
-    private ArrayList<Monster> monsters;
+    private final ArrayList<Monster> monsters;
 
     public GameEngine() throws IOException {
         players = new ArrayList<>();
+        monsters = new ArrayList<>();
         players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, loadImage("assets/white.png")));
+        monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, loadImage("assets/white.png")));
         
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();  
@@ -29,7 +32,8 @@ public class GameEngine {
     }
     
     private String[][] loadMap(){
-        InputStream is = loadTxt("assets/map1.txt");
+        String mapName = MainMenuWindow.getMap();
+        InputStream is = loadTxt("assets/" + mapName + ".txt");
         String[][] matrix = new String[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         
         try (Scanner sc = new Scanner(is)){
@@ -48,8 +52,8 @@ public class GameEngine {
     }
     
     private void initMap() throws IOException{
-        for (int i = 0; i < gameMap.length; i++) {
-            for (int j = 0; j < gameMap[i].length; j++) {
+        for (int i = 0; i < mapString.length; i++) {
+            for (int j = 0; j < mapString[i].length; j++) {
                 switch (mapString[i][j]) {
                     case "W":
                         gameMap[i][j] = new Block(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
@@ -72,6 +76,12 @@ public class GameEngine {
     public void drawPlayers(Graphics2D g){
         for (Player p : players){
             p.draw(g);
+        }
+    }
+    
+    public void drawMonsters(Graphics2D g){
+        for (Monster m : monsters){
+            m.draw(g);
         }
     }
     

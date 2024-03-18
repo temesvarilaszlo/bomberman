@@ -5,7 +5,7 @@ package model;
  * @author tlasz
  */
 public enum Speed {
-    NORMAL(1), FAST(2);
+    NORMAL(2), FAST(3);
     
     public float speed;
 

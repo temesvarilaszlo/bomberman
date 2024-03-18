@@ -11,13 +11,13 @@ public class Character extends Sprite{
     public Character(int x, int y, int size, Image img) {
         super(x, y, size, img);
         isAlive = true;
-        speed = Speed.NORMAL.speed;
+        speed = Speed.FAST.speed;
         direction = Direction.STOPPED;
     }
     
-    public void move(){
+    public boolean move(){
         if(direction == Direction.STOPPED)
-            return;
+            return false;
         
         //temp variables to store y and x speed
         float xSpeed = 0, ySpeed = 0;
@@ -34,7 +34,9 @@ public class Character extends Sprite{
         if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString)){
             x += xSpeed;
             y += ySpeed;
-        }   
+            return true;
+        } 
+        return false;
     }
 
     public void setDirection(Direction direction) {
