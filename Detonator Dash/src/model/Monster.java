@@ -17,6 +17,7 @@ public class Monster extends Character{
     
     public Monster(int x, int y, int size, Image img) {
         super(x, y, size, img);
+        speed = Speed.SLOW.speed;
         direction = getRandomDirection();
         timer = new Timer(10, new TimerListener());
         timer.start();
@@ -29,14 +30,18 @@ public class Monster extends Character{
         Random random = new Random();
         int randomNumber = random.nextInt(4);
         switch (randomNumber){
-            case 0:
+            case 0 -> {
                 return Direction.DOWN;
-            case 1:
+            }
+            case 1 -> {
                 return Direction.LEFT;
-            case 2:
+            }
+            case 2 -> {
                 return Direction.RIGHT;
-            case 3:
+            }
+            case 3 -> {
                 return Direction.UP;
+            }
         }
         return null;
     }
