@@ -13,9 +13,8 @@ import static model.HelpMethods.canMoveHere;
  */
 public class Monster extends Character{
 
-    Timer timer;
-    TimerListener listener;
-    private static int passedTime = 0;
+    private Timer timer;
+    private TimerListener listener;
     
     public Monster(int x, int y, int size, Image img) {
         super(x, y, size, img);
@@ -25,9 +24,6 @@ public class Monster extends Character{
         timer = new Timer(new Random().nextInt(2000, 10000), listener);
         timer.start();
     }
-    
-   
-    
     
     private static Direction getRandomDirection(){
         Random random = new Random();
@@ -46,7 +42,7 @@ public class Monster extends Character{
                 return Direction.UP;
             }
         }
-        return null;
+        return Direction.STOPPED;
     }
     
     @Override
@@ -54,23 +50,9 @@ public class Monster extends Character{
         if(direction == Direction.STOPPED)
             return false;
         
-        //temp variables to store y and x speed
-        float xSpeed = 0, ySpeed = 0;
-        
-        if(direction == Direction.UP)
-            ySpeed = -speed;
-        else if(direction == Direction.DOWN)
-            ySpeed = speed;
-        else if(direction == Direction.LEFT)
-            xSpeed = -speed;
-        else if(direction == Direction.RIGHT)
-            xSpeed = speed;
-        
-        
-        
-        if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString)){
-            x += xSpeed;
-            y += ySpeed;
+        if(canMoveHere(x+direction.x, y+direction.y, size, size, GameEngine.mapString)){
+            x += direction.x;
+            y += direction.y;
             return true;
         }
         else{
@@ -84,25 +66,10 @@ public class Monster extends Character{
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
-            /*do {
-                direction = getRandomDirection();
-            } while (!canMoveHere(x+direction.x, y+direction.y, size, size, GameEngine.mapString));
-            */
             direction = getRandomDirection();
             timer.stop();
-            timer = new Timer(new Random().nextInt(2000, 10000), listener);
+            timer = new Timer(new Random().nextInt(4000, 12000), listener);
             timer.start();
-            //passedTime++;
-//            if(!move()){
-//                direction = getRandomDirection();
-//            }
-//            else if(passedTime == 500){
-//                direction = getRandomDirection();
-//                passedTime = 0;
-//            }
-//            else{
-//                move();
-//            }
         }
             
     }

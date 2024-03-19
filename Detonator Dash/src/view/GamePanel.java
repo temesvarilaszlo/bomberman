@@ -51,7 +51,6 @@ public class GamePanel extends JPanel{
         Graphics2D g = (Graphics2D) gr;
         super.paintComponent(g);
         
-        
         // the things that need to be drawn
         engine.drawMap(g);
         engine.drawPlayers(g);
