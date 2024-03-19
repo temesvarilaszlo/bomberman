@@ -19,7 +19,7 @@ import model.KeyHandler;
  */
 public class GamePanel extends JPanel{
     public static final int BLOCK_PIXEL_SIZE = 50;
-    public static final int PLAYER_PIXEL_SIZE = 30;
+    public static final int PLAYER_PIXEL_SIZE = 35;
     public static final int MAP_SIZE = 15;
     public static final int WIDTH = BLOCK_PIXEL_SIZE * MAP_SIZE;
     public static final int HEIGHT = BLOCK_PIXEL_SIZE * MAP_SIZE;

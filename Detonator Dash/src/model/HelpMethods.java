@@ -16,12 +16,8 @@ public class HelpMethods {
         float xIndex = x / GamePanel.BLOCK_PIXEL_SIZE;
         float yIndex = y / GamePanel.BLOCK_PIXEL_SIZE;
         
-        String value = map[(int)xIndex][(int)yIndex];
-        
-        if(value.equals("W") || value.equals("B")){
-            return true;
-        }
-        
-        return false;
+        String value = map[(int)yIndex][(int)xIndex];
+
+        return value.equals("W") || value.equals("B");
     }
 }
