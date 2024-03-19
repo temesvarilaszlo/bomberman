@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.Timer;
+import static model.HelpMethods.canMoveHere;
 
 /**
  *
@@ -48,9 +49,45 @@ public class Monster extends Character{
         return null;
     }
     
+    @Override
+    public boolean move(){
+        if(direction == Direction.STOPPED)
+            return false;
+        
+        //temp variables to store y and x speed
+        float xSpeed = 0, ySpeed = 0;
+        
+        if(direction == Direction.UP)
+            ySpeed = -speed;
+        else if(direction == Direction.DOWN)
+            ySpeed = speed;
+        else if(direction == Direction.LEFT)
+            xSpeed = -speed;
+        else if(direction == Direction.RIGHT)
+            xSpeed = speed;
+        
+        
+        
+        if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString)){
+            x += xSpeed;
+            y += ySpeed;
+            return true;
+        }
+        else{
+            do {
+                direction = getRandomDirection();
+            } while (!canMoveHere(x+direction.x, y+direction.y, size, size, GameEngine.mapString));
+        }
+        return false;
+    }
+    
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
+            /*do {
+                direction = getRandomDirection();
+            } while (!canMoveHere(x+direction.x, y+direction.y, size, size, GameEngine.mapString));
+            */
             direction = getRandomDirection();
             timer.stop();
             timer = new Timer(new Random().nextInt(2000, 10000), listener);
