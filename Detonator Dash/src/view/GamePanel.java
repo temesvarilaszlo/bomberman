@@ -26,7 +26,7 @@ public class GamePanel extends JPanel{
     
     private final GameEngine engine;
     private final Timer timer;
-    private final KeyHandler keyH = new KeyHandler();
+    private final KeyHandler keyH;
 
     public GamePanel() throws IOException {
         super();
@@ -38,6 +38,7 @@ public class GamePanel extends JPanel{
         
         // initialize engine related stuff
         engine = new GameEngine();
+        keyH = new KeyHandler();
         this.addKeyListener(keyH);
         
         timer = new Timer(10, new TimerListener());
@@ -84,6 +85,7 @@ public class GamePanel extends JPanel{
     private void placeBombs(){
         if (keyH.placeBomb){
             engine.getPlayers().get(0).placeBomb();
+            keyH.placeBomb = false;
         }
     }
     

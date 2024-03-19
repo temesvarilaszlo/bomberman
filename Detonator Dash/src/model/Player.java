@@ -16,7 +16,7 @@ public class Player extends Character{
     public Player(int x, int y, int size, Image img) {
         super(x, y, size, img);
         placedBombs = new ArrayList<>();
-        bombCapacity = 2;
+        bombCapacity = 1;
     }
     
     public void placeBomb(){
