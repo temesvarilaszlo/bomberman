@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import javax.swing.JFrame;
+import static view.HelperMethods.*;
 
 /**
  *
@@ -15,9 +16,11 @@ public class GameWindow extends JFrame{
         gamePanel = new GamePanel();
         
         // add panel to frame
-        getContentPane().add(gamePanel);
+        add(gamePanel);
         
         // GUI settings
+        createMenuBar(this);
+        setLookandFeel();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         pack();
