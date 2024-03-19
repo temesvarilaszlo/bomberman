@@ -55,7 +55,7 @@ public class HelperMethods {
             new MainMenuWindow();
             frame.dispose();
         });
-        JMenuItem settingsMenu = new JMenuItem("Main Menu");
+        JMenuItem settingsMenu = new JMenuItem("Settings");
         settingsMenu.addActionListener((e) -> {
             new SettingsWindow();
             frame.dispose();
