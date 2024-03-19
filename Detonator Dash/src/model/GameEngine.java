@@ -56,15 +56,15 @@ public class GameEngine {
             for (int j = 0; j < mapString[i].length; j++) {
                 switch (mapString[i][j]) {
                     case "W":
-                        gameMap[i][j] = new Block(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
+                        gameMap[i][j] = new Block(j*GamePanel.BLOCK_PIXEL_SIZE, i*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
                                 loadImage("assets/wall.png"));
                         break;
                     case "P":
-                        gameMap[i][j] = new Path(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
+                        gameMap[i][j] = new Path(j*GamePanel.BLOCK_PIXEL_SIZE, i*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
                                 loadImage("assets/path.png"));
                         break;
                     case "B":
-                        gameMap[i][j] = new Box(i*GamePanel.BLOCK_PIXEL_SIZE, j*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
+                        gameMap[i][j] = new Box(j*GamePanel.BLOCK_PIXEL_SIZE, i*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
                                 loadImage("assets/Box.png"));
                         break;
                     default: break;
