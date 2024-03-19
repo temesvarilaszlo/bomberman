@@ -1,6 +1,7 @@
 package model;
 
 import static assets.AssetLoader.*;
+import assets.Images;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,9 +23,9 @@ public class GameEngine {
     public GameEngine() throws IOException {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
-        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, loadImage("assets/white.png")));
-        monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, loadImage("assets/white.png")));
-        monsters.add(new Monster(60, 310, GamePanel.PLAYER_PIXEL_SIZE, loadImage("assets/white.png")));
+        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
+        monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
+        monsters.add(new Monster(60, 310, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
         
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();  
@@ -45,7 +46,7 @@ public class GameEngine {
                 i++;
             }
         } catch (Exception e){
-            System.out.println("Ajaj");
+            System.out.println("Error while reading map from txt!");
         }
         
         return matrix;
@@ -57,15 +58,15 @@ public class GameEngine {
                 switch (mapString[i][j]) {
                     case "W":
                         gameMap[i][j] = new Block(j*GamePanel.BLOCK_PIXEL_SIZE, i*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
-                                loadImage("assets/wall.png"));
+                                Images.wallImg);
                         break;
                     case "P":
                         gameMap[i][j] = new Path(j*GamePanel.BLOCK_PIXEL_SIZE, i*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
-                                loadImage("assets/path.png"));
+                                Images.pathImg);
                         break;
                     case "B":
                         gameMap[i][j] = new Box(j*GamePanel.BLOCK_PIXEL_SIZE, i*GamePanel.BLOCK_PIXEL_SIZE, GamePanel.BLOCK_PIXEL_SIZE,
-                                loadImage("assets/Box.png"));
+                                Images.boxImg);
                         break;
                     default: break;
                 }
