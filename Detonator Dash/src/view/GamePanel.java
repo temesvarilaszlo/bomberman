@@ -54,9 +54,9 @@ public class GamePanel extends JPanel{
         
         // the things that need to be drawn
         engine.drawMap(g);
+        engine.drawBombs(g);
         engine.drawPlayers(g);
         engine.drawMonsters(g);
-        updatePos();
     }
     
     private void updatePos(){
@@ -81,11 +81,19 @@ public class GamePanel extends JPanel{
         }
     }
     
+    private void placeBombs(){
+        if (keyH.placeBomb){
+            engine.getPlayers().get(0).placeBomb();
+        }
+    }
+    
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
             //engine.movePlayers();
             //System.out.println(engine.getPlayers().get(0).currentMatrixPosition());
+            placeBombs();
+            updatePos();
             engine.moveMonsters();
             repaint();
         }
