@@ -19,17 +19,8 @@ public class Character extends Sprite{
         if(direction == Direction.STOPPED)
             return false;
         
-        //temp variables to store y and x speed
-        float xSpeed = 0, ySpeed = 0;
-        
-        if(direction == Direction.UP)
-            ySpeed = -speed;
-        else if(direction == Direction.DOWN)
-            ySpeed = speed;
-        else if(direction == Direction.LEFT)
-            xSpeed = -speed;
-        else if(direction == Direction.RIGHT)
-            xSpeed = speed;
+        float xSpeed = direction.x * speed;
+        float ySpeed = direction.y * speed;
         
         if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString)){
             x += xSpeed;

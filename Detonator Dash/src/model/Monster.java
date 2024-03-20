@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.Timer;
+import static model.HelpMethods.canMoveHere;
 
 /**
  *
@@ -12,9 +13,8 @@ import javax.swing.Timer;
  */
 public class Monster extends Character{
 
-    Timer timer;
-    TimerListener listener;
-    private static int passedTime = 0;
+    private Timer timer;
+    private TimerListener listener;
     
     public Monster(int x, int y, int size, Image img) {
         super(x, y, size, img);
@@ -24,9 +24,6 @@ public class Monster extends Character{
         timer = new Timer(new Random().nextInt(2000, 10000), listener);
         timer.start();
     }
-    
-   
-    
     
     private static Direction getRandomDirection(){
         Random random = new Random();
@@ -45,7 +42,25 @@ public class Monster extends Character{
                 return Direction.UP;
             }
         }
-        return null;
+        return Direction.STOPPED;
+    }
+    
+    @Override
+    public boolean move(){
+        if(direction == Direction.STOPPED)
+            return false;
+        
+        if(canMoveHere(x+direction.x, y+direction.y, size, size, GameEngine.mapString)){
+            x += direction.x;
+            y += direction.y;
+            return true;
+        }
+        else{
+            do {
+                direction = getRandomDirection();
+            } while (!canMoveHere(x+direction.x, y+direction.y, size, size, GameEngine.mapString));
+        }
+        return false;
     }
     
     class TimerListener implements ActionListener{
@@ -53,19 +68,8 @@ public class Monster extends Character{
         public void actionPerformed(ActionEvent ae) {
             direction = getRandomDirection();
             timer.stop();
-            timer = new Timer(new Random().nextInt(2000, 10000), listener);
+            timer = new Timer(new Random().nextInt(4000, 12000), listener);
             timer.start();
-            //passedTime++;
-//            if(!move()){
-//                direction = getRandomDirection();
-//            }
-//            else if(passedTime == 500){
-//                direction = getRandomDirection();
-//                passedTime = 0;
-//            }
-//            else{
-//                move();
-//            }
         }
             
     }
