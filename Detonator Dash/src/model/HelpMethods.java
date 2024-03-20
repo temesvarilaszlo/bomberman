@@ -18,6 +18,6 @@ public class HelpMethods {
         
         String value = map[(int)yIndex][(int)xIndex];
 
-        return value.equals("W") || value.equals("B");
+        return value.equals("W") || value.equals("B") /*|| value.equals("Bomb")*/;
     }
 }

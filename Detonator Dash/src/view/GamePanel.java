@@ -26,7 +26,7 @@ public class GamePanel extends JPanel{
     
     private final GameEngine engine;
     private final Timer timer;
-    private final KeyHandler keyH = new KeyHandler();
+    private final KeyHandler keyH;
 
     public GamePanel() {
         super();
@@ -38,6 +38,7 @@ public class GamePanel extends JPanel{
         
         // initialize engine related stuff
         engine = new GameEngine();
+        keyH = new KeyHandler();
         this.addKeyListener(keyH);
         
         timer = new Timer(10, new TimerListener());
@@ -53,9 +54,9 @@ public class GamePanel extends JPanel{
         
         // the things that need to be drawn
         engine.drawMap(g);
+        engine.drawBombs(g);
         engine.drawPlayers(g);
         engine.drawMonsters(g);
-        updatePos();
     }
     
     private void updatePos(){
@@ -80,11 +81,20 @@ public class GamePanel extends JPanel{
         }
     }
     
+    private void placeBombs(){
+        if (keyH.placeBomb){
+            engine.getPlayers().get(0).placeBomb();
+            keyH.placeBomb = false;
+        }
+    }
+    
     class TimerListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent ae) {
             //engine.movePlayers();
             //System.out.println(engine.getPlayers().get(0).currentMatrixPosition());
+            placeBombs();
+            updatePos();
             engine.moveMonsters();
             repaint();
         }

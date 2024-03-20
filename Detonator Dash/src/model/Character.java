@@ -1,7 +1,9 @@
 package model;
 
 import java.awt.Image;
+import java.awt.Point;
 import static model.HelpMethods.canMoveHere;
+import view.GamePanel;
 
 public class Character extends Sprite{
     protected float speed;
@@ -33,4 +35,9 @@ public class Character extends Sprite{
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+    
+    public Point currentMatrixPosition(){
+        return new Point((x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
+    }
+
 }

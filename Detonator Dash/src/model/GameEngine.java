@@ -86,6 +86,14 @@ public class GameEngine {
         }
     }
     
+    public void drawBombs(Graphics2D g){
+        for (Player p : players){
+            for (Bomb b : p.getPlacedBombs()){
+                b.draw(g);
+            }
+        }
+    }
+    
     public void moveMonsters(){
         for (Monster m : monsters){
             m.move();
