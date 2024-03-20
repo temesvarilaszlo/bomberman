@@ -28,7 +28,7 @@ public class GamePanel extends JPanel{
     private final Timer timer;
     private final KeyHandler keyH = new KeyHandler();
 
-    public GamePanel() throws IOException {
+    public GamePanel() {
         super();
         
         // GUI stuff

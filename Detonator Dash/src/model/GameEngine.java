@@ -20,7 +20,7 @@ public class GameEngine {
     private final ArrayList<Player> players;
     private final ArrayList<Monster> monsters;
 
-    public GameEngine() throws IOException {
+    public GameEngine()  {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
         players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
@@ -52,7 +52,7 @@ public class GameEngine {
         return matrix;
     }
     
-    private void initMap() throws IOException{
+    private void initMap() {
         for (int i = 0; i < mapString.length; i++) {
             for (int j = 0; j < mapString[i].length; j++) {
                 switch (mapString[i][j]) {

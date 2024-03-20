@@ -109,11 +109,7 @@ public class MainMenuWindow extends JFrame {
      */
     private ActionListener twoPlayers() {
         return (ActionEvent e) -> {
-            try {
-                new GameWindow();
-            } catch (IOException ex) {
-                System.out.println("GameWindow couldn't open!");
-            }
+            new GameWindow();
             setVisible(false);
         };
     }
@@ -125,11 +121,7 @@ public class MainMenuWindow extends JFrame {
      */
     private ActionListener threePlayers() {
         return (ActionEvent e) -> {
-            try {
-                new GameWindow();
-            } catch (IOException ex) {
-                System.out.println("GameWindow couldn't open!");
-            }
+            new GameWindow();
             setVisible(false);
         };
     }

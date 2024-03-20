@@ -11,7 +11,7 @@ import static view.HelperMethods.*;
 public class GameWindow extends JFrame{
     private GamePanel gamePanel;
 
-    public GameWindow() throws IOException{
+    public GameWindow() {
         super();
         gamePanel = new GamePanel();
         
