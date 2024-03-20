@@ -16,7 +16,7 @@ public class Player extends Character{
     public Player(int x, int y, int size, Image img) {
         super(x, y, size, img);
         placedBombs = new ArrayList<>();
-        bombCapacity = 1;
+        bombCapacity = 3;
     }
     
     public void placeBomb(){
@@ -26,7 +26,7 @@ public class Player extends Character{
         
         if (!GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("Bomb")){
             // assign bomb to player
-            placedBombs.add(new Bomb(currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE,
+            placedBombs.add(new Bomb(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
                     GamePanel.BLOCK_PIXEL_SIZE,Images.bombImg));
 
             // add to mapString for collision checking

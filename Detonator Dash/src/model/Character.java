@@ -37,7 +37,7 @@ public class Character extends Sprite{
     }
     
     public Point currentMatrixPosition(){
-        return new Point((x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
+        return new Point((y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
     }
 
 }
