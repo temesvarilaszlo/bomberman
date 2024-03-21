@@ -29,7 +29,7 @@ public class Player extends Character{
         float xSpeed = direction.x * speed;
         float ySpeed = direction.y * speed;
         
-        // if the player is on their own placed bomb, don't check collision for bomb
+        // if the player is on their own placed bomb, don't check collision for that bomb
         if (isOnPlacedBlock(getLastPlacedBomb())){
             if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())){
                 x += xSpeed;
