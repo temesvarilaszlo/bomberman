@@ -3,30 +3,27 @@ package model;
 import view.GamePanel;
 
 public class HelpMethods {
-    public static boolean canMoveHere(float x, float y, float width, float height, String[][] map, String... blockTypes){
-        if(!IsSolid(x, y, map, blockTypes))//top left
-            if(!IsSolid(x+width, y+height, map, blockTypes))//bottom right
-                if(!IsSolid(x+width, y, map, blockTypes))//top right
-                    if(!IsSolid(x, y+height, map, blockTypes))//bottom left
+    public static boolean canMoveHere(float x, float y, float width, float height, String[][] map, Block... lastPlacedBlock){
+        if(!IsSolid(x, y, map, lastPlacedBlock))//top left
+            if(!IsSolid(x+width, y+height, map, lastPlacedBlock))//bottom right
+                if(!IsSolid(x+width, y, map, lastPlacedBlock))//top right
+                    if(!IsSolid(x, y+height, map, lastPlacedBlock))//bottom left
                         return true;
         return false;
     }
     
-    private static boolean IsSolid(float x, float y, String[][] map, String[] blockTypes){
+    private static boolean IsSolid(float x, float y, String[][] map, Block[] lastPlacedBlock){
         float xIndex = x / GamePanel.BLOCK_PIXEL_SIZE;
         float yIndex = y / GamePanel.BLOCK_PIXEL_SIZE;
         
         String value = map[(int)yIndex][(int)xIndex];
         
-        if (blockTypes.length == 0){
-            blockTypes = new String[]{"W", "B", "Bomb"};
+        if (lastPlacedBlock.length != 0 &&
+            lastPlacedBlock[0].currentMatrixPosition().x == (int)yIndex &&
+            lastPlacedBlock[0].currentMatrixPosition().y == (int)xIndex)
+        {
+            return false;   
         }
-        
-        for (String blockType : blockTypes) {
-            if (value.equals(blockType)) {
-                return true;
-            }
-        }
-        return false;
+        return value.equals("W")|| value.equals("B") || value.equals("Bomb");
     }
 }

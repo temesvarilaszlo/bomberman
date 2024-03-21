@@ -31,7 +31,7 @@ public class Player extends Character{
         
         // if the player is on their own placed bomb, don't check collision for bomb
         if (isOnPlacedBlock(getLastPlacedBomb())){
-            if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString, "W", "B")){
+            if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())){
                 x += xSpeed;
                 y += ySpeed;
                 return true;
