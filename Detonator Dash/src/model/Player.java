@@ -77,7 +77,7 @@ public class Player extends Character{
     }
     
     public Bomb getLastPlacedBomb(){
-        if (placedBombs.size() == 0) return null;
+        if (placedBombs.isEmpty()) return null;
         return placedBombs.get(placedBombs.size() - 1);
     }
 }
