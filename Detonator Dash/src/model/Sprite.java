@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
+import view.GamePanel;
 
 /**
  *
@@ -22,5 +24,9 @@ public class Sprite {
     
     public void draw(Graphics2D g){
         g.drawImage(img, x, y, size, size, null);
+    }
+    
+    public Point currentMatrixPosition(){
+        return new Point((y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
     }
 }
