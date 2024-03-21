@@ -28,16 +28,11 @@ public class Character extends Sprite{
             x += xSpeed;
             y += ySpeed;
             return true;
-        } 
+        }
         return false;
     }
 
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-    
-    public Point currentMatrixPosition(){
-        return new Point((y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
-    }
-
 }
