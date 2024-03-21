@@ -24,8 +24,8 @@ public class GameEngine {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
         players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
-        monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
-        monsters.add(new Monster(60, 310, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
+        monsters.add(new Monster(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
+        monsters.add(new Monster(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
         
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();  
