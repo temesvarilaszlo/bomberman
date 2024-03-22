@@ -19,10 +19,12 @@ public class GameEngine {
     private final Sprite[][] gameMap;
     private final ArrayList<Player> players;
     private final ArrayList<Monster> monsters;
+    private final ArrayList<Fire> bombFires;
 
     public GameEngine()  {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
+        bombFires = new ArrayList<>();
         players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
         monsters.add(new Monster(660, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
         monsters.add(new Monster(560, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
@@ -99,7 +101,7 @@ public class GameEngine {
             ArrayList<Bomb> bombsCopy = new ArrayList<>(p.getPlacedBombs());
             for (Bomb b : bombsCopy){
                 if (b.isReadyToExplode()){
-                    System.out.println("Bomba robban" + b.x + " " + b.y);
+                    System.out.println("Bomba robban " + b.x + " " + b.y);
                     mapString[b.currentMatrixPosition().x][b.currentMatrixPosition().y] = "P";
                     p.getPlacedBombs().remove(b);
                 }
