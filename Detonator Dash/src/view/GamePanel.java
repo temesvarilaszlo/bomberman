@@ -93,6 +93,7 @@ public class GamePanel extends JPanel{
         public void actionPerformed(ActionEvent ae) {
             //engine.movePlayers();
             placeBombs();
+            engine.explodeBombs();
             updatePos();
             engine.moveMonsters();
             repaint();

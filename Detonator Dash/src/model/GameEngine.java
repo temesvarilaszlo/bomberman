@@ -94,6 +94,19 @@ public class GameEngine {
         }
     }
     
+    public void explodeBombs(){
+        for (Player p : players){
+            ArrayList<Bomb> bombsCopy = new ArrayList<>(p.getPlacedBombs());
+            for (Bomb b : bombsCopy){
+                if (b.isReadyToExplode()){
+                    System.out.println("Bomba robban" + b.x + " " + b.y);
+                    mapString[b.currentMatrixPosition().x][b.currentMatrixPosition().y] = "P";
+                    p.getPlacedBombs().remove(b);
+                }
+            }
+        }
+    }
+    
     public void moveMonsters(){
         for (Monster m : monsters){
             m.move();
