@@ -8,7 +8,7 @@ import javax.swing.Timer;
  * @author tlasz
  */
 public class Bomb extends Block{
-    private Timer timer;
+    private final Timer timer;
     private final int explosionDelay;
     private boolean readyToExplode;
     
@@ -16,17 +16,16 @@ public class Bomb extends Block{
         super(x, y, size, img);
         explosionDelay = 3000;
         readyToExplode = false;
-        System.out.println(explosionDelay);
         
         timer = new Timer(explosionDelay, (e) -> {
-            readyToExplode = true;
-            timer.stop();
+            explode();
         });
         timer.start();
     }
     
     public void explode(){
-        readyToExplode = false;
+        readyToExplode = true;
+        timer.stop();
     }
 
     public boolean isReadyToExplode() {

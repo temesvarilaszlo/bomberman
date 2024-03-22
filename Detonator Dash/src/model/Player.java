@@ -52,7 +52,7 @@ public class Player extends Character{
             return;
         }
         
-        if (!GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("Bomb")){
+        if (GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
             // assign bomb to player
             placedBombs.add(new Bomb(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
                     GamePanel.BLOCK_PIXEL_SIZE,Images.bombImg));
