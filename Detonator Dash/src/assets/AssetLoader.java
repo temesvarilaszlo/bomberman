@@ -39,7 +39,6 @@ public class AssetLoader {
     
     public static Image loadImage(String resName) throws IOException{
         URL url = AssetLoader.class.getClassLoader().getResource(resName);
-        //asd
         return ImageIO.read(url);
     }
     

@@ -1,10 +1,8 @@
 package model;
 
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Rectangle;
 import static model.HelpMethods.canMoveHere;
-import view.GamePanel;
 
 public class Character extends Sprite{
     protected float speed;
@@ -18,6 +16,10 @@ public class Character extends Sprite{
         direction = Direction.STOPPED;
     }
     
+    /**
+     * Moves the character
+     * @return 
+     */
     public boolean move(){
         if(direction == Direction.STOPPED)
             return false;
@@ -32,13 +34,22 @@ public class Character extends Sprite{
         }
         return false;
     }
-
+    
+    /**
+     * Sets the direction
+     * @param direction 
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
     
+    /**
+     * Checking collision with another character
+     * @param c
+     * @return 
+     */
     public boolean collidesWith(Character c){
-        Rectangle character = new Rectangle(x, y,size,size);
+        Rectangle character = new Rectangle(x, y, size, size);
         if (this.getClass().equals(c.getClass())) {
             character = new Rectangle(x + direction.x,y + direction.y,size,size);
         }

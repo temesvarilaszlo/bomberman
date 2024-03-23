@@ -3,7 +3,6 @@ package model;
 import static assets.AssetLoader.*;
 import assets.Images;
 import java.awt.Graphics2D;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -24,7 +23,7 @@ public class GameEngine {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
         players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
-        players.add(new Player(123, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        players.add(new Player(60, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
         monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
         monsters.add(new Monster(60, 310, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
         
