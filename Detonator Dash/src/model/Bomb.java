@@ -40,6 +40,10 @@ public class Bomb extends Block{
         return readyToExplode;
     }
 
+    public boolean isExplosionOver() {
+        return isExplosionOver;
+    }
+
     public void setReadyToExplode(boolean readyToExplode) {
         this.readyToExplode = readyToExplode;
     }
@@ -60,10 +64,11 @@ public class Bomb extends Block{
         fires.get(0).isActive = true;
         timer = new Timer(500, (e) -> {
             for (Fire f : fires){
-                f.isActive = f.wave == currWave;
+                f.isActive = f.wave <= currWave && currWave <= range;
             }
             if (currWave > range){
                 timer.stop();
+                isExplosionOver = true;
             }
             currWave++;
         });

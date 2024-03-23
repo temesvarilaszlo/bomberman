@@ -121,9 +121,18 @@ public class GameEngine {
                     b.setFires(generateFires(b));
                     explodedBombs.add(b);
                     b.explosion();
+                    System.out.println(explodedBombs.toString());
                 }
             }
         }
+        
+        // delete exploded bombs
+        ArrayList<Bomb> explodedBombsCopy = new ArrayList<>(explodedBombs);
+        for (Bomb b : explodedBombsCopy){
+            if (b.isExplosionOver()){
+                explodedBombs.remove(b);
+            }
+        } 
     }
     
     private ArrayList<Fire> generateFires(Bomb bomb){
