@@ -12,9 +12,9 @@ import view.GamePanel;
  * @author tlasz
  */
 public class Player extends Character{
-    private ArrayList<Bomb> placedBombs;
-    private int bombCapacity;
-    private GameEngine gameEngine;
+    private final ArrayList<Bomb> placedBombs;
+    private final int bombCapacity;
+    private final GameEngine gameEngine;
     
     public Player(int x, int y, int size, Image img, GameEngine game) {
         super(x, y, size, img);
@@ -22,6 +22,8 @@ public class Player extends Character{
         bombCapacity = 3;
         gameEngine = game;
     }
+    
+    public ArrayList<Bomb> getPlacedBombs() { return placedBombs; }
     
     @Override
     public boolean move(){
@@ -55,6 +57,9 @@ public class Player extends Character{
         return false;
     }
     
+    /**
+     * Player places bombs
+     */
     public void placeBomb(){
         if (placedBombs.size() == bombCapacity || isOnPlacedBlock(getLastPlacedBomb())){
             return;
@@ -70,20 +75,25 @@ public class Player extends Character{
             System.out.println("Bomba lerak " + (bombCapacity - placedBombs.size()));
         }
     }
-
-    public ArrayList<Bomb> getPlacedBombs() {
-        return placedBombs;
-    }
     
+    /**
+     * Decides if a player is on a placed bomb by them or not
+     * @param placedBlock
+     * @return 
+     */
     public boolean isOnPlacedBlock(Block placedBlock){
         if (placedBlock == null) return false;
-//        Bomb lastBomb = placedBombs.get(placedBombs.size()-1);
+        //Bomb lastBomb = placedBombs.get(placedBombs.size()-1);
         Rectangle player = new Rectangle(x, y, size, size);
         Rectangle placedBlockHitbox = new Rectangle(placedBlock.x, placedBlock.y, placedBlock.size, placedBlock.size);
         
         return placedBlockHitbox.intersects(player);
     }
     
+    /**
+     * Returns the last placed bomb by a player
+     * @return 
+     */
     public Bomb getLastPlacedBomb(){
         if (placedBombs.isEmpty()) return null;
         return placedBombs.get(placedBombs.size() - 1);

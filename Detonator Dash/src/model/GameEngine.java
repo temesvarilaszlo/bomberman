@@ -32,6 +32,13 @@ public class GameEngine {
         initMap();  
     }
     
+    public ArrayList<Player> getPlayers() { return players; }
+    public ArrayList<Monster> getMonsters(){ return monsters; }
+    
+    /**
+     * Loads the map from the txt using loadTxt() from AssetLoader class
+     * @return 
+     */
     private String[][] loadMap(){
         String mapName = MainMenuWindow.getMap();
         InputStream is = loadTxt("assets/" + mapName + ".txt");
@@ -52,6 +59,9 @@ public class GameEngine {
         return matrix;
     }
     
+    /**
+     * Creating the gameMap Sprite matrix
+     */
     private void initMap() {
         for (int i = 0; i < mapString.length; i++) {
             for (int j = 0; j < mapString[i].length; j++) {
@@ -74,18 +84,30 @@ public class GameEngine {
         }
     }
     
+    /**
+     * Draws players
+     * @param g 
+     */
     public void drawPlayers(Graphics2D g){
         for (Player p : players){
             p.draw(g);
         }
     }
     
+    /**
+     * Draws monsters
+     * @param g 
+     */
     public void drawMonsters(Graphics2D g){
         for (Monster m : monsters){
             m.draw(g);
         }
     }
     
+    /**
+     * Draws bombs
+     * @param g 
+     */
     public void drawBombs(Graphics2D g){
         for (Player p : players){
             for (Bomb b : p.getPlacedBombs()){
@@ -94,6 +116,9 @@ public class GameEngine {
         }
     }
     
+    /**
+     * Move monsters
+     */
     public void moveMonsters(){
         for (Monster m : monsters){
             m.move();
@@ -103,7 +128,10 @@ public class GameEngine {
         }
     }
     
-    //ez új
+    /**
+     * Checks if monster catches player
+     * @param monster 
+     */
     private void checkCollisionsWithPlayers(Monster monster) {
         for (Player player : players) {
             if (monster.collidesWith(player)) {
@@ -112,7 +140,10 @@ public class GameEngine {
         }
     }
     
-    //ez új
+    /**
+     * Monster-monster collision
+     * @param g 
+     */
     /*private void checkCollisionsWithMonsters(Monster monster) {
         for (Monster m : monsters) {
             if (m != monster && monster.collidesWith(m)) {
@@ -122,20 +153,15 @@ public class GameEngine {
         }
     }*/
     
-    
+    /**
+     * Draws the map
+     * @param g 
+     */
     public void drawMap(Graphics2D g){
         for (Sprite[] row : gameMap) {
             for (Sprite sprite : row) {
                 sprite.draw(g);
             }
         }
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-    
-    public ArrayList<Monster> getMonsters(){
-        return monsters;
     }
 }

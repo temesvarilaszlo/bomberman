@@ -3,6 +3,16 @@ package model;
 import view.GamePanel;
 
 public class HelpMethods {
+    /**
+     * Decides if a character can move
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param map
+     * @param lastPlacedBlock
+     * @return 
+     */
     public static boolean canMoveHere(float x, float y, float width, float height, String[][] map, Block... lastPlacedBlock){
         if(!IsSolid(x, y, map, lastPlacedBlock))//top left
             if(!IsSolid(x+width, y+height, map, lastPlacedBlock))//bottom right
@@ -12,6 +22,14 @@ public class HelpMethods {
         return false;
     }
     
+    /**
+     * Checks if a block is solid or not
+     * @param x
+     * @param y
+     * @param map
+     * @param lastPlacedBlock
+     * @return 
+     */
     private static boolean IsSolid(float x, float y, String[][] map, Block[] lastPlacedBlock){
         float xIndex = x / GamePanel.BLOCK_PIXEL_SIZE;
         float yIndex = y / GamePanel.BLOCK_PIXEL_SIZE;

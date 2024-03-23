@@ -58,6 +58,9 @@ public class GamePanel extends JPanel{
         engine.drawMonsters(g);
     }
     
+    /**
+     * Sets the players direction and calls move()
+     */
     private void updatePos(){
         if(keyH.upPressed){
             engine.getPlayers().get(0).setDirection(Direction.UP);
@@ -80,6 +83,9 @@ public class GamePanel extends JPanel{
         }
     }
     
+    /**
+     * Placing bombs
+     */
     private void placeBombs(){
         if (keyH.placeBomb){
             engine.getPlayers().get(0).placeBomb();

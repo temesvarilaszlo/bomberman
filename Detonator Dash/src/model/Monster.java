@@ -28,6 +28,10 @@ public class Monster extends Character{
         
     }
     
+    /**
+     * Chooses a random direction for the monster
+     * @return 
+     */
     private static Direction getRandomDirection(){
         Random random = new Random();
         int randomNumber = random.nextInt(4);
