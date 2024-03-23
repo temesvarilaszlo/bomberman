@@ -23,9 +23,10 @@ public class GameEngine {
     public GameEngine()  {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
-        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
-        monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
-        monsters.add(new Monster(60, 310, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
+        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        players.add(new Player(123, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        monsters.add(new Monster(60, 310, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
         
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();  
@@ -97,8 +98,31 @@ public class GameEngine {
     public void moveMonsters(){
         for (Monster m : monsters){
             m.move();
+            //két metódus
+            checkCollisionsWithPlayers(m);
+            //checkCollisionsWithMonsters(m);
         }
     }
+    
+    //ez új
+    private void checkCollisionsWithPlayers(Monster monster) {
+        for (Player player : players) {
+            if (monster.collidesWith(player)) {
+                player.isAlive = false;
+            }
+        }
+    }
+    
+    //ez új
+    /*private void checkCollisionsWithMonsters(Monster monster) {
+        for (Monster m : monsters) {
+            if (m != monster && monster.collidesWith(m)) {
+                m.direction = Direction.oppositeDirection(m.direction);
+                monster.direction = Direction.oppositeDirection(monster.direction);
+            }
+        }
+    }*/
+    
     
     public void drawMap(Graphics2D g){
         for (Sprite[] row : gameMap) {

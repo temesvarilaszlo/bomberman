@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import static model.HelpMethods.canMoveHere;
 import view.GamePanel;
 
@@ -34,5 +35,15 @@ public class Character extends Sprite{
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+    
+    public boolean collidesWith(Character c){
+        Rectangle character = new Rectangle(x, y,size,size);
+        if (this.getClass().equals(c.getClass())) {
+            character = new Rectangle(x + direction.x,y + direction.y,size,size);
+        }
+        Rectangle otherCharacter = new Rectangle(c.x,c.y,c.size,c.size);
+        
+        return character.intersects(otherCharacter);
     }
 }

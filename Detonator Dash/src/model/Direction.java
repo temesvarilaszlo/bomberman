@@ -8,5 +8,20 @@ public enum Direction {
         this.y = y;
     }
     public final int x, y;
+    
+    public static Direction oppositeDirection(Direction d){
+        if (d == Direction.UP) {
+            return Direction.DOWN;
+        }
+        else if(d == DOWN){
+            return Direction.UP;
+        }
+        else if(d == Direction.LEFT){
+            return Direction.RIGHT;
+        }
+        else{
+            return Direction.LEFT;
+        }
+    }
 }
 

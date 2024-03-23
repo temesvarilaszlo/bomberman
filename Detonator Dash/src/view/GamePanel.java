@@ -93,7 +93,7 @@ public class GamePanel extends JPanel{
         public void actionPerformed(ActionEvent ae) {
             //engine.movePlayers();
             model.Player player = engine.getPlayers().get(0);
-            System.out.println(player.isOnPlacedBlock(player.getLastPlacedBomb()));
+            //System.out.println(player.isOnPlacedBlock(player.getLastPlacedBomb()));
             
             placeBombs();
             updatePos();
