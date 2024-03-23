@@ -14,11 +14,13 @@ import view.GamePanel;
 public class Player extends Character{
     private ArrayList<Bomb> placedBombs;
     private int bombCapacity;
+    private GameEngine gameEngine;
     
-    public Player(int x, int y, int size, Image img) {
+    public Player(int x, int y, int size, Image img, GameEngine game) {
         super(x, y, size, img);
         placedBombs = new ArrayList<>();
         bombCapacity = 3;
+        gameEngine = game;
     }
     
     @Override
@@ -37,6 +39,12 @@ public class Player extends Character{
                 return true;
             }
             return false;
+        }
+        
+        for(Player p : gameEngine.getPlayers()){
+            if (p != this && this.collidesWith(p)) {
+                return false;
+            }
         }
         
         if(canMoveHere(x+xSpeed, y+ySpeed, size, size, GameEngine.mapString)){
