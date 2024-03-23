@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
+import javax.swing.Timer;
 import view.GamePanel;
 import view.MainMenuWindow;
 
@@ -19,12 +21,12 @@ public class GameEngine {
     private final Sprite[][] gameMap;
     private final ArrayList<Player> players;
     private final ArrayList<Monster> monsters;
-    private final ArrayList<Fire> bombFires;
+    private final ArrayList<Bomb> explodedBombs;
 
     public GameEngine()  {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
-        bombFires = new ArrayList<>();
+        explodedBombs = new ArrayList<>();
         players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
         monsters.add(new Monster(660, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
         monsters.add(new Monster(560, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg));
@@ -32,6 +34,7 @@ public class GameEngine {
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();  
         initMap();  
+//        generateFires(new Bomb(350, 350, GamePanel.PLAYER_PIXEL_SIZE, Images.bombImg));
     }
     
     private String[][] loadMap(){
@@ -88,10 +91,18 @@ public class GameEngine {
         }
     }
     
-    public void drawBombs(Graphics2D g){
+    public void drawBombsAndFires(Graphics2D g){
         for (Player p : players){
             for (Bomb b : p.getPlacedBombs()){
                 b.draw(g);
+            }
+        }
+        
+        for (Bomb b : explodedBombs){
+            for (Fire f : b.getFires()){
+                if (f.isActive){
+                    f.draw(g);
+                }
             }
         }
     }
@@ -101,12 +112,55 @@ public class GameEngine {
             ArrayList<Bomb> bombsCopy = new ArrayList<>(p.getPlacedBombs());
             for (Bomb b : bombsCopy){
                 if (b.isReadyToExplode()){
+                    // remove bomb from map after explosion
                     System.out.println("Bomba robban " + b.x + " " + b.y);
                     mapString[b.currentMatrixPosition().x][b.currentMatrixPosition().y] = "P";
                     p.getPlacedBombs().remove(b);
+                    
+                    // explosion
+                    b.setFires(generateFires(b));
+                    explodedBombs.add(b);
+                    b.explosion();
                 }
             }
         }
+    }
+    
+    private ArrayList<Fire> generateFires(Bomb bomb){
+        ArrayList<Fire> fires = new ArrayList<>();
+        
+        int bombRow = bomb.currentMatrixPosition().x;
+        int bombCol = bomb.currentMatrixPosition().y;
+        System.out.println((bombRow) + " " + (bombCol));
+        System.out.println(mapString[bombRow][bombCol]);
+        
+        fires.add(new Fire(bombCol * GamePanel.BLOCK_PIXEL_SIZE, bombRow * GamePanel.BLOCK_PIXEL_SIZE,
+                        GamePanel.BLOCK_PIXEL_SIZE, 0));
+        
+        for (Direction d : Direction.values()){
+            if (d != Direction.STOPPED){
+                for (int wave = 1; wave <= bomb.getRange(); wave++) {
+                    int xInd = bombRow + (d.x*wave);
+                    int yInd = bombCol + (d.y*wave);
+                    
+                    if (xInd >= mapString.length || yInd >= mapString[0].length || mapString[xInd][yInd].equals("W")){
+                        break;
+                    }
+                    else {
+                        fires.add(new Fire(yInd * GamePanel.BLOCK_PIXEL_SIZE, xInd * GamePanel.BLOCK_PIXEL_SIZE,
+                        GamePanel.BLOCK_PIXEL_SIZE, wave));
+                        if (mapString[xInd][yInd].equals("B")){
+                            break; 
+                        }
+                    }
+                    
+//                    System.out.println((bombRow + (d.x*wave)) + " " + (bombCol + (d.y*wave)));
+//                    System.out.println(mapString[bombRow + (d.x*wave)][bombRow + (d.y*wave)]);
+                }
+            }
+        }
+        
+        return fires;
     }
     
     public void moveMonsters(){
