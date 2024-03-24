@@ -1,5 +1,6 @@
 package view;
 
+import assets.Controls;
 import java.io.IOException;
 import assets.Images;
 
@@ -10,13 +11,13 @@ public class DetonatorDash {
      */
     public static void main(String[] args) {
         // load images
-        try{
+        try {
             new Images();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Error while loading images!");
         }
+        new Controls();
         new MainMenuWindow();
     }
-    
+
 }
