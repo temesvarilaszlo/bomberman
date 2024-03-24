@@ -37,12 +37,22 @@ public class AssetLoader {
         return customFont;
     }
     
+    /**
+     * Loads images for the game
+     * @param resName
+     * @return
+     * @throws IOException 
+     */
     public static Image loadImage(String resName) throws IOException{
         URL url = AssetLoader.class.getClassLoader().getResource(resName);
-        //asd
         return ImageIO.read(url);
     }
     
+    /**
+     * Loads txts for the game
+     * @param resName
+     * @return 
+     */
     public static InputStream loadTxt(String resName){
         return AssetLoader.class.getClassLoader().getResourceAsStream(resName);
     } 

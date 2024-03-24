@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,6 +21,7 @@ import static view.HelperMethods.*;
 public class MainMenuWindow extends JFrame {
 
     private static final JComboBox maps = new JComboBox<>(new String[]{"map1", "map2", "map3"});
+    public static boolean is2PlayerGame = false;
 
     public MainMenuWindow() {
         init(this, "Detonator Dash", 800, 750);
@@ -109,8 +109,9 @@ public class MainMenuWindow extends JFrame {
      */
     private ActionListener twoPlayers() {
         return (ActionEvent e) -> {
+            is2PlayerGame = true;
             new GameWindow();
-            setVisible(false);
+            dispose();
         };
     }
 
@@ -121,8 +122,9 @@ public class MainMenuWindow extends JFrame {
      */
     private ActionListener threePlayers() {
         return (ActionEvent e) -> {
+            is2PlayerGame = false;
             new GameWindow();
-            setVisible(false);
+            dispose();
         };
     }
 

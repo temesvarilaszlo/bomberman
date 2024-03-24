@@ -22,10 +22,18 @@ public class Sprite {
         this.img = img;
     }
     
+    /**
+     * Draws the Sprite
+     * @param g 
+     */
     public void draw(Graphics2D g){
         g.drawImage(img, x, y, size, size, null);
     }
     
+    /**
+     * Return a Sprite's current positions in the matrix
+     * @return 
+     */
     public Point currentMatrixPosition(){
         return new Point((y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
     }

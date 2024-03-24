@@ -1,6 +1,5 @@
 package view;
 
-import java.io.IOException;
 import javax.swing.JFrame;
 import static view.HelperMethods.*;
 
@@ -9,7 +8,7 @@ import static view.HelperMethods.*;
  * @author tlasz
  */
 public class GameWindow extends JFrame{
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
 
     public GameWindow() {
         super();

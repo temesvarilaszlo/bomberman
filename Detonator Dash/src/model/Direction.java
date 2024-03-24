@@ -8,5 +8,22 @@ public enum Direction {
         this.y = y;
     }
     public final int x, y;
+    
+    /**
+     * If two monster collides this send the into the opposite direction
+     * @param d
+     * @return 
+     */
+    public static Direction oppositeDirection(Direction d){
+        if (d == null) {
+            return Direction.LEFT;
+        }
+        return switch (d) {
+            case UP -> Direction.DOWN;
+            case DOWN -> Direction.UP;
+            case LEFT -> Direction.RIGHT;
+            default -> Direction.LEFT;
+        };
+    }
 }
 
