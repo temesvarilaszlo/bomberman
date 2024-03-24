@@ -34,8 +34,8 @@ public class GameEngine {
         } else {
             add3Players();
         }
-        monsters.add(new Monster(60, 260, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
-        monsters.add(new Monster(60, 310, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        monsters.add(new Monster(650, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        monsters.add(new Monster(650, 120, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
 
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();
@@ -272,6 +272,18 @@ public class GameEngine {
                             }
                         }
                     }
+                    else {
+                        for (Player p : players){
+                            if (f.collidesWith(p)){
+                                p.isAlive = false;
+                            }
+                        }
+                        for (Monster m : monsters){
+                            if (f.collidesWith(m)){
+                                m.isAlive = false;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -288,5 +300,14 @@ public class GameEngine {
                 sprite.draw(g);
             }
         }
+    }
+    
+    public void clearDeadMonsters(){
+        ArrayList<Monster> monstersCopy = new ArrayList<>(monsters);
+        for (Monster m : monstersCopy){
+            if (!m.isAlive){
+                monsters.remove(m);
+            }
+        } 
     }
 }

@@ -48,6 +48,7 @@ public class Character extends Sprite{
      * @param c
      * @return 
      */
+    @Override
     public boolean collidesWith(Character c){
         Rectangle character = new Rectangle(x, y, size, size);
         if (this.getClass().equals(c.getClass())) {
