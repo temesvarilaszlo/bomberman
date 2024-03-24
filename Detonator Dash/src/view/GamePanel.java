@@ -134,6 +134,7 @@ public class GamePanel extends JPanel {
             engine.explosionEffects();
             updatePos();
             engine.moveMonsters();
+            engine.clearDeadMonsters();
             repaint();
         }
 

@@ -3,6 +3,7 @@ package model;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import view.GamePanel;
 
 /**
@@ -36,5 +37,18 @@ public class Sprite {
      */
     public Point currentMatrixPosition(){
         return new Point((y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
+    }
+    
+    /**
+     * Checking collision with another character
+     * @param c
+     * @return 
+     */
+    public boolean collidesWith(Character c){
+        Rectangle sprite = new Rectangle(x, y, size, size);
+        
+        Rectangle otherCharacter = new Rectangle(c.x,c.y,c.size,c.size);
+        
+        return sprite.intersects(otherCharacter);
     }
 }
