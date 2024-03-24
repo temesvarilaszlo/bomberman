@@ -56,6 +56,7 @@ public class GamePanel extends JPanel {
 
         // the things that need to be drawn
         engine.drawMap(g);
+        engine.drawBombsAndFires(g);
         engine.drawPlayers(g);
         engine.drawMonsters(g);
         engine.drawBombs(g);
@@ -130,6 +131,8 @@ public class GamePanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent ae) {
             placeBombs();
+            engine.explodeBombs();
+            engine.explosionEffects();
             updatePos();
             engine.moveMonsters();
             repaint();

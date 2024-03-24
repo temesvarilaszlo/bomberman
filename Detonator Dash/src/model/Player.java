@@ -77,15 +77,14 @@ public class Player extends Character {
         if (placedBombs.size() == bombCapacity || isOnPlacedBlock(getLastPlacedBomb())) {
             return;
         }
-
-        if (!GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("Bomb")) {
+        
+        if (GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
             // assign bomb to player
             placedBombs.add(new Bomb(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
                     GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg));
 
             // add to mapString for collision checking
             GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "Bomb";
-            System.out.println("Bomba lerak " + (bombCapacity - placedBombs.size()));
         }
     }
 
