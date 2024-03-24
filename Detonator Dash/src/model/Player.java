@@ -59,7 +59,6 @@ public class Player extends Character{
 
             // add to mapString for collision checking
             GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "Bomb";
-            System.out.println("Bomba lerak " + (bombCapacity - placedBombs.size()));
         }
     }
 

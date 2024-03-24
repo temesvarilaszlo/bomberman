@@ -94,6 +94,7 @@ public class GamePanel extends JPanel{
             //engine.movePlayers();
             placeBombs();
             engine.explodeBombs();
+            engine.explosionEffects();
             updatePos();
             engine.moveMonsters();
             repaint();

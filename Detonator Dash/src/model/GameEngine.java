@@ -33,8 +33,7 @@ public class GameEngine {
         
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();  
-        initMap();  
-//        generateFires(new Bomb(350, 350, GamePanel.PLAYER_PIXEL_SIZE, Images.bombImg));
+        initMap();
     }
     
     private String[][] loadMap(){
@@ -113,7 +112,6 @@ public class GameEngine {
             for (Bomb b : bombsCopy){
                 if (b.isReadyToExplode()){
                     // remove bomb from map after explosion
-                    System.out.println("Bomba robban " + b.x + " " + b.y);
                     mapString[b.currentMatrixPosition().x][b.currentMatrixPosition().y] = "P";
                     p.getPlacedBombs().remove(b);
                     
@@ -121,7 +119,6 @@ public class GameEngine {
                     b.setFires(generateFires(b));
                     explodedBombs.add(b);
                     b.explosion();
-                    System.out.println(explodedBombs.toString());
                 }
             }
         }
@@ -140,8 +137,6 @@ public class GameEngine {
         
         int bombRow = bomb.currentMatrixPosition().x;
         int bombCol = bomb.currentMatrixPosition().y;
-        System.out.println((bombRow) + " " + (bombCol));
-        System.out.println(mapString[bombRow][bombCol]);
         
         fires.add(new Fire(bombCol * GamePanel.BLOCK_PIXEL_SIZE, bombRow * GamePanel.BLOCK_PIXEL_SIZE,
                         GamePanel.BLOCK_PIXEL_SIZE, 0));
@@ -158,18 +153,40 @@ public class GameEngine {
                     else {
                         fires.add(new Fire(yInd * GamePanel.BLOCK_PIXEL_SIZE, xInd * GamePanel.BLOCK_PIXEL_SIZE,
                         GamePanel.BLOCK_PIXEL_SIZE, wave));
-                        if (mapString[xInd][yInd].equals("B")){
+                        if (mapString[xInd][yInd].equals("B") || mapString[xInd][yInd].equals("Bomb")){
                             break; 
                         }
                     }
-                    
-//                    System.out.println((bombRow + (d.x*wave)) + " " + (bombCol + (d.y*wave)));
-//                    System.out.println(mapString[bombRow + (d.x*wave)][bombRow + (d.y*wave)]);
                 }
             }
         }
         
         return fires;
+    }
+    
+    public void explosionEffects(){
+        for (Bomb b : explodedBombs){
+            for (Fire f : b.getFires()){
+                if (f.isActive){
+                    int row = f.currentMatrixPosition().x;
+                    int col = f.currentMatrixPosition().y;
+                    if (mapString[row][col].equals("B")){
+                        mapString[row][col] = "P";
+                        gameMap[row][col] = new Path(col * GamePanel.BLOCK_PIXEL_SIZE, row * GamePanel.BLOCK_PIXEL_SIZE, 
+                                GamePanel.BLOCK_PIXEL_SIZE, Images.pathImg);
+                    }
+                    else if (mapString[row][col].equals("Bomb")){
+                        for (Player p : players){
+                            for (Bomb bomb : p.getPlacedBombs()){
+                                if (bomb.currentMatrixPosition().x == row && bomb.currentMatrixPosition().y == col){
+                                    bomb.explode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     public void moveMonsters(){

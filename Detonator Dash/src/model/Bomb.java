@@ -31,7 +31,7 @@ public class Bomb extends Block{
         timer.start();
     }
     
-    private void explode(){
+    public void explode(){
         readyToExplode = true;
         timer.stop();
     }
@@ -62,7 +62,7 @@ public class Bomb extends Block{
     
     public void explosion(){
         fires.get(0).isActive = true;
-        timer = new Timer(500, (e) -> {
+        timer = new Timer(300, (e) -> {
             for (Fire f : fires){
                 f.isActive = f.wave <= currWave && currWave <= range;
             }
