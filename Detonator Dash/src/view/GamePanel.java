@@ -136,6 +136,11 @@ public class GamePanel extends JPanel {
             engine.moveMonsters();
             engine.clearDeadMonsters();
             repaint();
+            
+            if (engine.isGameOver()){
+                timer.stop();
+                removeKeyListener(keyH);
+            }
         }
 
     }
