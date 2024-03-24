@@ -163,7 +163,9 @@ public class GameEngine {
      */
     public void drawPlayers(Graphics2D g) {
         for (Player p : players) {
-            p.draw(g);
+            if (p.isAlive){
+                p.draw(g);
+            }
         }
     }
 
@@ -309,5 +311,26 @@ public class GameEngine {
                 monsters.remove(m);
             }
         } 
+    }
+    
+    /**
+     * Checks the number of players alive, checks if at least one bomb is placed or an explosion
+     * is in progress.
+     * @return if the game is over
+     */
+    public boolean isGameOver(){
+        int alivePlayers = 0;
+        boolean areBombsPlaced = false;
+        
+        for (Player p : players){
+            if (p.isAlive){
+                alivePlayers++;
+            }
+            if (!p.getPlacedBombs().isEmpty()){
+                areBombsPlaced = true;
+            }
+        }
+        
+        return alivePlayers <= 1 && explodedBombs.isEmpty() && !areBombsPlaced;
     }
 }

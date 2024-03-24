@@ -50,6 +50,7 @@ public class Character extends Sprite{
      */
     @Override
     public boolean collidesWith(Character c){
+        if (!c.isAlive) return false;
         Rectangle character = new Rectangle(x, y, size, size);
         if (this.getClass().equals(c.getClass())) {
             character = new Rectangle(x + direction.x,y + direction.y,size,size);

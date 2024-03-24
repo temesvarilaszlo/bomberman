@@ -39,7 +39,7 @@ public class Player extends Character {
 
     @Override
     public boolean move() {
-        if (direction == Direction.STOPPED) {
+        if (direction == Direction.STOPPED || !isAlive) {
             return false;
         }
 
@@ -74,7 +74,7 @@ public class Player extends Character {
      * Player places bombs
      */
     public void placeBomb() {
-        if (placedBombs.size() == bombCapacity || isOnPlacedBlock(getLastPlacedBomb())) {
+        if (!isAlive || placedBombs.size() == bombCapacity || isOnPlacedBlock(getLastPlacedBomb())) {
             return;
         }
         

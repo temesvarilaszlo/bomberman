@@ -45,6 +45,7 @@ public class Sprite {
      * @return 
      */
     public boolean collidesWith(Character c){
+        if (!c.isAlive) return false;
         Rectangle sprite = new Rectangle(x, y, size, size);
         
         Rectangle otherCharacter = new Rectangle(c.x,c.y,c.size,c.size);
