@@ -59,7 +59,6 @@ public class GamePanel extends JPanel {
         engine.drawBombsAndFires(g);
         engine.drawPlayers(g);
         engine.drawMonsters(g);
-        engine.drawBombs(g);
     }
 
     /**

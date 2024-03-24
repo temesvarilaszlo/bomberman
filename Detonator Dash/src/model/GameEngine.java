@@ -28,6 +28,7 @@ public class GameEngine {
     public GameEngine() {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
+        explodedBombs = new ArrayList<>();
         if (is2PlayerGame) {
             add2Players();
         } else {
