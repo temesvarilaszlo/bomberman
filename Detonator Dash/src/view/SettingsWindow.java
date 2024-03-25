@@ -14,13 +14,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import static assets.AssetLoader.CUSTOM_FONT;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import static view.HelperMethods.*;
 import static assets.Controls.*;
+import java.awt.event.KeyListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 
-public class SettingsWindow extends JFrame {
+public class SettingsWindow extends JFrame implements KeyListener {
 
     private final JPanel middlePanel = new JPanel();
     private final JComboBox playersCombo = new JComboBox<>(new String[]{"Player 1", "Player 2", "Player 3"});
@@ -53,31 +60,26 @@ public class SettingsWindow extends JFrame {
         JLabel upLabel = new JLabel("Up");
         setProperties(upLabel, 25, 200, 260, 50, 40);
         setProperties(upButton, 20, 400, 260, 200, 35);
-//        changeKeyBinding(upButton);
 
         //Down
         JLabel downLabel = new JLabel("Down");
         setProperties(downLabel, 25, 200, 320, 90, 40);
         setProperties(downButton, 20, 400, 320, 200, 35);
-//        changeKeyBinding(downButton);
 
         //Left
         JLabel leftLabel = new JLabel("Left");
         setProperties(leftLabel, 25, 200, 380, 80, 40);
         setProperties(leftButton, 20, 400, 380, 200, 35);
-//        changeKeyBinding(leftButton);
 
         //Right
         JLabel rightLabel = new JLabel("Right");
         setProperties(rightLabel, 25, 200, 440, 90, 40);
         setProperties(rightButton, 20, 400, 440, 200, 35);
-//        changeKeyBinding(rightButton);
 
         //Place Bomb
         JLabel placeBombLabel = new JLabel("Place Bomb");
         setProperties(placeBombLabel, 25, 200, 500, 180, 40);
         setProperties(bombButton, 20, 400, 500, 200, 35);
-//        changeKeyBinding(bombButton);
 
         //Back to menu button
         backToMenuButton.addActionListener(backToMenu());
@@ -100,7 +102,9 @@ public class SettingsWindow extends JFrame {
         middlePanel.setLayout(null);
         setLayout(new GridBagLayout());
         add(middlePanel, new GridBagConstraints());
-
+        
+        addKeyListener(this);
+        
         setVisible(true);
     }
 
@@ -142,50 +146,119 @@ public class SettingsWindow extends JFrame {
         buttonList.add(leftButton);
         buttonList.add(bombButton);
         buttonList.add(backToMenuButton);
+        
+        for(JButton b : buttonList){
+            b.addActionListener(new ButtonClickListener());
+        }
     }
 
-    /**
-     * Changes the keybindings
-     *
-     * @param button
-     */
-    private void changeKeyBinding(JButton button) {
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button.setFocusable(true);
-                for (JButton b : buttonList) {
-                    b.setEnabled(false);
-                    playersCombo.setEnabled(false);
-                }
-            }
-        });
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (!button.isEnabled()) {
-                    int keyCode = e.getKeyCode();
-                    System.out.println(keyCode);
-                    int otherKeyCode = -1;
-                    for (JButton b : buttonList) {
-                        if (b.getText().equals(KeyEvent.getKeyText(keyCode))) {
-                            // If the key is already bound to another button, do nothing
-                            //return;
-                        }
-                    }
-
-                    button.setText(KeyEvent.getKeyText(keyCode));
-                    for (JButton b : buttonList) {
-                        b.setEnabled(true);
-                    }
-                    playersCombo.setEnabled(true);
-                    button.setFocusable(false);
-                }
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //if the pressed key matches any other key
+        for(int i = 0; i < controls.length; i++){
+            for(int j = 0; j < controls[i].length; j++){
+                if(controls[i][j] == e.getKeyCode())
+                    return;
             }
-        });
+        }
+        
+        JButton clickedButton = null;
+        for (JButton button : buttonList) {
+            if (button.isEnabled()) {
+                clickedButton = button;
+                button.setText(KeyEvent.getKeyText(e.getKeyCode()));
+            }
+            button.setEnabled(true);
+        }
+        
+        try {
+            writeControlsToFile(clickedButton, e.getKeyCode());
+        } catch (URISyntaxException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent e) {}
+    
+    private void writeControlsToFile(JButton clickedButton, int keyCode) throws URISyntaxException{
+        String selectedPlayer = (String) playersCombo.getSelectedItem();
+        switch (selectedPlayer) {
+            case "Player 1" -> {
+                if(clickedButton == upButton)
+                    controls[0][0] = keyCode;
+                else if(clickedButton == rightButton)
+                    controls[0][1] = keyCode;
+                else if(clickedButton == downButton)
+                    controls[0][2] = keyCode;
+                else if(clickedButton == leftButton)
+                    controls[0][3] = keyCode;
+                else if(clickedButton == bombButton)
+                    controls[0][4] = keyCode;
+            }
+            case "Player 2" -> {
+                if(clickedButton == upButton)
+                    controls[1][0] = keyCode;
+                else if(clickedButton == rightButton)
+                    controls[1][1] = keyCode;
+                else if(clickedButton == downButton)
+                    controls[1][2] = keyCode;
+                else if(clickedButton == leftButton)
+                    controls[1][3] = keyCode;
+                else if(clickedButton == bombButton)
+                    controls[1][4] = keyCode;
+            }
+            case "Player 3" -> {
+                if(clickedButton == upButton)
+                    controls[2][0] = keyCode;
+                else if(clickedButton == rightButton)
+                    controls[2][1] = keyCode;
+                else if(clickedButton == downButton)
+                    controls[2][2] = keyCode;
+                else if(clickedButton == leftButton)
+                    controls[2][3] = keyCode;
+                else if(clickedButton == bombButton)
+                    controls[2][4] = keyCode;
+            }
+            default -> throw new AssertionError();
+        }
+        
+        
+        URL url = SettingsWindow.class.getClassLoader().getResource("assets/controls.txt");
+        File controlFile = Paths.get(url.toURI()).toFile();        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(controlFile))) {
+            for (int[] row : controls) {
+                StringBuilder rowString = new StringBuilder();
+                for (int col : row) {
+                    rowString.append(col).append(",");
+                }
+                // Remove the last comma and write the row to the file
+                writer.write(rowString.substring(0, rowString.length() - 1));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing matrix to file: " + e.getMessage());
+        }
     }
 
+
+    private class ButtonClickListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton clickedButton = (JButton) e.getSource();
+            for(JButton button : buttonList){
+                if(button != clickedButton)
+                    button.setEnabled(false);
+            }
+            clickedButton.requestFocus();
+        }
+        
+    }    
+    
     /**
      * Updates control combo boxes based on which player is selected
      */
