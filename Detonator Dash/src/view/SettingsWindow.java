@@ -13,11 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import static assets.AssetLoader.CUSTOM_FONT;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import static view.HelperMethods.*;
-import static assets.Controls.*;
 import java.awt.event.KeyListener;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,6 +23,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import static assets.AssetLoader.CUSTOM_FONT;
+import static view.HelperMethods.*;
+import static assets.Controls.*;
 
 public class SettingsWindow extends JFrame implements KeyListener {
 
@@ -148,8 +148,31 @@ public class SettingsWindow extends JFrame implements KeyListener {
         buttonList.add(backToMenuButton);
         
         for(JButton b : buttonList){
-            b.addActionListener(new ButtonClickListener());
+            if(b != backToMenuButton)
+                b.addActionListener(new ButtonClickListener());
         }
+    }
+    
+    /**
+     * Disables all buttons and playersCombo except the clickedButton
+     * @param clickedButton 
+     */
+    private void disableButtons(JButton clickedButton){
+        for(JButton button : buttonList){
+            if(button != clickedButton)
+            button.setEnabled(false);
+        }
+        playersCombo.setEnabled(false);
+    }
+    
+    /**
+     * Enables all buttons and playerCombo
+     */
+    private void enableButtons(){
+        for(JButton button : buttonList){
+            button.setEnabled(true);
+        }
+        playersCombo.setEnabled(true);
     }
 
     @Override
@@ -157,34 +180,34 @@ public class SettingsWindow extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //if the pressed key matches any other key
-        for(int i = 0; i < controls.length; i++){
-            for(int j = 0; j < controls[i].length; j++){
-                if(controls[i][j] == e.getKeyCode())
-                    return;
-            }
-        }
+        int keyCode = e.getKeyCode();
+        if(isMatchingKey(keyCode))
+            return;
         
+        //setting text for button
         JButton clickedButton = null;
         for (JButton button : buttonList) {
             if (button.isEnabled()) {
                 clickedButton = button;
-                button.setText(KeyEvent.getKeyText(e.getKeyCode()));
+                clickedButton.setText(KeyEvent.getKeyText(keyCode));
             }
-            button.setEnabled(true);
         }
+        clickedButton.setForeground(Color.BLACK);
+        enableButtons();
         
-        try {
-            writeControlsToFile(clickedButton, e.getKeyCode());
-        } catch (URISyntaxException ex) {
-            ex.printStackTrace();
-        }
+        updateControlsMatrix(clickedButton, keyCode);
+        updateControlsFile();
     }
     
     @Override
     public void keyReleased(KeyEvent e) {}
     
-    private void writeControlsToFile(JButton clickedButton, int keyCode) throws URISyntaxException{
+    /**
+     * Updates the controls matrix with the new keybindings
+     * @param clickedButton
+     * @param keyCode 
+     */
+    private void updateControlsMatrix(JButton clickedButton, int keyCode){
         String selectedPlayer = (String) playersCombo.getSelectedItem();
         switch (selectedPlayer) {
             case "Player 1" -> {
@@ -225,23 +248,6 @@ public class SettingsWindow extends JFrame implements KeyListener {
             }
             default -> throw new AssertionError();
         }
-        
-        
-        URL url = SettingsWindow.class.getClassLoader().getResource("assets/controls.txt");
-        File controlFile = Paths.get(url.toURI()).toFile();        
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(controlFile))) {
-            for (int[] row : controls) {
-                StringBuilder rowString = new StringBuilder();
-                for (int col : row) {
-                    rowString.append(col).append(",");
-                }
-                // Remove the last comma and write the row to the file
-                writer.write(rowString.substring(0, rowString.length() - 1));
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing matrix to file: " + e.getMessage());
-        }
     }
 
 
@@ -250,10 +256,9 @@ public class SettingsWindow extends JFrame implements KeyListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton clickedButton = (JButton) e.getSource();
-            for(JButton button : buttonList){
-                if(button != clickedButton)
-                    button.setEnabled(false);
-            }
+            disableButtons(clickedButton);
+            clickedButton.setText("input...");
+            clickedButton.setForeground(Color.RED);
             clickedButton.requestFocus();
         }
         
@@ -265,23 +270,22 @@ public class SettingsWindow extends JFrame implements KeyListener {
     private void updateControls() {
         String selectedPlayer = (String) playersCombo.getSelectedItem();
         switch (selectedPlayer) {
-            case "Player 1":
+            case "Player 1" -> {
                 for (int i = 0; i < controls[0].length; i++) {
                     buttonList.get(i).setText(KeyEvent.getKeyText(controls[0][i]));
                 }
-                break;
-            case "Player 2":
+            }
+            case "Player 2" -> {
                 for (int i = 0; i < controls[1].length; i++) {
                     buttonList.get(i).setText(KeyEvent.getKeyText(controls[1][i]));
                 }
-                break;
-            case "Player 3":
+            }
+            case "Player 3" -> {
                 for (int i = 0; i < controls[2].length; i++) {
                     buttonList.get(i).setText(KeyEvent.getKeyText(controls[2][i]));
                 }
-                break;
-            default:
-                throw new AssertionError();
+            }
+            default -> throw new AssertionError();
         }
     }
 

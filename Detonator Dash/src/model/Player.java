@@ -4,8 +4,8 @@ import assets.Images;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import static model.HelpMethods.canMoveHere;
 import view.GamePanel;
+import static model.HelpMethods.canMoveHere;
 
 /**
  *

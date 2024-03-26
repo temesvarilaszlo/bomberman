@@ -1,15 +1,13 @@
 package model;
 
-import static assets.AssetLoader.*;
 import assets.Images;
 import java.awt.Graphics2D;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
-import javax.swing.Timer;
 import view.GamePanel;
 import view.MainMenuWindow;
+import static assets.AssetLoader.*;
 import static assets.Controls.controls;
 import static view.MainMenuWindow.is2PlayerGame;
 
