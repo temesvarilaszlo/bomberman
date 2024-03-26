@@ -11,6 +11,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import view.SettingsWindow;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import javax.swing.JButton;
 import static assets.AssetLoader.loadTxt;
 
 public class Controls {
@@ -18,6 +21,12 @@ public class Controls {
     
     public Controls(){
         controls = loadControls();
+    }
+    
+    public static void setButtonsText(ArrayList<JButton> buttonList, int row){
+        for (int i = 0; i < controls[row].length; i++) {
+            buttonList.get(i).setText(KeyEvent.getKeyText(controls[row][i]));
+        }
     }
     
     public static boolean isMatchingKey(int keycode){

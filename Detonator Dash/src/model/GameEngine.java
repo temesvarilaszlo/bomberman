@@ -111,8 +111,7 @@ public class GameEngine {
      * Adding 3 players
      */
     private void add3Players() {
-        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[0]));
-        players.add(new Player(60, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[1]));
+        add2Players();
         players.add(new Player(260, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[2]));
     }
 
@@ -134,14 +133,15 @@ public class GameEngine {
      *
      * @param g
      */
-    /*private void checkCollisionsWithMonsters(Monster monster) {
+    private void checkCollisionsWithMonsters(Monster monster) {
         for (Monster m : monsters) {
             if (m != monster && monster.collidesWith(m)) {
                 m.direction = Direction.oppositeDirection(m.direction);
                 monster.direction = Direction.oppositeDirection(monster.direction);
             }
         }
-    }*/
+    }
+    
     /**
      * Move monsters
      */

@@ -16,13 +16,6 @@ import javax.swing.border.LineBorder;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.awt.event.KeyListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import static assets.AssetLoader.CUSTOM_FONT;
 import static view.HelperMethods.*;
 import static assets.Controls.*;
@@ -44,7 +37,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
         setLookandFeel();
         middlePanel.setPreferredSize(new Dimension(750, 690));
         addButtonsToList();
-        updateControls(); //calling it so it sets the default for player 1
+        renderControls(); //calling it so it sets the default for player 1
 
         //Title
         JLabel title = new JLabel("Settings");
@@ -53,7 +46,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
         //Players
         setProperties(playersCombo, 20, 305, 170, 140, 40);
         playersCombo.addActionListener((ActionEvent e) -> {
-            updateControls();
+            renderControls();
         });
 
         //Up
@@ -157,12 +150,13 @@ public class SettingsWindow extends JFrame implements KeyListener {
      * Disables all buttons and playersCombo except the clickedButton
      * @param clickedButton 
      */
-    private void disableButtons(JButton clickedButton){
+    private void disableButtons(JButton exception){
         for(JButton button : buttonList){
-            if(button != clickedButton)
-            button.setEnabled(false);
+            if(button != exception)
+                button.setEnabled(false);
         }
         playersCombo.setEnabled(false);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
     
     /**
@@ -173,6 +167,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
             button.setEnabled(true);
         }
         playersCombo.setEnabled(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     @Override
@@ -189,10 +184,10 @@ public class SettingsWindow extends JFrame implements KeyListener {
         for (JButton button : buttonList) {
             if (button.isEnabled()) {
                 clickedButton = button;
+                clickedButton.setForeground(Color.BLACK);
                 clickedButton.setText(KeyEvent.getKeyText(keyCode));
             }
         }
-        clickedButton.setForeground(Color.BLACK);
         enableButtons();
         
         updateControlsMatrix(clickedButton, keyCode);
@@ -249,7 +244,19 @@ public class SettingsWindow extends JFrame implements KeyListener {
             default -> throw new AssertionError();
         }
     }
-
+    
+    /**
+     * Updates control combo boxes based on which player is selected
+     */
+    private void renderControls() {
+        String selectedPlayer = (String) playersCombo.getSelectedItem();
+        switch (selectedPlayer) {
+            case "Player 1" -> { setButtonsText(buttonList, 0); }
+            case "Player 2" -> { setButtonsText(buttonList, 1); }
+            case "Player 3" -> { setButtonsText(buttonList, 2); }
+            default -> throw new AssertionError();
+        }
+    }
 
     private class ButtonClickListener implements ActionListener{
 
@@ -262,31 +269,6 @@ public class SettingsWindow extends JFrame implements KeyListener {
             clickedButton.requestFocus();
         }
         
-    }    
-    
-    /**
-     * Updates control combo boxes based on which player is selected
-     */
-    private void updateControls() {
-        String selectedPlayer = (String) playersCombo.getSelectedItem();
-        switch (selectedPlayer) {
-            case "Player 1" -> {
-                for (int i = 0; i < controls[0].length; i++) {
-                    buttonList.get(i).setText(KeyEvent.getKeyText(controls[0][i]));
-                }
-            }
-            case "Player 2" -> {
-                for (int i = 0; i < controls[1].length; i++) {
-                    buttonList.get(i).setText(KeyEvent.getKeyText(controls[1][i]));
-                }
-            }
-            case "Player 3" -> {
-                for (int i = 0; i < controls[2].length; i++) {
-                    buttonList.get(i).setText(KeyEvent.getKeyText(controls[2][i]));
-                }
-            }
-            default -> throw new AssertionError();
-        }
     }
 
     /**

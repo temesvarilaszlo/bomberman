@@ -62,7 +62,7 @@ public class Bomb extends Block{
     
     public void explosion(){
         fires.get(0).isActive = true;
-        timer = new Timer(300, (e) -> {
+        timer = new Timer(250, (e) -> {
             for (Fire f : fires){
                 f.isActive = f.wave <= currWave && currWave <= range;
             }

@@ -26,7 +26,6 @@ public class MainMenuWindow extends JFrame {
     public MainMenuWindow() {
         init(this, "Detonator Dash", 800, 750);
         setLookandFeel();
-
         //Panel
         JPanel middlePanel = new JPanel();
         middlePanel.setPreferredSize(new Dimension(750, 690));

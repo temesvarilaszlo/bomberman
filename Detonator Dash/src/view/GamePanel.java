@@ -34,7 +34,6 @@ public class GamePanel extends JPanel {
         super();
 
         // GUI stuff
-        setBackground(Color.BLACK);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setFocusable(true);
 
