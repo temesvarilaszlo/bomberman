@@ -54,10 +54,7 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
 
         // the things that need to be drawn
-        engine.drawMap(g);
-        engine.drawBombsAndFires(g);
-        engine.drawPlayers(g);
-        engine.drawMonsters(g);
+        engine.drawSprites(g);
     }
 
     /**

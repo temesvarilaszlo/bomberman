@@ -331,4 +331,11 @@ public class GameEngine {
         
         return alivePlayers <= 1 && explodedBombs.isEmpty() && !areBombsPlaced;
     }
+    
+    public void drawSprites(Graphics2D g){
+        drawMap(g);
+        drawBombsAndFires(g);
+        drawPlayers(g);
+        drawMonsters(g);
+    }
 }
