@@ -50,4 +50,9 @@ public class Drop extends Block{
         }
         this.img = img;
     }
+
+    public String getType() {
+        return type;
+    }
+    
 }

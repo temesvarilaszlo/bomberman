@@ -14,9 +14,11 @@ import static model.HelpMethods.canMoveHere;
 public class Player extends Character {
 
     private final ArrayList<Bomb> placedBombs;
-    private final int bombCapacity;
+    private int bombCapacity;
+    private int bombRange;
     private final GameEngine gameEngine;
     private final ArrayList<Integer> controls;
+    private String powerup;
 
     public Player(int x, int y, int size, Image img, GameEngine game, int[] controls) {
         super(x, y, size, img);
@@ -26,7 +28,9 @@ public class Player extends Character {
             this.controls.add(controls[i]);
         }
         bombCapacity = 3;
+        bombRange = 2;
         gameEngine = game;
+        powerup = "";
     }
 
     public ArrayList<Bomb> getPlacedBombs() {
@@ -81,7 +85,7 @@ public class Player extends Character {
         if (GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
             // assign bomb to player
             placedBombs.add(new Bomb(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
-                    GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg));
+                    GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg, bombRange, true));
 
             // add to mapString for collision checking
             GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "Bomb";
@@ -115,5 +119,43 @@ public class Player extends Character {
             return null;
         }
         return placedBombs.get(placedBombs.size() - 1);
+    }
+    
+    public void increaseBombRange(){
+        bombRange++;
+    }
+    
+    public void increaseBombCapacity(){
+        bombCapacity++;
+    }
+    
+    public void powerupChooser(String powerup){
+        switch (powerup) {
+            case "D" -> {
+                this.powerup = powerup;
+                System.out.println("Detonator");
+            }
+            case "G" -> {
+                
+            }
+            case "I" -> {
+                
+            }
+            case "O" -> {
+                
+            }
+            case "PB" -> {
+                increaseBombCapacity();
+                System.out.println("Bomb range increased.");
+            }
+            case "PR" -> {
+                increaseBombRange();
+                System.out.println("Bomb range increased.");
+            }
+            case "S" -> {
+                
+            }
+            default -> throw new AssertionError();
+        }
     }
 }

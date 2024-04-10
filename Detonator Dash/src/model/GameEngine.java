@@ -346,9 +346,21 @@ public class GameEngine {
     
     public void drawSprites(Graphics2D g){
         drawMap(g);
+        drawDrops(g);
         drawBombsAndFires(g);
         drawPlayers(g);
         drawMonsters(g);
-        drawDrops(g);
+    }
+    
+    public void dropPickups(){
+        ArrayList<Drop> dropsCopy = new ArrayList<>(drops);
+        for (Drop d : dropsCopy){
+            for (Player p : players){
+                if (d.collidesWith(p)){
+                    p.powerupChooser(d.getType());
+                    drops.remove(d);
+                }
+            }
+        }
     }
 }
