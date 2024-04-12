@@ -22,11 +22,13 @@ public class GameEngine {
     private final ArrayList<Player> players;
     private final ArrayList<Monster> monsters;
     private final ArrayList<Bomb> explodedBombs;
+    private final ArrayList<Drop> drops;
 
     public GameEngine() {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
         explodedBombs = new ArrayList<>();
+        drops = new ArrayList<>();
         if (is2PlayerGame) {
             add2Players();
         } else {
@@ -259,6 +261,10 @@ public class GameEngine {
                     int row = f.currentMatrixPosition().x;
                     int col = f.currentMatrixPosition().y;
                     if (mapString[row][col].equals("B")){
+                        Box explodedBox = (Box)gameMap[row][col];
+                        if (explodedBox.containsDrop()){
+                            drops.add(new Drop(col * GamePanel.BLOCK_PIXEL_SIZE, row * GamePanel.BLOCK_PIXEL_SIZE));
+                        }
                         mapString[row][col] = "P";
                         gameMap[row][col] = new Path(col * GamePanel.BLOCK_PIXEL_SIZE, row * GamePanel.BLOCK_PIXEL_SIZE, 
                                 GamePanel.BLOCK_PIXEL_SIZE, Images.pathImg);
@@ -332,10 +338,29 @@ public class GameEngine {
         return alivePlayers <= 1 && explodedBombs.isEmpty() && !areBombsPlaced;
     }
     
+    public void drawDrops(Graphics2D g){
+        for (Drop d : drops){
+            d.draw(g);
+        }
+    }
+    
     public void drawSprites(Graphics2D g){
         drawMap(g);
+        drawDrops(g);
         drawBombsAndFires(g);
         drawPlayers(g);
         drawMonsters(g);
+    }
+    
+    public void pickupDrops(){
+        ArrayList<Drop> dropsCopy = new ArrayList<>(drops);
+        for (Drop d : dropsCopy){
+            for (Player p : players){
+                if (d.collidesWith(p)){
+                    p.powerupChooser(d.getType());
+                    drops.remove(d);
+                }
+            }
+        }
     }
 }

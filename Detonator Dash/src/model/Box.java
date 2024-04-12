@@ -22,9 +22,9 @@ public class Box extends Block{
     public Box(int x, int y, int size, Image img) {
         this(x, y, size, img, true);
     }
-    
-    public void dropTheDrop(){
-        
+
+    public boolean containsDrop() {
+        return containsDrop;
     }
     
 }

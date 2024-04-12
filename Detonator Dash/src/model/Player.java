@@ -14,9 +14,11 @@ import static model.HelpMethods.canMoveHere;
 public class Player extends Character {
 
     private final ArrayList<Bomb> placedBombs;
-    private final int bombCapacity;
+    private int bombCapacity;
+    private int bombRange;
     private final GameEngine gameEngine;
     private final ArrayList<Integer> controls;
+    private ArrayList<String> powerups;
 
     public Player(int x, int y, int size, Image img, GameEngine game, int[] controls) {
         super(x, y, size, img);
@@ -26,7 +28,9 @@ public class Player extends Character {
             this.controls.add(controls[i]);
         }
         bombCapacity = 3;
+        bombRange = 2;
         gameEngine = game;
+        powerups = new ArrayList<>();
     }
 
     public ArrayList<Bomb> getPlacedBombs() {
@@ -74,14 +78,24 @@ public class Player extends Character {
      * Player places bombs
      */
     public void placeBomb() {
-        if (!isAlive || placedBombs.size() == bombCapacity || isOnPlacedBlock(getLastPlacedBomb())) {
+        if (isOnPlacedBlock(getLastPlacedBomb())) {
+            return;
+        }
+        boolean hasDetonator = powerups.contains("D");
+        if (!isAlive || placedBombs.size() == bombCapacity){
+            if (hasDetonator){
+                for (Bomb b : placedBombs){
+                    b.explode();
+                }
+                powerups.remove("D");
+            }
             return;
         }
         
         if (GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
             // assign bomb to player
             placedBombs.add(new Bomb(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
-                    GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg));
+                    GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg, bombRange, !hasDetonator));
 
             // add to mapString for collision checking
             GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "Bomb";
@@ -115,5 +129,43 @@ public class Player extends Character {
             return null;
         }
         return placedBombs.get(placedBombs.size() - 1);
+    }
+    
+    public void increaseBombRange(){
+        bombRange++;
+    }
+    
+    public void increaseBombCapacity(){
+        bombCapacity++;
+    }
+    
+    public void powerupChooser(String powerup){
+        switch (powerup) {
+            case "D" -> {
+                this.powerups.add(powerup);
+                System.out.println("Detonator");
+            }
+            case "G" -> {
+                
+            }
+            case "I" -> {
+                
+            }
+            case "O" -> {
+                
+            }
+            case "PB" -> {
+                increaseBombCapacity();
+                System.out.println("Bomb range increased.");
+            }
+            case "PR" -> {
+                increaseBombRange();
+                System.out.println("Bomb range increased.");
+            }
+            case "S" -> {
+                
+            }
+            default -> throw new AssertionError();
+        }
     }
 }

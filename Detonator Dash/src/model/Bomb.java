@@ -17,23 +17,27 @@ public class Bomb extends Block{
     private ArrayList<Fire> fires;
     private int currWave;
     
-    public Bomb(int x, int y, int size, Image img) {
+    public Bomb(int x, int y, int size, Image img, int range, boolean isDetonated) {
         super(x, y, size, img);
         explosionDelay = 3000;
         readyToExplode = false;
         isExplosionOver = false;
-        range = 2;
+        this.range = range;
         currWave = 1;
         
-        timer = new Timer(explosionDelay, (e) -> {
-            explode();
-        });
-        timer.start();
+        if (isDetonated){
+            timer = new Timer(explosionDelay, (e) -> {
+                explode();
+            });
+            timer.start();     
+        }
     }
     
     public void explode(){
         readyToExplode = true;
-        timer.stop();
+        if (timer != null){
+            timer.stop();
+        }
     }
 
     public boolean isReadyToExplode() {
