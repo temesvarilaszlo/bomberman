@@ -35,7 +35,9 @@ public class Bomb extends Block{
     
     public void explode(){
         readyToExplode = true;
-        timer.stop();
+        if (timer != null){
+            timer.stop();
+        }
     }
 
     public boolean isReadyToExplode() {

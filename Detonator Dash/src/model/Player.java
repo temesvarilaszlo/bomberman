@@ -18,7 +18,7 @@ public class Player extends Character {
     private int bombRange;
     private final GameEngine gameEngine;
     private final ArrayList<Integer> controls;
-    private String powerup;
+    private ArrayList<String> powerups;
 
     public Player(int x, int y, int size, Image img, GameEngine game, int[] controls) {
         super(x, y, size, img);
@@ -30,7 +30,7 @@ public class Player extends Character {
         bombCapacity = 3;
         bombRange = 2;
         gameEngine = game;
-        powerup = "";
+        powerups = new ArrayList<>();
     }
 
     public ArrayList<Bomb> getPlacedBombs() {
@@ -78,14 +78,26 @@ public class Player extends Character {
      * Player places bombs
      */
     public void placeBomb() {
-        if (!isAlive || placedBombs.size() == bombCapacity || isOnPlacedBlock(getLastPlacedBomb())) {
+        if (isOnPlacedBlock(getLastPlacedBomb())) {
+            return;
+        }
+        boolean hasDetonator = powerups.contains("D");
+        if (!isAlive || placedBombs.size() == bombCapacity){
+            if (hasDetonator){
+                for (Bomb b : placedBombs){
+                    b.explode();
+                }
+                powerups.remove("D");
+            }
             return;
         }
         
         if (GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
+            // check if player has detonator powerup
+            
             // assign bomb to player
             placedBombs.add(new Bomb(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
-                    GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg, bombRange, true));
+                    GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg, bombRange, !hasDetonator));
 
             // add to mapString for collision checking
             GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "Bomb";
@@ -132,7 +144,7 @@ public class Player extends Character {
     public void powerupChooser(String powerup){
         switch (powerup) {
             case "D" -> {
-                this.powerup = powerup;
+                this.powerups.add(powerup);
                 System.out.println("Detonator");
             }
             case "G" -> {
