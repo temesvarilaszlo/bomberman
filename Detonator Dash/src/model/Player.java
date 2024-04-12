@@ -93,8 +93,6 @@ public class Player extends Character {
         }
         
         if (GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
-            // check if player has detonator powerup
-            
             // assign bomb to player
             placedBombs.add(new Bomb(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
                     GamePanel.BLOCK_PIXEL_SIZE, Images.bombImg, bombRange, !hasDetonator));

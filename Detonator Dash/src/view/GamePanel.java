@@ -131,7 +131,7 @@ public class GamePanel extends JPanel {
             updatePos();
             engine.moveMonsters();
             engine.clearDeadMonsters();
-            engine.dropPickups();
+            engine.pickupDrops();
             repaint();
             
             if (engine.isGameOver()){

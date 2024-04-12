@@ -352,7 +352,7 @@ public class GameEngine {
         drawMonsters(g);
     }
     
-    public void dropPickups(){
+    public void pickupDrops(){
         ArrayList<Drop> dropsCopy = new ArrayList<>(drops);
         for (Drop d : dropsCopy){
             for (Player p : players){
