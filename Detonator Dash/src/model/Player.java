@@ -87,7 +87,6 @@ public class Player extends Character {
                 for (Bomb b : placedBombs){
                     b.explode();
                 }
-                powerups.remove("D");
             }
             return;
         }
