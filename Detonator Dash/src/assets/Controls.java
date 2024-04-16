@@ -64,7 +64,7 @@ public class Controls {
     
     private int[][] loadControls(){
         InputStream is = loadTxt("assets/controls.txt");
-        int[][] matrix = new int[3][5];
+        int[][] matrix = new int[3][6];
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             String line;
             int rowCount = 0;

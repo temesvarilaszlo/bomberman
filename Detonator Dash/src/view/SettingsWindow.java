@@ -29,6 +29,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
     private final JButton leftButton = new JButton();
     private final JButton rightButton = new JButton();
     private final JButton bombButton = new JButton();
+    private final JButton obstacleButton = new JButton();
     private final JButton backToMenuButton = new JButton("Back to Menu");
     private final ArrayList<JButton> buttonList = new ArrayList<>();
 
@@ -73,10 +74,15 @@ public class SettingsWindow extends JFrame implements KeyListener {
         JLabel placeBombLabel = new JLabel("Place Bomb");
         setProperties(placeBombLabel, 25, 200, 500, 180, 40);
         setProperties(bombButton, 20, 400, 500, 200, 35);
+        
+        //Place Bomb
+        JLabel placeObstacleLabel = new JLabel("Place Box");
+        setProperties(placeObstacleLabel, 25, 200, 560, 180, 40);
+        setProperties(obstacleButton, 20, 400, 560, 200, 35);
 
         //Back to menu button
         backToMenuButton.addActionListener(backToMenu());
-        setProperties(backToMenuButton, 30, 235, 580, 280, 40);
+        setProperties(backToMenuButton, 30, 235, 620, 280, 40);
 
         //Adding everything to the JPanel
         middlePanel.add(title);
@@ -91,6 +97,8 @@ public class SettingsWindow extends JFrame implements KeyListener {
         middlePanel.add(rightButton);
         middlePanel.add(placeBombLabel);
         middlePanel.add(bombButton);
+        middlePanel.add(placeObstacleLabel);
+        middlePanel.add(obstacleButton);
         middlePanel.add(backToMenuButton);
         middlePanel.setLayout(null);
         setLayout(new GridBagLayout());
@@ -138,6 +146,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
         buttonList.add(downButton);
         buttonList.add(leftButton);
         buttonList.add(bombButton);
+        buttonList.add(obstacleButton);
         buttonList.add(backToMenuButton);
         
         for(JButton b : buttonList){
@@ -216,6 +225,8 @@ public class SettingsWindow extends JFrame implements KeyListener {
                     controls[0][3] = keyCode;
                 else if(clickedButton == bombButton)
                     controls[0][4] = keyCode;
+                else if(clickedButton == obstacleButton)
+                    controls[0][5] = keyCode;
             }
             case "Player 2" -> {
                 if(clickedButton == upButton)
@@ -228,6 +239,8 @@ public class SettingsWindow extends JFrame implements KeyListener {
                     controls[1][3] = keyCode;
                 else if(clickedButton == bombButton)
                     controls[1][4] = keyCode;
+                else if(clickedButton == obstacleButton)
+                    controls[1][5] = keyCode;
             }
             case "Player 3" -> {
                 if(clickedButton == upButton)
@@ -240,6 +253,8 @@ public class SettingsWindow extends JFrame implements KeyListener {
                     controls[2][3] = keyCode;
                 else if(clickedButton == bombButton)
                     controls[2][4] = keyCode;
+                else if(clickedButton == obstacleButton)
+                    controls[2][5] = keyCode;
             }
             default -> throw new AssertionError();
         }

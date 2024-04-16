@@ -6,9 +6,9 @@ import static view.MainMenuWindow.is2PlayerGame;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed1, downPressed1, leftPressed1, rightPressed1, bombReady1, placeBomb1;
-    public boolean upPressed2, downPressed2, leftPressed2, rightPressed2, bombReady2, placeBomb2;
-    public boolean upPressed3, downPressed3, leftPressed3, rightPressed3, bombReady3, placeBomb3;
+    public boolean upPressed1, downPressed1, leftPressed1, rightPressed1, bombReady1, placeBomb1, placeBox1;
+    public boolean upPressed2, downPressed2, leftPressed2, rightPressed2, bombReady2, placeBomb2, placeBox2;
+    public boolean upPressed3, downPressed3, leftPressed3, rightPressed3, bombReady3, placeBomb3, placeBox3;
     private GameEngine engine;
 
     public KeyHandler(GameEngine engine) {
@@ -19,6 +19,7 @@ public class KeyHandler implements KeyListener {
         rightPressed1 = false;
         placeBomb1 = false;
         bombReady1 = true;
+        placeBox1 = false;
 
         upPressed2 = false;
         downPressed2 = false;
@@ -26,6 +27,7 @@ public class KeyHandler implements KeyListener {
         rightPressed2 = false;
         placeBomb2 = false;
         bombReady2 = true;
+        placeBox2 = false;
 
         upPressed3 = false;
         downPressed3 = false;
@@ -33,6 +35,7 @@ public class KeyHandler implements KeyListener {
         rightPressed3 = false;
         placeBomb3 = false;
         bombReady3 = true;
+        placeBox3 = false;
 
         this.engine = engine;
     }
@@ -57,6 +60,8 @@ public class KeyHandler implements KeyListener {
         } else if (code == player1.getControls().get(4) && bombReady1) {
             placeBomb1 = true;
             bombReady1 = false;
+        }else if (code == player1.getControls().get(5)) {
+            placeBox1 = true;
         }
 
         Player player2 = engine.getPlayers().get(1);
@@ -71,7 +76,10 @@ public class KeyHandler implements KeyListener {
         } else if (code == player2.getControls().get(4) && bombReady2) {
             placeBomb2 = true;
             bombReady2 = false;
+        } else if (code == player2.getControls().get(5)) {
+            placeBox2 = true;
         }
+        
 
         if (!is2PlayerGame) {
             Player player3 = engine.getPlayers().get(2);
@@ -86,6 +94,8 @@ public class KeyHandler implements KeyListener {
             } else if (code == player3.getControls().get(4) && bombReady3) {
                 placeBomb3 = true;
                 bombReady3 = false;
+            } else if (code == player3.getControls().get(5)) {
+                placeBox3 = true;
             }
         }
     }
@@ -106,6 +116,8 @@ public class KeyHandler implements KeyListener {
         } else if (code == player1.getControls().get(4)) {
             placeBomb1 = false;
             bombReady1 = true;
+        } else if (code == player1.getControls().get(5)) {
+            placeBox1 = false;
         }
 
         Player player2 = engine.getPlayers().get(1);
@@ -120,6 +132,8 @@ public class KeyHandler implements KeyListener {
         } else if (code == player2.getControls().get(4)) {
             placeBomb2 = false;
             bombReady2 = true;
+        } else if (code == player2.getControls().get(5)) {
+            placeBox2 = false;
         }
 
         if (!is2PlayerGame) {
@@ -135,6 +149,8 @@ public class KeyHandler implements KeyListener {
             } else if (code == player3.getControls().get(4)) {
                 placeBomb3 = false;
                 bombReady3 = true;
+            } else if (code == player3.getControls().get(5)) {
+                placeBox3 = false;
             }
         }
     }
