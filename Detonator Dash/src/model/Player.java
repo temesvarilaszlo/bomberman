@@ -3,7 +3,10 @@ package model;
 import assets.Images;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Timer;
 import view.GamePanel;
 import static model.HelpMethods.canMoveHere;
 
@@ -51,27 +54,38 @@ public class Player extends Character {
         float ySpeed = direction.y * speed;
 
         // if the player is on their own placed bomb, don't check collision for bomb
-        if (isOnPlacedBlock(getLastPlacedBomb())) {
-            if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())) {
+        if(!powerups.contains("G")){
+            if (isOnPlacedBlock(getLastPlacedBomb())) {
+                if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())) {
+                    x += xSpeed;
+                    y += ySpeed;
+                    return true;
+                }
+                return false;
+            }
+
+            for (Player p : gameEngine.getPlayers()) {
+                if (p != this && this.collidesWith(p)) {
+                    return false;
+                }
+            }
+
+            if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString)) {
                 x += xSpeed;
                 y += ySpeed;
                 return true;
             }
             return false;
         }
-
-        for (Player p : gameEngine.getPlayers()) {
-            if (p != this && this.collidesWith(p)) {
-                return false;
+        else{
+            if (x + xSpeed >= 0 && x + xSpeed <= (GamePanel.BLOCK_PIXEL_SIZE * GamePanel.MAP_SIZE) - size && y + ySpeed >= 0 && y + ySpeed <= (GamePanel.BLOCK_PIXEL_SIZE * GamePanel.MAP_SIZE) - size) {
+                x += xSpeed;
+                y += ySpeed;
+                return true;  
             }
+            return false;
         }
-
-        if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString)) {
-            x += xSpeed;
-            y += ySpeed;
-            return true;
-        }
-        return false;
+        
     }
 
     /**
@@ -137,6 +151,44 @@ public class Player extends Character {
     public void increaseBombCapacity(){
         bombCapacity++;
     }
+   
+    //-------- Powerupok közül törlő függvény
+    public void removeFromPowerups(String name){
+        for(int i = 0; i < powerups.size();i++){
+               if (powerups.get(i) == name) {
+                   powerups.remove(i);
+                   break;
+               }
+           } 
+    }
+    
+    //-------- Szellem powerup 
+    public void ghostPowerup(){
+        Timer timer = new Timer(3000, new ActionListener() {
+            int elapsedTime = 0;
+            int timerDelay = 500;
+            int max = 5000;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elapsedTime += timerDelay;
+                
+                if (elapsedTime >= max) {
+                    Timer s = (Timer)e.getSource();
+                    removeFromPowerups("G");
+                    s.stop();
+                    if (!powerups.contains("G") && !canMoveHere(x + 1, y, size, size, GameEngine.mapString) &&
+                        !canMoveHere(x - 1, y, size, size, GameEngine.mapString) &&
+                        !canMoveHere(x, y + 1, size, size, GameEngine.mapString) &&
+                        !canMoveHere(x, y - 1, size, size, GameEngine.mapString)) {
+                            isAlive = false;
+                        }
+                }     
+            }
+        });
+        timer.start();
+        
+        
+    }
     
     public void powerupChooser(String powerup){
         switch (powerup) {
@@ -145,7 +197,9 @@ public class Player extends Character {
                 System.out.println("Detonator");
             }
             case "G" -> {
-                
+                ghostPowerup();
+                this.powerups.add(powerup);
+                System.out.println("Ghost");
             }
             case "I" -> {
                 
