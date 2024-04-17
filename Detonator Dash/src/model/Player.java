@@ -138,6 +138,11 @@ public class Player extends Character {
         bombCapacity++;
     }
     
+    public void increaseSpeed(){
+        if(this.speed == Speed.FAST.speed) return;
+        this.speed = Speed.FAST.speed;
+    }
+    
     public void powerupChooser(String powerup){
         switch (powerup) {
             case "D" -> {
@@ -162,7 +167,8 @@ public class Player extends Character {
                 System.out.println("Bomb range increased.");
             }
             case "S" -> {
-                
+                increaseSpeed();
+                System.out.println("Skate");
             }
             default -> throw new AssertionError();
         }
