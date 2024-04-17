@@ -1,9 +1,14 @@
 package model;
 
 import assets.Images;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javax.swing.JPanel;
 import view.GamePanel;
 import static model.HelpMethods.canMoveHere;
 
@@ -20,26 +25,25 @@ public class Player extends Character {
     private final ArrayList<Integer> controls;
     private ArrayList<String> powerups;
 
-    public Player(int x, int y, int size, Image img, GameEngine game, int[] controls) {
+    public Player(int x, int y, int size, Image img, GameEngine game, int[] ctrls) {
         super(x, y, size, img);
-        placedBombs = new ArrayList<>();
-        this.controls = new ArrayList<>();
-        for (int i = 0; i < controls.length; i++) {
-            this.controls.add(controls[i]);
-        }
         bombCapacity = 3;
         bombRange = 2;
         gameEngine = game;
+        placedBombs = new ArrayList<>();
+        
+        controls = new ArrayList<>();
+        for (int i = 0; i < ctrls.length; i++) {
+            controls.add(ctrls[i]);
+        }
         powerups = new ArrayList<>();
     }
 
-    public ArrayList<Bomb> getPlacedBombs() {
-        return placedBombs;
-    }
+    public ArrayList<Bomb> getPlacedBombs() { return placedBombs; }
 
-    public ArrayList<Integer> getControls() {
-        return controls;
-    }
+    public ArrayList<Integer> getControls() { return controls; }
+    
+    public ArrayList<String> getPowerUps(){ return powerups; }
 
     @Override
     public boolean move() {
@@ -124,42 +128,55 @@ public class Player extends Character {
      * @return
      */
     public Bomb getLastPlacedBomb() {
-        if (placedBombs.isEmpty()) {
-            return null;
-        }
-        return placedBombs.get(placedBombs.size() - 1);
+        return placedBombs.isEmpty() ? null : placedBombs.get(placedBombs.size() - 1);
     }
     
-    public void increaseBombRange(){
+    private void increaseBombRange(){
         bombRange++;
     }
     
-    public void increaseBombCapacity(){
+    private void increaseBombCapacity(){
         bombCapacity++;
+    }
+    
+    private void removeInvincibility(){
+        for(int i = 0; i < powerups.size(); i++){
+            if(powerups.get(i).equals("I")){
+                powerups.remove(i);
+                break;
+            }
+        }
     }
     
     public void powerupChooser(String powerup){
         switch (powerup) {
             case "D" -> {
                 this.powerups.add(powerup);
-                System.out.println("Detonator");
             }
             case "G" -> {
                 
             }
             case "I" -> {
-                
+                if(powerups.contains("I")){
+                    
+                }
+                else{
+                    this.powerups.add(powerup);
+                    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+                    executor.schedule(() -> {
+                        removeInvincibility();
+                        executor.shutdown();
+                    }, 10, TimeUnit.SECONDS);
+                }
             }
             case "O" -> {
                 
             }
             case "PB" -> {
                 increaseBombCapacity();
-                System.out.println("Bomb range increased.");
             }
             case "PR" -> {
                 increaseBombRange();
-                System.out.println("Bomb range increased.");
             }
             case "S" -> {
                 
