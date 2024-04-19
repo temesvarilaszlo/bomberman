@@ -119,11 +119,29 @@ public class GamePanel extends JPanel {
             }
         }
     }
+    
+    private void placeBoxes() {
+        for (int i = 0; i < engine.getPlayers().size(); i++) {
+            if (i == 0 && keyH.placeBox1) {
+                engine.getPlayers().get(i).placeBox();
+                keyH.placeBox1 = false;
+                
+            } else if (i == 1 && keyH.placeBox2) {
+                engine.getPlayers().get(i).placeBox();
+                keyH.placeBox1 = false;
+            } else if (!is2PlayerGame && i == 2 && keyH.placeBox3) {
+                engine.getPlayers().get(i).placeBox();
+                keyH.placeBox1 = false;
+            }
+        }
+        
+    }
 
     class TimerListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            placeBoxes();
             placeBombs();
             engine.explodeBombs();
             engine.explosionEffects();

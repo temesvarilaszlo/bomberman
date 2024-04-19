@@ -6,9 +6,11 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.Timer;
 import view.GamePanel;
 import static model.HelpMethods.canMoveHere;
+import java.util.Arrays;
 
 /**
  *
@@ -17,6 +19,7 @@ import static model.HelpMethods.canMoveHere;
 public class Player extends Character {
 
     private final ArrayList<Bomb> placedBombs;
+    private final ArrayList<Box> placedBoxes;
     private int bombCapacity;
     private int bombRange;
     private final GameEngine gameEngine;
@@ -26,6 +29,7 @@ public class Player extends Character {
     public Player(int x, int y, int size, Image img, GameEngine game, int[] controls) {
         super(x, y, size, img);
         placedBombs = new ArrayList<>();
+        placedBoxes = new ArrayList<>();
         this.controls = new ArrayList<>();
         for (int i = 0; i < controls.length; i++) {
             this.controls.add(controls[i]);
@@ -38,6 +42,10 @@ public class Player extends Character {
 
     public ArrayList<Bomb> getPlacedBombs() {
         return placedBombs;
+    }
+    
+    public ArrayList<Box> getPlacedBoxes() {
+        return placedBoxes;
     }
 
     public ArrayList<Integer> getControls() {
@@ -57,6 +65,14 @@ public class Player extends Character {
         if(!powerups.contains("G")){
             if (isOnPlacedBlock(getLastPlacedBomb())) {
                 if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())) {
+                    x += xSpeed;
+                    y += ySpeed;
+                    return true;
+                }
+                return false;
+            }
+             if (isOnPlacedBlock(getLastPlacedBox())) {
+                if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBox())) {
                     x += xSpeed;
                     y += ySpeed;
                     return true;
@@ -114,6 +130,27 @@ public class Player extends Character {
             GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "Bomb";
         }
     }
+    
+    public void placeBox() {
+        if (isOnPlacedBlock(getLastPlacedBox())) {
+            return;
+        }
+        
+        if (powerups.contains("O") && GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
+            // assign bomb to player
+            placedBoxes.add(new Box(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE, 
+                    GamePanel.BLOCK_PIXEL_SIZE, Images.boxImg, false));
+
+            // add to mapString for collision checking
+            GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "B";
+            gameEngine.getGameMap()[currentMatrixPosition().x][currentMatrixPosition().y] = new Box(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE, 
+                    GamePanel.BLOCK_PIXEL_SIZE, Images.boxImg, false);
+            System.out.println(powerups.toString());
+            removeFromPowerups("O");
+            System.out.println(powerups.toString());
+        }
+        
+    }
 
     /**
      * Decides if a player is on a placed bomb by them or not
@@ -144,6 +181,12 @@ public class Player extends Character {
         return placedBombs.get(placedBombs.size() - 1);
     }
     
+    public Box getLastPlacedBox() {
+        if (placedBoxes.isEmpty()) {
+            return null;
+        }
+        return placedBoxes.get(placedBoxes.size() - 1);
+    }
     public void increaseBombRange(){
         bombRange++;
     }
@@ -189,6 +232,20 @@ public class Player extends Character {
         
         
     }
+      
+    //-------- Obstance powerup
+    /*public void obstancePowerup(){
+        int obstanceNumber = Collections.frequency(powerups, "O");
+        if (obstanceNumber != 0) {
+            if (GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y].equals("P")){
+                GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "B";
+            }
+            System.out.println(powerups.toString());
+            
+            System.out.println(powerups.toString());
+            System.out.println(Arrays.deepToString(GameEngine.mapString));
+        }
+    }*/
     
     public void powerupChooser(String powerup){
         switch (powerup) {
@@ -206,6 +263,10 @@ public class Player extends Character {
             }
             case "O" -> {
                 
+                for (int i = 0; i < 3; i++) {
+                    this.powerups.add(powerup);
+                }
+                System.out.println("Obstance");
             }
             case "PB" -> {
                 increaseBombCapacity();

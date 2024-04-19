@@ -50,6 +50,12 @@ public class GameEngine {
         return monsters;
     }
 
+    public Sprite[][] getGameMap() {
+        return gameMap;
+    }
+    
+    
+
     /**
      * Loads the map from the txt using loadTxt() from AssetLoader class
      *
@@ -195,6 +201,14 @@ public class GameEngine {
             }
         }
     }
+    
+    /*public void drawBox(Graphics2D g){
+        for (Player p : players){
+            for (Box b : p.getPlacedBoxes()){
+                b.draw(g);
+            }
+        }
+    }*/
     
     public void explodeBombs(){
         for (Player p : players){
@@ -348,6 +362,7 @@ public class GameEngine {
         drawMap(g);
         drawDrops(g);
         drawBombsAndFires(g);
+        //drawBox(g);
         drawPlayers(g);
         drawMonsters(g);
     }
