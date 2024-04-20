@@ -16,24 +16,26 @@ import static model.HelpMethods.canMoveHere;
  */
 public class Player extends Character {
 
-    private final ArrayList<Bomb> placedBombs;
-    private int bombCapacity;
     private int bombRange;
+    private int bombCapacity;
     private final GameEngine gameEngine;
+    
+    private final ArrayList<Bomb> placedBombs;
+    private final ArrayList<String> powerups;
     private final ArrayList<Integer> controls;
-    private ArrayList<String> powerups;
 
-    public Player(int x, int y, int size, Image img, GameEngine game, int[] controls) {
+    public Player(int x, int y, int size, Image img, GameEngine game, int[] ctrls) {
         super(x, y, size, img);
-        placedBombs = new ArrayList<>();
-        this.controls = new ArrayList<>();
-        for (int i = 0; i < controls.length; i++) {
-            this.controls.add(controls[i]);
-        }
-        bombCapacity = 3;
         bombRange = 2;
+        bombCapacity = 3;
         gameEngine = game;
+        
+        placedBombs = new ArrayList<>();
         powerups = new ArrayList<>();
+        controls = new ArrayList<>();
+        for (int i = 0; i < ctrls.length; i++) {
+            controls.add(ctrls[i]);
+        }
     }
 
     public ArrayList<Bomb> getPlacedBombs() {
@@ -144,25 +146,36 @@ public class Player extends Character {
         return placedBombs.get(placedBombs.size() - 1);
     }
     
-    public void increaseBombRange(){
+    /**
+     * Increases player's bomb's range
+     */
+    private void increaseBombRange(){
         bombRange++;
     }
     
-    public void increaseBombCapacity(){
+    /**
+     * Increases player's bomb capacity
+     */
+    private void increaseBombCapacity(){
         bombCapacity++;
     }
    
-    //-------- Powerupok közül törlő függvény
+    /**
+     * Removes the power up given in the parameter from the powerups arraylist
+     * @param name 
+     */
     public void removeFromPowerups(String name){
         for(int i = 0; i < powerups.size();i++){
-               if (powerups.get(i) == name) {
+               if (powerups.get(i).equals(name)) {
                    powerups.remove(i);
                    break;
                }
            } 
     }
     
-    //-------- Szellem powerup 
+    /**
+     * Ghost power up
+     */
     public void ghostPowerup(){
         Timer timer = new Timer(3000, new ActionListener() {
             int elapsedTime = 0;
@@ -190,21 +203,26 @@ public class Player extends Character {
         
     }
     
-    public void increaseSpeed(){
+    /**
+     * Increases player's speed if not increased before
+     */
+    private void increaseSpeed(){
         if(this.speed == Speed.FAST.speed) return;
         this.speed = Speed.FAST.speed;
     }
     
+    /**
+     * Chooses a power up for the player
+     * @param powerup 
+     */
     public void powerupChooser(String powerup){
         switch (powerup) {
             case "D" -> {
                 this.powerups.add(powerup);
-                System.out.println("Detonator");
             }
             case "G" -> {
                 ghostPowerup();
                 this.powerups.add(powerup);
-                System.out.println("Ghost");
             }
             case "I" -> {
                 
@@ -214,15 +232,12 @@ public class Player extends Character {
             }
             case "PB" -> {
                 increaseBombCapacity();
-                System.out.println("Bomb range increased.");
             }
             case "PR" -> {
                 increaseBombRange();
-                System.out.println("Bomb range increased.");
             }
             case "S" -> {
                 increaseSpeed();
-                System.out.println("Skate");
             }
             default -> throw new AssertionError();
         }
