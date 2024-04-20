@@ -4,8 +4,6 @@ import assets.Images;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,26 +18,25 @@ import static model.HelpMethods.canMoveHere;
  */
 public class Player extends Character {
 
-    private int bombRange;
-    private int bombCapacity;
-    private final GameEngine gameEngine;
-    
     private final ArrayList<Bomb> placedBombs;
-    private final ArrayList<String> powerups;
+    private int bombCapacity;
+    private int bombRange;
+    private final GameEngine gameEngine;
     private final ArrayList<Integer> controls;
+    private ArrayList<String> powerups;
 
     public Player(int x, int y, int size, Image img, GameEngine game, int[] ctrls) {
         super(x, y, size, img);
-        bombRange = 2;
         bombCapacity = 3;
+        bombRange = 2;
         gameEngine = game;
-        
         placedBombs = new ArrayList<>();
-        powerups = new ArrayList<>();
+        
         controls = new ArrayList<>();
         for (int i = 0; i < ctrls.length; i++) {
             controls.add(ctrls[i]);
         }
+        powerups = new ArrayList<>();
     }
 
     public ArrayList<Bomb> getPlacedBombs() { return placedBombs; }
@@ -58,38 +55,27 @@ public class Player extends Character {
         float ySpeed = direction.y * speed;
 
         // if the player is on their own placed bomb, don't check collision for bomb
-        if(!powerups.contains("G")){
-            if (isOnPlacedBlock(getLastPlacedBomb())) {
-                if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())) {
-                    x += xSpeed;
-                    y += ySpeed;
-                    return true;
-                }
-                return false;
-            }
-
-            for (Player p : gameEngine.getPlayers()) {
-                if (p != this && this.collidesWith(p)) {
-                    return false;
-                }
-            }
-
-            if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString)) {
+        if (isOnPlacedBlock(getLastPlacedBomb())) {
+            if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())) {
                 x += xSpeed;
                 y += ySpeed;
                 return true;
             }
             return false;
         }
-        else{
-            if (x + xSpeed >= 0 && x + xSpeed <= (GamePanel.BLOCK_PIXEL_SIZE * GamePanel.MAP_SIZE) - size && y + ySpeed >= 0 && y + ySpeed <= (GamePanel.BLOCK_PIXEL_SIZE * GamePanel.MAP_SIZE) - size) {
-                x += xSpeed;
-                y += ySpeed;
-                return true;  
+
+        for (Player p : gameEngine.getPlayers()) {
+            if (p != this && this.collidesWith(p)) {
+                return false;
             }
-            return false;
         }
-        
+
+        if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString)) {
+            x += xSpeed;
+            y += ySpeed;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -145,83 +131,30 @@ public class Player extends Character {
         return placedBombs.isEmpty() ? null : placedBombs.get(placedBombs.size() - 1);
     }
     
-    /**
-     * Increases player's bomb's range
-     */
     private void increaseBombRange(){
         bombRange++;
     }
     
-    /**
-     * Increases player's bomb capacity
-     */
     private void increaseBombCapacity(){
         bombCapacity++;
     }
-   
-    /**
-     * Removes the power up given in the parameter from the powerups arraylist
-     * @param name 
-     */
-    public void removeFromPowerups(String name){
-        for(int i = 0; i < powerups.size();i++){
-               if (powerups.get(i).equals(name)) {
-                   powerups.remove(i);
-                   break;
-               }
-           } 
-    }
     
-    /**
-     * Ghost power up
-     */
-    public void ghostPowerup(){
-        Timer timer = new Timer(3000, new ActionListener() {
-            int elapsedTime = 0;
-            int timerDelay = 500;
-            int max = 5000;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                elapsedTime += timerDelay;
-                
-                if (elapsedTime >= max) {
-                    Timer s = (Timer)e.getSource();
-                    removeFromPowerups("G");
-                    s.stop();
-                    if (!powerups.contains("G") && !canMoveHere(x + 1, y, size, size, GameEngine.mapString) &&
-                        !canMoveHere(x - 1, y, size, size, GameEngine.mapString) &&
-                        !canMoveHere(x, y + 1, size, size, GameEngine.mapString) &&
-                        !canMoveHere(x, y - 1, size, size, GameEngine.mapString)) {
-                            isAlive = false;
-                        }
-                }     
+    private void removeInvincibility(){
+        for(int i = 0; i < powerups.size(); i++){
+            if(powerups.get(i).equals("I")){
+                powerups.remove(i);
+                break;
             }
-        });
-        timer.start();
-        
-        
+        }
     }
     
-    /**
-     * Increases player's speed if not increased before
-     */
-    private void increaseSpeed(){
-        if(this.speed == Speed.FAST.speed) return;
-        this.speed = Speed.FAST.speed;
-    }
-    
-    /**
-     * Chooses a power up for the player
-     * @param powerup 
-     */
     public void powerupChooser(String powerup){
         switch (powerup) {
             case "D" -> {
                 this.powerups.add(powerup);
             }
             case "G" -> {
-                ghostPowerup();
-                this.powerups.add(powerup);
+                
             }
             case "I" -> {
                 if(powerups.contains("I")){
@@ -246,7 +179,7 @@ public class Player extends Character {
                 increaseBombRange();
             }
             case "S" -> {
-                increaseSpeed();
+                
             }
             default -> throw new AssertionError();
         }
