@@ -125,9 +125,6 @@ public class GameEngine {
     private void checkCollisionsWithPlayers(Monster monster) {
         for (Player player : players) {
             if (monster.collidesWith(player)) {
-                if(player.getPowerUps().contains("I")){
-                    continue;
-                }
                 player.isAlive = false;
             }
         }
@@ -284,9 +281,6 @@ public class GameEngine {
                     else {
                         for (Player p : players){
                             if (f.collidesWith(p)){
-                                if(p.getPowerUps().contains("I")){
-                                    continue;
-                                }
                                 p.isAlive = false;
                             }
                         }

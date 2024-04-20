@@ -13,4 +13,5 @@ public enum Speed {
         this.speed = speed;
     }
     
+    
 }
