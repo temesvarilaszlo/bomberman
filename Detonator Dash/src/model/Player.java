@@ -6,6 +6,9 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
 import view.GamePanel;
 import static model.HelpMethods.canMoveHere;
@@ -37,9 +40,15 @@ public class Player extends Character {
             controls.add(ctrls[i]);
         }
     }
-
+    
+    
+    //GETTERS -------------------------------
     public ArrayList<Bomb> getPlacedBombs() {
         return placedBombs;
+    }
+    
+    public ArrayList<String> getPowerups() {
+        return powerups;
     }
 
     public ArrayList<Integer> getControls() {
@@ -48,15 +57,14 @@ public class Player extends Character {
 
     @Override
     public boolean move() {
-        if (direction == Direction.STOPPED || !isAlive) {
+        if (direction == Direction.STOPPED || !isAlive)
             return false;
-        }
 
         float xSpeed = direction.x * speed;
         float ySpeed = direction.y * speed;
 
-        // if the player is on their own placed bomb, don't check collision for bomb
         if(!powerups.contains("G")){
+            // if the player is on their own placed bomb, don't check collision for bomb
             if (isOnPlacedBlock(getLastPlacedBomb())) {
                 if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())) {
                     x += xSpeed;
@@ -140,10 +148,7 @@ public class Player extends Character {
      * @return
      */
     public Bomb getLastPlacedBomb() {
-        if (placedBombs.isEmpty()) {
-            return null;
-        }
-        return placedBombs.get(placedBombs.size() - 1);
+        return placedBombs.isEmpty() ? null : placedBombs.get(placedBombs.size() - 1);
     }
     
     /**
@@ -158,19 +163,6 @@ public class Player extends Character {
      */
     private void increaseBombCapacity(){
         bombCapacity++;
-    }
-   
-    /**
-     * Removes the power up given in the parameter from the powerups arraylist
-     * @param name 
-     */
-    public void removeFromPowerups(String name){
-        for(int i = 0; i < powerups.size();i++){
-               if (powerups.get(i).equals(name)) {
-                   powerups.remove(i);
-                   break;
-               }
-           } 
     }
     
     /**
@@ -192,15 +184,13 @@ public class Player extends Character {
                     if (!powerups.contains("G") && !canMoveHere(x + 1, y, size, size, GameEngine.mapString) &&
                         !canMoveHere(x - 1, y, size, size, GameEngine.mapString) &&
                         !canMoveHere(x, y + 1, size, size, GameEngine.mapString) &&
-                        !canMoveHere(x, y - 1, size, size, GameEngine.mapString)) {
+                        !canMoveHere(x, y - 1, size, size, GameEngine.mapString) && !powerups.contains("I")) {
                             isAlive = false;
                         }
                 }     
             }
         });
-        timer.start();
-        
-        
+        timer.start();     
     }
     
     /**
@@ -225,7 +215,17 @@ public class Player extends Character {
                 this.powerups.add(powerup);
             }
             case "I" -> {
-                
+                if(powerups.contains("I")){
+                    
+                }
+                else{
+                    this.powerups.add(powerup);
+                    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+                    executor.schedule(() -> {
+                        removeFromPowerups("I");
+                        executor.shutdown();
+                    }, 10, TimeUnit.SECONDS);
+                }
             }
             case "O" -> {
                 
@@ -241,5 +241,19 @@ public class Player extends Character {
             }
             default -> throw new AssertionError();
         }
+    }
+    
+       
+    /**
+     * Removes the power up given in the parameter from the "powerups" arraylist
+     * @param name 
+     */
+    public void removeFromPowerups(String name){
+        for(int i = 0; i < powerups.size();i++){
+               if (powerups.get(i).equals(name)) {
+                   powerups.remove(i);
+                   break;
+               }
+           } 
     }
 }

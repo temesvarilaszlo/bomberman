@@ -29,13 +29,13 @@ public class GameEngine {
         monsters = new ArrayList<>();
         explodedBombs = new ArrayList<>();
         drops = new ArrayList<>();
+        
         if (is2PlayerGame) {
             add2Players();
         } else {
             add3Players();
         }
-        monsters.add(new Monster(650, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
-        monsters.add(new Monster(650, 120, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        addMonsters();
 
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();
@@ -116,6 +116,14 @@ public class GameEngine {
         add2Players();
         players.add(new Player(260, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[2]));
     }
+    
+     /**
+     * Adding monsters
+     */
+    private void addMonsters() {
+        monsters.add(new Monster(650, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        monsters.add(new Monster(650, 120, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+    }
 
     /**
      * Checks if monster catches player
@@ -124,7 +132,7 @@ public class GameEngine {
      */
     private void checkCollisionsWithPlayers(Monster monster) {
         for (Player player : players) {
-            if (monster.collidesWith(player)) {
+            if (monster.collidesWith(player) && !player.getPowerups().contains("I")) {
                 player.isAlive = false;
             }
         }
@@ -158,7 +166,6 @@ public class GameEngine {
 
     /**
      * Draws players
-     *
      * @param g
      */
     public void drawPlayers(Graphics2D g) {
@@ -171,7 +178,6 @@ public class GameEngine {
 
     /**
      * Draws monsters
-     *
      * @param g
      */
     public void drawMonsters(Graphics2D g) {
@@ -180,6 +186,32 @@ public class GameEngine {
         }
     }
     
+    /**
+     * Draws the drops
+     * @param g 
+     */    
+    public void drawDrops(Graphics2D g){
+        for (Drop d : drops){
+            d.draw(g);
+        }
+    }
+    
+    /**
+     * Draws the map
+     * @param g
+     */
+    public void drawMap(Graphics2D g) {
+        for (Sprite[] row : gameMap) {
+            for (Sprite sprite : row) {
+                sprite.draw(g);
+            }
+        }
+    }
+    
+    /**
+     * Draws bombs and fires
+     * @param g 
+     */
     public void drawBombsAndFires(Graphics2D g){
         for (Player p : players){
             for (Bomb b : p.getPlacedBombs()){
@@ -196,6 +228,21 @@ public class GameEngine {
         }
     }
     
+    /**
+     * Drawing all the sprites
+     * @param g 
+     */
+    public void drawSprites(Graphics2D g){
+        drawMap(g);
+        drawDrops(g);
+        drawBombsAndFires(g);
+        drawPlayers(g);
+        drawMonsters(g);
+    }
+    
+    /**
+     * This functions makes the bombs explode
+     */
     public void explodeBombs(){
         for (Player p : players){
             ArrayList<Bomb> bombsCopy = new ArrayList<>(p.getPlacedBombs());
@@ -222,6 +269,11 @@ public class GameEngine {
         } 
     }
     
+    /**
+     * Generates fires for the bomb
+     * @param bomb
+     * @return 
+     */
     private ArrayList<Fire> generateFires(Bomb bomb){
         ArrayList<Fire> fires = new ArrayList<>();
         
@@ -254,6 +306,9 @@ public class GameEngine {
         return fires;
     }
     
+    /**
+     * Does the explosion effect
+     */
     public void explosionEffects(){
         for (Bomb b : explodedBombs){
             for (Fire f : b.getFires()){
@@ -280,7 +335,7 @@ public class GameEngine {
                     }
                     else {
                         for (Player p : players){
-                            if (f.collidesWith(p)){
+                            if (f.collidesWith(p) && !p.getPowerups().contains("I")){
                                 p.isAlive = false;
                             }
                         }
@@ -294,20 +349,10 @@ public class GameEngine {
             }
         }
     }
-
-    /**
-     * Draws the map
-     *
-     * @param g
-     */
-    public void drawMap(Graphics2D g) {
-        for (Sprite[] row : gameMap) {
-            for (Sprite sprite : row) {
-                sprite.draw(g);
-            }
-        }
-    }
     
+    /**
+     * Clears dead monsters from the map so they're not visible
+     */
     public void clearDeadMonsters(){
         ArrayList<Monster> monstersCopy = new ArrayList<>(monsters);
         for (Monster m : monstersCopy){
@@ -338,20 +383,9 @@ public class GameEngine {
         return alivePlayers <= 1 && explodedBombs.isEmpty() && !areBombsPlaced;
     }
     
-    public void drawDrops(Graphics2D g){
-        for (Drop d : drops){
-            d.draw(g);
-        }
-    }
-    
-    public void drawSprites(Graphics2D g){
-        drawMap(g);
-        drawDrops(g);
-        drawBombsAndFires(g);
-        drawPlayers(g);
-        drawMonsters(g);
-    }
-    
+    /**
+     * Player picks up drop
+     */
     public void pickupDrops(){
         ArrayList<Drop> dropsCopy = new ArrayList<>(drops);
         for (Drop d : dropsCopy){
