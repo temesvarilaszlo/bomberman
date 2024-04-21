@@ -35,7 +35,7 @@ public class GameEngine {
         } else {
             add3Players();
         }
-        addMonsters();
+        addMonsters(MainMenuWindow.getMap());
 
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();
@@ -105,24 +105,48 @@ public class GameEngine {
      * Adding 2 players
      */
     private void add2Players() {
-        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[0]));
-        players.add(new Player(60, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[1]));
+           players.add(new Player(60, 55, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[0]));
+           players.add(new Player(658, 658, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[1]));
     }
 
     /**
      * Adding 3 players
      */
     private void add3Players() {
+        String map = MainMenuWindow.getMap();
         add2Players();
-        players.add(new Player(260, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[2]));
+        if (map.equals("map1")) {
+            players.add(new Player(358, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[2]));
+        }
+        else if(map.equals("map2")){
+            players.add(new Player(310, 408, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[2]));
+        }
+        else{
+            players.add(new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[2]));
+        }
+        
     }
     
      /**
      * Adding monsters
      */
-    private void addMonsters() {
+    private void addMonsters(String map) {
+        
         monsters.add(new Monster(650, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
-        monsters.add(new Monster(650, 120, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        monsters.add(new Monster(60, 658, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        if (!is2PlayerGame) {
+            if (map.equals("map1")) {
+               monsters.add(new Monster(258, 258, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this)); 
+            }
+            else if(map.equals("map2")){
+                monsters.add(new Monster(408, 310, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+            }
+            else{
+                monsters.add(new Monster(458, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+            }
+            
+        }
+        
     }
 
     /**
