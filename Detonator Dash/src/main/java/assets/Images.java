@@ -35,7 +35,7 @@ public class Images {
         pathImg = loadImage("assets/path.png");
         wallImg = loadImage("assets/wall.png");
         whiteImg = loadImage("assets/white.png");
-        
+
         // drops
         detonatorImg = loadImage("assets/detonator.png");
         ghostImg = loadImage("assets/ghost.png");

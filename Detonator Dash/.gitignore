@@ -1,27 +1,38 @@
-##########################
-## Java
-##########################
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-*.class
-.mtj.tmp/
-*.war
-*.ear
-hs_err_pid*
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
 
-##########################
-## NetBeans
-##########################
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-nbproject/private/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-##########################
-## OS X
-##########################
+### VS Code ###
+.vscode/
 
+### Mac OS ###
 .DS_Store
