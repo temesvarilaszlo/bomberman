@@ -4,10 +4,7 @@
  */
 import assets.Controls;
 import model.GameEngine;
-import static assets.Controls.controls;
 
-import java.awt.Graphics2D;
-import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author tlasz
  */
-public class GameEngineIT {
+public class GameEngineTest {
     
-    public GameEngineIT() {
+    public GameEngineTest() {
     }
     
     @BeforeAll
