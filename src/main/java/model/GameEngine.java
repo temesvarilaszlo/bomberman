@@ -53,7 +53,7 @@ public class GameEngine {
     /**
      * Loads the map from the txt using loadTxt() from AssetLoader class
      *
-     * @return
+     * @return String[][]
      */
     private String[][] loadMap() {
         String mapName = MainMenuWindow.getMap();
@@ -128,7 +128,7 @@ public class GameEngine {
     /**
      * Checks if monster catches player
      *
-     * @param monster
+     * @param monster monster
      */
     private void checkCollisionsWithPlayers(Monster monster) {
         for (Player player : players) {

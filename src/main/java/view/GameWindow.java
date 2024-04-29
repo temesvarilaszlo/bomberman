@@ -18,7 +18,6 @@ public class GameWindow extends JFrame{
         add(gamePanel);
         
         // GUI settings
-        createMenuBar(this);
         setLookandFeel();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
