@@ -1,5 +1,7 @@
 package view;
 
+import assets.Images;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,13 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import static assets.AssetLoader.CUSTOM_FONT;
 import static view.HelperMethods.*;
 
 public class MainMenuWindow extends JFrame {
 
     private static final JComboBox maps = new JComboBox<>(new String[]{"map1", "map2", "map3"});
-    public static boolean is2PlayerGame = false;
+    public static boolean is2PlayerGame = true;
+    private int numberToWin = 1;
 
     public MainMenuWindow() {
         init(this, "Detonator Dash", 800, 750);
@@ -74,12 +80,20 @@ public class MainMenuWindow extends JFrame {
         firstToWinLabel.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, 30));
         firstToWinLabel.setBounds(250, 500, 250, 40);
 
-        JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 5, 1));
         ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setEditable(false); //so players cant edit with keyboard
         spinner.setBorder(new LineBorder(Color.BLACK));
         spinner.setFont(CUSTOM_FONT);
         spinner.setBounds(335, 550, 80, 35);
         spinner.setFocusable(false);
+        spinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                numberToWin = (int) spinner.getValue();
+                // Do something with the new value
+                System.out.println("New value: " + numberToWin);
+            }
+        });
 
         //Adding everything to the JPanel
         middlePanel.add(title);
@@ -104,12 +118,11 @@ public class MainMenuWindow extends JFrame {
     /**
      * Creates a game with two players
      *
-     * @return
+     * @return ActionListener
      */
     private ActionListener twoPlayers() {
         return (ActionEvent e) -> {
-            is2PlayerGame = true;
-            new GameWindow();
+            new GameWindow(numberToWin);
             dispose();
         };
     }
@@ -117,12 +130,12 @@ public class MainMenuWindow extends JFrame {
     /**
      * Creates a game with three players
      *
-     * @return
+     * @return ActionListener
      */
     private ActionListener threePlayers() {
         return (ActionEvent e) -> {
             is2PlayerGame = false;
-            new GameWindow();
+            new GameWindow(numberToWin);
             dispose();
         };
     }
@@ -130,7 +143,7 @@ public class MainMenuWindow extends JFrame {
     /**
      * Opens settings
      *
-     * @return
+     * @return ActionListener
      */
     private ActionListener settings() {
         return (ActionEvent e) -> {

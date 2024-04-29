@@ -157,7 +157,7 @@ public class SettingsWindow extends JFrame implements KeyListener {
     
     /**
      * Disables all buttons and playersCombo except the clickedButton
-     * @param clickedButton 
+     * @param exception
      */
     private void disableButtons(JButton exception){
         for(JButton button : buttonList){
