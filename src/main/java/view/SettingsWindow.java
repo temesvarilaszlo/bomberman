@@ -45,40 +45,40 @@ public class SettingsWindow extends JFrame implements KeyListener {
         setProperties(title, 50, 240, 60, 270, 45);
 
         //Players
-        setProperties(playersCombo, 20, 305, 170, 140, 40);
+        setProperties(playersCombo, 20, 305, 140, 140, 40);
         playersCombo.addActionListener((ActionEvent e) -> {
             renderControls();
         });
 
         //Up
         JLabel upLabel = new JLabel("Up");
-        setProperties(upLabel, 25, 200, 260, 50, 40);
-        setProperties(upButton, 20, 400, 260, 200, 35);
+        setProperties(upLabel, 25, 200, 230, 50, 40);
+        setProperties(upButton, 20, 400, 230, 200, 35);
 
         //Down
         JLabel downLabel = new JLabel("Down");
-        setProperties(downLabel, 25, 200, 320, 90, 40);
-        setProperties(downButton, 20, 400, 320, 200, 35);
+        setProperties(downLabel, 25, 200, 290, 90, 40);
+        setProperties(downButton, 20, 400, 290, 200, 35);
 
         //Left
         JLabel leftLabel = new JLabel("Left");
-        setProperties(leftLabel, 25, 200, 380, 80, 40);
-        setProperties(leftButton, 20, 400, 380, 200, 35);
+        setProperties(leftLabel, 25, 200, 350, 80, 40);
+        setProperties(leftButton, 20, 400, 350, 200, 35);
 
         //Right
         JLabel rightLabel = new JLabel("Right");
-        setProperties(rightLabel, 25, 200, 440, 90, 40);
-        setProperties(rightButton, 20, 400, 440, 200, 35);
+        setProperties(rightLabel, 25, 200, 410, 90, 40);
+        setProperties(rightButton, 20, 400, 410, 200, 35);
 
         //Place Bomb
         JLabel placeBombLabel = new JLabel("Place Bomb");
-        setProperties(placeBombLabel, 25, 200, 500, 180, 40);
-        setProperties(bombButton, 20, 400, 500, 200, 35);
+        setProperties(placeBombLabel, 25, 200, 470, 180, 40);
+        setProperties(bombButton, 20, 400, 470, 200, 35);
         
         //Place Bomb
         JLabel placeObstacleLabel = new JLabel("Place Box");
-        setProperties(placeObstacleLabel, 25, 200, 560, 180, 40);
-        setProperties(obstacleButton, 20, 400, 560, 200, 35);
+        setProperties(placeObstacleLabel, 25, 200, 530, 180, 40);
+        setProperties(obstacleButton, 20, 400, 530, 200, 35);
 
         //Back to menu button
         backToMenuButton.addActionListener(backToMenu());
