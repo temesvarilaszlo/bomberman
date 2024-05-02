@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
+
 import model.Direction;
 import model.GameEngine;
 import model.KeyHandler;
@@ -29,7 +29,10 @@ public class GamePanel extends JPanel {
     private final Timer timer;
     private final KeyHandler keyH;
 
-    public GamePanel() {
+    private final int numberToWin;
+    private final GameWindow GameWindow;
+
+    public GamePanel(GameWindow GameWindow, int numberToWin) {
         super();
 
         // GUI stuff
@@ -39,6 +42,8 @@ public class GamePanel extends JPanel {
         // initialize engine related stuff
         engine = new GameEngine();
         keyH = new KeyHandler(engine);
+        this.numberToWin = numberToWin;
+        this.GameWindow = GameWindow;
         this.addKeyListener(keyH);
 
         timer = new Timer(10, new TimerListener());
@@ -132,12 +137,73 @@ public class GamePanel extends JPanel {
             engine.clearDeadMonsters();
             engine.pickupDrops();
             repaint();
-            
+
             if (engine.isGameOver()){
                 timer.stop();
-                removeKeyListener(keyH);
+                int winnerIndex = getWinner();
+                //increasing the win of the player who won, if not draw
+                if(winnerIndex != -1){
+                    switch (winnerIndex){
+                        case 1: GameEngine.player1Wins++; break;
+                        case 2: GameEngine.player2Wins++; break;
+                        case 3: GameEngine.player3Wins++; break;
+                    }
+                }
+                //checking final winner
+                if (checkWinner(winnerIndex)){
+                    timer.stop();
+                    removeKeyListener(keyH);
+                    return;
+                }
+                JOptionPane.showMessageDialog(GameWindow, winnerIndex == - 1 ? "Draw! Onto the next one!"  : "Player" + winnerIndex + " won this round! Onto the next one!"  , "Next Game", JOptionPane.INFORMATION_MESSAGE);
+                GameWindow.dispose();
+                new GameWindow(numberToWin);
             }
         }
 
+    }
+
+    private int getWinner(){
+        for (int i = 0; i < engine.getPlayers().size(); i++) {
+            if(engine.getPlayers().get(i).getIsAlive()){
+                return i + 1;
+            }
+        }
+        return -1;
+    }
+
+    private boolean checkWinner(int winnerIndex){
+        if(winnerIndex == -1)
+            return false;
+        switch (winnerIndex){
+            case 1:
+                if(GameEngine.player1Wins == numberToWin){
+                    JOptionPane.showMessageDialog(GameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
+                    GameWindow.dispose();
+                    new MainMenuWindow();
+                    GameEngine.setPlayerWinsToZero();
+                    return true;
+                }
+            break;
+            case 2:
+                if(GameEngine.player2Wins == numberToWin){
+                    JOptionPane.showMessageDialog(GameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
+                    GameWindow.dispose();
+                    new MainMenuWindow();
+                    GameEngine.setPlayerWinsToZero();
+                    return true;
+                }
+            break;
+            case 3:
+                if(GameEngine.player3Wins == numberToWin){
+                    JOptionPane.showMessageDialog(GameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
+                    GameWindow.dispose();
+                    new MainMenuWindow();
+                    GameEngine.setPlayerWinsToZero();
+                    return true;
+                }
+            break;
+        }
+        return false;
     }
 }

@@ -24,17 +24,20 @@ public class GameEngine {
     private final ArrayList<Bomb> explodedBombs;
     private final ArrayList<Drop> drops;
 
+    public static int player1Wins = 0;
+    public static int player2Wins = 0;
+    public static int player3Wins = 0;
+
     public GameEngine() {
         players = new ArrayList<>();
         monsters = new ArrayList<>();
         explodedBombs = new ArrayList<>();
         drops = new ArrayList<>();
         
-        if (is2PlayerGame) {
+        if (is2PlayerGame)
             add2Players();
-        } else {
+        else
             add3Players();
-        }
         addMonsters();
 
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
@@ -48,6 +51,12 @@ public class GameEngine {
 
     public ArrayList<Monster> getMonsters() {
         return monsters;
+    }
+
+    public static void setPlayerWinsToZero(){
+        GameEngine.player1Wins = 0;
+        GameEngine.player2Wins = 0;
+        GameEngine.player3Wins = 0;
     }
 
     /**
@@ -141,7 +150,7 @@ public class GameEngine {
     /**
      * Monster-monster collision
      *
-     * @param g
+     * @param monster
      */
     private void checkCollisionsWithMonsters(Monster monster) {
         for (Monster m : monsters) {
