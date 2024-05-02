@@ -15,7 +15,10 @@ public class Character extends Sprite{
         speed = Speed.NORMAL.speed;
         direction = Direction.STOPPED;
     }
-    
+
+    public boolean getIsAlive() { return isAlive; }
+    public void setIsAlive(boolean isAlive) { this.isAlive = isAlive; }
+
     /**
      * Moves the character
      * @return 

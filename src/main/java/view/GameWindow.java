@@ -10,9 +10,9 @@ import static view.HelperMethods.*;
 public class GameWindow extends JFrame{
     private final GamePanel gamePanel;
 
-    public GameWindow() {
+    public GameWindow(int numberToWin) {
         super();
-        gamePanel = new GamePanel();
+        gamePanel = new GamePanel(this, numberToWin);
         
         // add panel to frame
         add(gamePanel);
@@ -25,5 +25,4 @@ public class GameWindow extends JFrame{
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
 }
