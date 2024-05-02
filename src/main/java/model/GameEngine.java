@@ -53,6 +53,10 @@ public class GameEngine {
         return monsters;
     }
 
+    public Sprite[][] getGameMap() {
+        return gameMap;
+    }
+
     public static void setPlayerWinsToZero(){
         GameEngine.player1Wins = 0;
         GameEngine.player2Wins = 0;
