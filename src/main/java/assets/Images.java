@@ -13,7 +13,11 @@ public class Images {
     public static Image bombImg;
     public static Image boxImg;
     public static Image fireImg;
+    public static Image monsterImg;
     public static Image pathImg;
+    public static Image player1Img;
+    public static Image player2Img;
+    public static Image player3Img;
     public static Image wallImg;
     public static Image whiteImg;
     
@@ -32,7 +36,11 @@ public class Images {
         bombImg = loadImage("assets/bomb.png");
         boxImg = loadImage("assets/box.png");
         fireImg = loadImage("assets/fire.png");
+        monsterImg = loadImage("assets/monster.png");
         pathImg = loadImage("assets/path.png");
+        player1Img = loadImage("assets/player1.png");
+        player2Img = loadImage("assets/player2.png");
+        player3Img = loadImage("assets/player3.png");
         wallImg = loadImage("assets/wall.png");
         whiteImg = loadImage("assets/white.png");
 

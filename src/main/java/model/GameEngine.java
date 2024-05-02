@@ -114,8 +114,8 @@ public class GameEngine {
      * Adding 2 players
      */
     private void add2Players() {
-        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[0]));
-        players.add(new Player(60, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[1]));
+        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.player1Img, this, controls[0]));
+        players.add(new Player(60, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.player2Img, this, controls[1]));
     }
 
     /**
@@ -123,15 +123,15 @@ public class GameEngine {
      */
     private void add3Players() {
         add2Players();
-        players.add(new Player(260, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this, controls[2]));
+        players.add(new Player(260, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
     }
     
      /**
      * Adding monsters
      */
     private void addMonsters() {
-        monsters.add(new Monster(650, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
-        monsters.add(new Monster(650, 120, GamePanel.PLAYER_PIXEL_SIZE, Images.whiteImg, this));
+        monsters.add(new Monster(650, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.monsterImg, this));
+        monsters.add(new Monster(650, 120, GamePanel.PLAYER_PIXEL_SIZE, Images.monsterImg, this));
     }
 
     /**
