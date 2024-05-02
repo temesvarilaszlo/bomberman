@@ -55,19 +55,19 @@ public class SettingsWindow extends JFrame {
 
         //Set properties of labels, buttons etc.
         setProperties(title, 50, 240, 60, 270, 45);
-        setProperties(playersCombo, 20, 305, 170, 140, 40);
-        setProperties(upLabel, 25, 200, 260, 50, 40);
-        setProperties(upButton, 20, 400, 260, 200, 35);
-        setProperties(downLabel, 25, 200, 320, 90, 40);
-        setProperties(downButton, 20, 400, 320, 200, 35);
-        setProperties(leftLabel, 25, 200, 380, 80, 40);
-        setProperties(leftButton, 20, 400, 380, 200, 35);
-        setProperties(rightLabel, 25, 200, 440, 90, 40);
-        setProperties(rightButton, 20, 400, 440, 200, 35);
-        setProperties(placeBombLabel, 25, 200, 500, 180, 40);
-        setProperties(bombButton, 20, 400, 500, 200, 35);
-        setProperties(placeObstacleLabel, 25, 200, 560, 180, 40);
-        setProperties(obstacleButton, 20, 400, 560, 200, 35);
+        setProperties(playersCombo, 20, 305, 140, 140, 40);
+        setProperties(upLabel, 25, 200, 230, 50, 40);
+        setProperties(upButton, 20, 400, 230, 200, 35);
+        setProperties(downLabel, 25, 200, 290, 90, 40);
+        setProperties(downButton, 20, 400, 290, 200, 35);
+        setProperties(leftLabel, 25, 200, 350, 80, 40);
+        setProperties(leftButton, 20, 400, 350, 200, 35);
+        setProperties(rightLabel, 25, 200, 410, 90, 40);
+        setProperties(rightButton, 20, 400, 410, 200, 35);
+        setProperties(placeBombLabel, 25, 200, 470, 180, 40);
+        setProperties(bombButton, 20, 400, 470, 200, 35);
+        setProperties(placeObstacleLabel, 25, 200, 530, 180, 40);
+        setProperties(obstacleButton, 20, 400, 530, 200, 35);
         setProperties(backToMenuButton, 30, 235, 620, 280, 40);
 
         //Adding actionsListeners
