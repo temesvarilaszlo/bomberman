@@ -1,14 +1,11 @@
 package view;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import javax.swing.AbstractAction;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+
+import static assets.AssetLoader.CUSTOM_FONT;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class HelperMethods {
@@ -39,13 +36,13 @@ public class HelperMethods {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                 | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         }
     }
-    
+
     /**
      * Creates the menu bar
-     * @param frame 
+     * @param frame
      */
     public static void createMenuBar(JFrame frame) {
         JMenuBar menuBar = new JMenuBar();
@@ -73,5 +70,44 @@ public class HelperMethods {
         menuGame.add(menuExit);
         menuBar.add(menuGame);
         frame.setJMenuBar(menuBar);
+    }
+
+    /**
+     * Sets the properties of the given combo box
+     */
+    public static void setProperties(JComboBox comboBox, int fontSize, int x, int y, int width, int height) {
+        comboBox.setBorder(new LineBorder(Color.BLACK));
+        comboBox.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, fontSize));
+        comboBox.setBounds(x, y, width, height);
+        comboBox.setFocusable(false);
+    }
+
+    /**
+     * Sets the properties of the given label
+     */
+    public static void setProperties(JLabel label, int fontSize, int x, int y, int width, int height) {
+        label.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, fontSize));
+        label.setBounds(x, y, width, height);
+    }
+
+    /**
+     * Sets the properties of the given button
+     */
+    public static void setProperties(JButton button, int fontSize, int x, int y, int width, int height) {
+        button.setBorder(new LineBorder(Color.BLACK));
+        button.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, fontSize));
+        button.setBounds(x, y, width, height);
+        button.setFocusable(false);
+    }
+
+    /**
+     * Sets the properties of the given spinner
+     */
+    public static void setProperties(JSpinner spinner, int fontSize, int x, int y, int width, int height) {
+        ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setEditable(false); //so players cant edit with keyboard
+        spinner.setBorder(new LineBorder(Color.BLACK));
+        spinner.setFont(CUSTOM_FONT);
+        spinner.setBounds(x, y, width, height);
+        spinner.setFocusable(false);
     }
 }

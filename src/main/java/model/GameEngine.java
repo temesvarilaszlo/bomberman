@@ -65,7 +65,7 @@ public class GameEngine {
      * @return String[][]
      */
     private String[][] loadMap() {
-        String mapName = MainMenuWindow.getMap();
+        String mapName = MainMenuWindow.GetMap();
         InputStream is = loadTxt("assets/" + mapName + ".txt");
         String[][] matrix = new String[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
 

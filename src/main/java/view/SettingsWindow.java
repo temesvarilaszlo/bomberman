@@ -1,29 +1,23 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.awt.event.KeyListener;
-import static assets.AssetLoader.CUSTOM_FONT;
+import java.util.HashMap;
+import java.util.Objects;
 import static view.HelperMethods.*;
 import static assets.Controls.*;
 
-public class SettingsWindow extends JFrame implements KeyListener {
+public class SettingsWindow extends JFrame {
 
-    private final JPanel middlePanel = new JPanel();
-    private final JComboBox playersCombo = new JComboBox<>(new String[]{"Player 1", "Player 2", "Player 3"});
+    private final JComboBox<String> playersCombo = new JComboBox<>(new String[]{"Player 1", "Player 2", "Player 3"});
     private final JButton upButton = new JButton();
     private final JButton downButton = new JButton();
     private final JButton leftButton = new JButton();
@@ -31,58 +25,59 @@ public class SettingsWindow extends JFrame implements KeyListener {
     private final JButton bombButton = new JButton();
     private final JButton obstacleButton = new JButton();
     private final JButton backToMenuButton = new JButton("Back to Menu");
-    private final ArrayList<JButton> buttonList = new ArrayList<>();
+    private final ButtonClickListener buttonClickListener;
+
+    private static final ArrayList<JButton> buttonsList = new ArrayList<>();
 
     public SettingsWindow() {
         init(this, "Settings", 800, 750);
         setLookandFeel();
-        middlePanel.setPreferredSize(new Dimension(750, 690));
+
+        //Handlers, listeners
+        SettingsKeyHandler keyH = new SettingsKeyHandler(this);
+        addKeyListener(keyH);
+        buttonClickListener = new ButtonClickListener(this);
+
         addButtonsToList();
         renderControls(); //calling it so it sets the default for player 1
 
-        //Title
-        JLabel title = new JLabel("Settings");
-        setProperties(title, 50, 240, 60, 270, 45);
+        //Data
+        JPanel middlePanel = new JPanel();
+        middlePanel.setPreferredSize(new Dimension(750, 690));
 
-        //Players
-        setProperties(playersCombo, 20, 305, 140, 140, 40);
+        JLabel title = new JLabel("Settings");
+        JLabel upLabel = new JLabel("Up");
+        JLabel downLabel = new JLabel("Down");
+        JLabel leftLabel = new JLabel("Left");
+        JLabel rightLabel = new JLabel("Right");
+        JLabel placeBombLabel = new JLabel("Place Bomb");
+        JLabel placeObstacleLabel = new JLabel("Place Box");
+
+        //Set properties of labels, buttons etc.
+        setProperties(title, 50, 240, 60, 270, 45);
+        setProperties(playersCombo, 20, 305, 170, 140, 40);
+        setProperties(upLabel, 25, 200, 260, 50, 40);
+        setProperties(upButton, 20, 400, 260, 200, 35);
+        setProperties(downLabel, 25, 200, 320, 90, 40);
+        setProperties(downButton, 20, 400, 320, 200, 35);
+        setProperties(leftLabel, 25, 200, 380, 80, 40);
+        setProperties(leftButton, 20, 400, 380, 200, 35);
+        setProperties(rightLabel, 25, 200, 440, 90, 40);
+        setProperties(rightButton, 20, 400, 440, 200, 35);
+        setProperties(placeBombLabel, 25, 200, 500, 180, 40);
+        setProperties(bombButton, 20, 400, 500, 200, 35);
+        setProperties(placeObstacleLabel, 25, 200, 560, 180, 40);
+        setProperties(obstacleButton, 20, 400, 560, 200, 35);
+        setProperties(backToMenuButton, 30, 235, 620, 280, 40);
+
+        //Adding actionsListeners
+        backToMenuButton.addActionListener((ActionEvent e) -> {
+            new MainMenuWindow();
+            this.dispose();
+        });
         playersCombo.addActionListener((ActionEvent e) -> {
             renderControls();
         });
-
-        //Up
-        JLabel upLabel = new JLabel("Up");
-        setProperties(upLabel, 25, 200, 230, 50, 40);
-        setProperties(upButton, 20, 400, 230, 200, 35);
-
-        //Down
-        JLabel downLabel = new JLabel("Down");
-        setProperties(downLabel, 25, 200, 290, 90, 40);
-        setProperties(downButton, 20, 400, 290, 200, 35);
-
-        //Left
-        JLabel leftLabel = new JLabel("Left");
-        setProperties(leftLabel, 25, 200, 350, 80, 40);
-        setProperties(leftButton, 20, 400, 350, 200, 35);
-
-        //Right
-        JLabel rightLabel = new JLabel("Right");
-        setProperties(rightLabel, 25, 200, 410, 90, 40);
-        setProperties(rightButton, 20, 400, 410, 200, 35);
-
-        //Place Bomb
-        JLabel placeBombLabel = new JLabel("Place Bomb");
-        setProperties(placeBombLabel, 25, 200, 470, 180, 40);
-        setProperties(bombButton, 20, 400, 470, 200, 35);
-        
-        //Place Bomb
-        JLabel placeObstacleLabel = new JLabel("Place Box");
-        setProperties(placeObstacleLabel, 25, 200, 530, 180, 40);
-        setProperties(obstacleButton, 20, 400, 530, 200, 35);
-
-        //Back to menu button
-        backToMenuButton.addActionListener(backToMenu());
-        setProperties(backToMenuButton, 30, 235, 620, 280, 40);
 
         //Adding everything to the JPanel
         middlePanel.add(title);
@@ -103,198 +98,96 @@ public class SettingsWindow extends JFrame implements KeyListener {
         middlePanel.setLayout(null);
         setLayout(new GridBagLayout());
         add(middlePanel, new GridBagConstraints());
-        
-        addKeyListener(this);
-        
+
         setVisible(true);
     }
 
-    /**
-     * Sets the properties of the given combo box
-     */
-    private void setProperties(JComboBox comboBox, int fontSize, int x, int y, int width, int height) {
-        comboBox.setBorder(new LineBorder(Color.BLACK));
-        comboBox.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, fontSize));
-        comboBox.setBounds(x, y, width, height);
-        comboBox.setFocusable(false);
-    }
-
-    /**
-     * Sets the properties of the given label
-     */
-    private void setProperties(JLabel label, int fontSize, int x, int y, int width, int height) {
-        label.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, fontSize));
-        label.setBounds(x, y, width, height);
-    }
-
-    /**
-     * Sets the properties of the given button
-     */
-    private void setProperties(JButton button, int fontSize, int x, int y, int width, int height) {
-        button.setBorder(new LineBorder(Color.BLACK));
-        button.setFont(CUSTOM_FONT.deriveFont(Font.PLAIN, fontSize));
-        button.setBounds(x, y, width, height);
-        button.setFocusable(false);
+    public ArrayList<JButton> getButtonsList() {
+        return buttonsList;
     }
 
     /**
      * Adds all buttons to a list
      */
-    private void addButtonsToList() {
-        buttonList.add(upButton);
-        buttonList.add(rightButton);
-        buttonList.add(downButton);
-        buttonList.add(leftButton);
-        buttonList.add(bombButton);
-        buttonList.add(obstacleButton);
-        buttonList.add(backToMenuButton);
-        
-        for(JButton b : buttonList){
+    public void addButtonsToList() {
+        buttonsList.add(upButton);
+        buttonsList.add(rightButton);
+        buttonsList.add(downButton);
+        buttonsList.add(leftButton);
+        buttonsList.add(bombButton);
+        buttonsList.add(obstacleButton);
+        buttonsList.add(backToMenuButton);
+
+        for(JButton b : buttonsList){
             if(b != backToMenuButton)
-                b.addActionListener(new ButtonClickListener());
+                b.addActionListener(buttonClickListener);
         }
     }
-    
-    /**
-     * Disables all buttons and playersCombo except the clickedButton
-     * @param exception
-     */
-    private void disableButtons(JButton exception){
-        for(JButton button : buttonList){
-            if(button != exception)
-                button.setEnabled(false);
-        }
-        playersCombo.setEnabled(false);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-    }
-    
+
     /**
      * Enables all buttons and playerCombo
      */
-    private void enableButtons(){
-        for(JButton button : buttonList){
+    public void enableButtons(){
+        for(JButton button : buttonsList){
             button.setEnabled(true);
         }
         playersCombo.setEnabled(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {}
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        if(isMatchingKey(keyCode))
-            return;
-        
-        //setting text for button
-        JButton clickedButton = null;
-        for (JButton button : buttonList) {
-            if (button.isEnabled()) {
-                clickedButton = button;
-                clickedButton.setForeground(Color.BLACK);
-                clickedButton.setText(KeyEvent.getKeyText(keyCode));
-            }
+    /**
+     * Disables all buttons and playersCombo except the clickedButton
+     * @param clickedButton clicked button
+     */
+    public void disableButtons(JButton clickedButton){
+        for(JButton button : buttonsList){
+            if(button != clickedButton)
+                button.setEnabled(false);
         }
-        enableButtons();
-        
-        updateControlsMatrix(clickedButton, keyCode);
-        updateControlsFile();
+        playersCombo.setEnabled(false);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
-    
-    @Override
-    public void keyReleased(KeyEvent e) {}
-    
+
     /**
      * Updates the controls matrix with the new keybindings
-     * @param clickedButton
-     * @param keyCode 
+     * @param clickedButton clicked button
+     * @param keyCode key code of the letter on the button
      */
-    private void updateControlsMatrix(JButton clickedButton, int keyCode){
+    public void updateControlsMatrix(JButton clickedButton, int keyCode){
+        HashMap<String, int[]> playerControlsMap = new HashMap<>();
+        playerControlsMap.put("Player 1", controls[0]);
+        playerControlsMap.put("Player 2", controls[1]);
+        playerControlsMap.put("Player 3", controls[2]);
+
         String selectedPlayer = (String) playersCombo.getSelectedItem();
-        switch (selectedPlayer) {
-            case "Player 1" -> {
-                if(clickedButton == upButton)
-                    controls[0][0] = keyCode;
-                else if(clickedButton == rightButton)
-                    controls[0][1] = keyCode;
-                else if(clickedButton == downButton)
-                    controls[0][2] = keyCode;
-                else if(clickedButton == leftButton)
-                    controls[0][3] = keyCode;
-                else if(clickedButton == bombButton)
-                    controls[0][4] = keyCode;
-                else if(clickedButton == obstacleButton)
-                    controls[0][5] = keyCode;
+        int[] selectedControls = playerControlsMap.getOrDefault(selectedPlayer, null);
+        if (selectedControls != null) {
+            int index = -1;
+            if (clickedButton == upButton) index = 0;
+            else if (clickedButton == rightButton) index = 1;
+            else if (clickedButton == downButton) index = 2;
+            else if (clickedButton == leftButton) index = 3;
+            else if (clickedButton == bombButton) index = 4;
+            else if (clickedButton == obstacleButton) index = 5;
+
+            if (index != -1) {
+                selectedControls[index] = keyCode;
             }
-            case "Player 2" -> {
-                if(clickedButton == upButton)
-                    controls[1][0] = keyCode;
-                else if(clickedButton == rightButton)
-                    controls[1][1] = keyCode;
-                else if(clickedButton == downButton)
-                    controls[1][2] = keyCode;
-                else if(clickedButton == leftButton)
-                    controls[1][3] = keyCode;
-                else if(clickedButton == bombButton)
-                    controls[1][4] = keyCode;
-                else if(clickedButton == obstacleButton)
-                    controls[1][5] = keyCode;
-            }
-            case "Player 3" -> {
-                if(clickedButton == upButton)
-                    controls[2][0] = keyCode;
-                else if(clickedButton == rightButton)
-                    controls[2][1] = keyCode;
-                else if(clickedButton == downButton)
-                    controls[2][2] = keyCode;
-                else if(clickedButton == leftButton)
-                    controls[2][3] = keyCode;
-                else if(clickedButton == bombButton)
-                    controls[2][4] = keyCode;
-                else if(clickedButton == obstacleButton)
-                    controls[2][5] = keyCode;
-            }
-            default -> throw new AssertionError();
+        } else {
+            throw new AssertionError();
         }
     }
-    
+
     /**
      * Updates control combo boxes based on which player is selected
      */
     private void renderControls() {
         String selectedPlayer = (String) playersCombo.getSelectedItem();
-        switch (selectedPlayer) {
-            case "Player 1" -> { setButtonsText(buttonList, 0); }
-            case "Player 2" -> { setButtonsText(buttonList, 1); }
-            case "Player 3" -> { setButtonsText(buttonList, 2); }
+        switch (Objects.requireNonNull(selectedPlayer)) {
+            case "Player 1" -> { setButtonsText(buttonsList, 0); }
+            case "Player 2" -> { setButtonsText(buttonsList, 1); }
+            case "Player 3" -> { setButtonsText(buttonsList, 2); }
             default -> throw new AssertionError();
         }
-    }
-
-    private class ButtonClickListener implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JButton clickedButton = (JButton) e.getSource();
-            disableButtons(clickedButton);
-            clickedButton.setText("input...");
-            clickedButton.setForeground(Color.RED);
-            clickedButton.requestFocus();
-        }
-        
-    }
-
-    /**
-     * Goes back to the main menu
-     *
-     * @return
-     */
-    private ActionListener backToMenu() {
-        return (ActionEvent e) -> {
-            new MainMenuWindow();
-            this.dispose();
-        };
     }
 }
