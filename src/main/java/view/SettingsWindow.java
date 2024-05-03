@@ -9,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -40,6 +41,8 @@ public class SettingsWindow extends JFrame {
 
         addButtonsToList();
         renderControls(); //calling it so it sets the default for player 1
+
+        System.out.println(buttonsList.get(1).getText());
 
         //Data
         JPanel middlePanel = new JPanel();
@@ -183,11 +186,32 @@ public class SettingsWindow extends JFrame {
      */
     private void renderControls() {
         String selectedPlayer = (String) playersCombo.getSelectedItem();
-        switch (Objects.requireNonNull(selectedPlayer)) {
-            case "Player 1" -> { setButtonsText(buttonsList, 0); }
-            case "Player 2" -> { setButtonsText(buttonsList, 1); }
-            case "Player 3" -> { setButtonsText(buttonsList, 2); }
+
+        switch (selectedPlayer) {
+            case "Player 1" -> { setButtonsText(0);}
+            case "Player 2" -> { setButtonsText(1); }
+            case "Player 3" -> { setButtonsText(2); }
             default -> throw new AssertionError();
         }
+    }
+
+    private void setButtonsText(int row){
+        String text = (String) KeyEvent.getKeyText(controls[row][0]);
+        upButton.setText(text);
+
+        text = (String) KeyEvent.getKeyText(controls[row][1]);
+        rightButton.setText(text);
+
+        text = (String) KeyEvent.getKeyText(controls[row][2]);
+        downButton.setText(text);
+
+        text = (String) KeyEvent.getKeyText(controls[row][3]);
+        leftButton.setText(text);
+
+        text = (String) KeyEvent.getKeyText(controls[row][4]);
+        bombButton.setText(text);
+
+        text = (String) KeyEvent.getKeyText(controls[row][5]);
+        obstacleButton.setText(text);
     }
 }

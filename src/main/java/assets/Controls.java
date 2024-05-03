@@ -22,13 +22,7 @@ public class Controls {
     public Controls(){
         controls = loadControls();
     }
-    
-    public static void setButtonsText(ArrayList<JButton> buttonList, int row){
-        for (int i = 0; i < controls[row].length; i++) {
-            buttonList.get(i).setText(KeyEvent.getKeyText(controls[row][i]));
-        }
-    }
-    
+
     public static boolean isMatchingKey(int keycode){
         for(int i = 0; i < controls.length; i++){
             for(int j = 0; j < controls[i].length; j++){
