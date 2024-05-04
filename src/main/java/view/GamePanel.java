@@ -32,7 +32,7 @@ public class GamePanel extends JPanel {
     private final int numberToWin;
     private final GameWindow GameWindow;
 
-    public GamePanel(GameWindow GameWindow, int numberToWin) {
+    public GamePanel(GameWindow GameWindow, int numberToWin, GameEngine engine) {
         super();
 
         // GUI stuff
@@ -40,7 +40,7 @@ public class GamePanel extends JPanel {
         this.setFocusable(true);
 
         // initialize engine related stuff
-        engine = new GameEngine();
+        this.engine = engine;
         keyH = new KeyHandler(engine);
         this.numberToWin = numberToWin;
         this.GameWindow = GameWindow;
@@ -155,6 +155,7 @@ public class GamePanel extends JPanel {
             engine.clearDeadMonsters();
             engine.pickupDrops();
             repaint();
+            GameWindow.getPowerupPanel().updateLabels();
 
             if (engine.isGameOver()){
                 timer.stop();
