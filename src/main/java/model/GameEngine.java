@@ -118,19 +118,30 @@ public class GameEngine {
      * Adding 2 players
      */
     private void add2Players() {
-        players.add(new Player(60, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.player1Img, this, controls[0]));
-        players.add(new Player(60, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.player2Img, this, controls[1]));
+        players.add(new Player(60, 55, GamePanel.PLAYER_PIXEL_SIZE, Images.player1Img, this, controls[0]));
+        players.add(new Player(658, 658, GamePanel.PLAYER_PIXEL_SIZE, Images.player2Img, this, controls[1]));
     }
+
 
     /**
      * Adding 3 players
      */
     private void add3Players() {
+        String map = MainMenuWindow.GetMap();
         add2Players();
-        players.add(new Player(260, 360, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
+        if (map.equals("map1")) {
+            players.add(new Player(358, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
+        }
+        else if(map.equals("map2")){
+            players.add(new Player(310, 408, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
+        }
+        else{
+            players.add(new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
+        }
     }
-    
-     /**
+
+
+    /**
      * Adding monsters
      */
     private void addMonsters() {
@@ -364,7 +375,7 @@ public class GameEngine {
     }
     
     /**
-     * Clears dead monsters from the map so they're not visible
+     * Clears dead monsters from the map, so they're not visible
      */
     public void clearDeadMonsters(){
         ArrayList<Monster> monstersCopy = new ArrayList<>(monsters);
