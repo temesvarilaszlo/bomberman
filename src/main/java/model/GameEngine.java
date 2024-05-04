@@ -382,18 +382,13 @@ public class GameEngine {
      */
     public boolean isGameOver(){
         int alivePlayers = 0;
-        boolean areBombsPlaced = false;
         
         for (Player p : players){
             if (p.isAlive){
                 alivePlayers++;
             }
-            if (!p.getPlacedBombs().isEmpty()){
-                areBombsPlaced = true;
-            }
         }
-        // TODO arebombsplaced -> explodedBombs.isEmpty()
-        return alivePlayers <= 1 && explodedBombs.isEmpty() && !areBombsPlaced;
+        return alivePlayers <= 1 && explodedBombs.isEmpty();
     }
     
     /**
