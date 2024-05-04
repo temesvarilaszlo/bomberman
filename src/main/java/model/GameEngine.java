@@ -392,7 +392,7 @@ public class GameEngine {
                 areBombsPlaced = true;
             }
         }
-        
+        // TODO arebombsplaced -> explodedBombs.isEmpty()
         return alivePlayers <= 1 && explodedBombs.isEmpty() && !areBombsPlaced;
     }
     

@@ -61,6 +61,14 @@ public class Player extends Character {
         return controls;
     }
 
+    public int getBombRange() {
+        return bombRange;
+    }
+
+    public int getBombCapacity() {
+        return bombCapacity;
+    }
+
     @Override
     public boolean move() {
         if (direction == Direction.STOPPED || !isAlive)
@@ -153,9 +161,7 @@ public class Player extends Character {
             GameEngine.mapString[currentMatrixPosition().x][currentMatrixPosition().y] = "B";
             gameEngine.getGameMap()[currentMatrixPosition().x][currentMatrixPosition().y] = new Box(currentMatrixPosition().y * GamePanel.BLOCK_PIXEL_SIZE, currentMatrixPosition().x * GamePanel.BLOCK_PIXEL_SIZE,
                     GamePanel.BLOCK_PIXEL_SIZE, Images.boxImg, false);
-            System.out.println(powerups.toString());
             removeFromPowerups("O");
-            System.out.println(powerups.toString());
         }
 
     }
@@ -250,30 +256,26 @@ public class Player extends Character {
     public void powerupChooser(String powerup){
         switch (powerup) {
             case "D" -> {
-                this.powerups.add(powerup);
+                if (!powerups.contains(powerup)){
+                    this.powerups.add(powerup);
+                }
             }
             case "G" -> {
                 ghostPowerup();
                 this.powerups.add(powerup);
             }
             case "I" -> {
-                if(powerups.contains("I")){
-                    
-                }
-                else{
-                    this.powerups.add(powerup);
-                    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                    executor.schedule(() -> {
-                        removeFromPowerups("I");
-                        executor.shutdown();
-                    }, 10, TimeUnit.SECONDS);
-                }
+                this.powerups.add(powerup);
+                ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+                executor.schedule(() -> {
+                    removeFromPowerups("I");
+                    executor.shutdown();
+                }, 10, TimeUnit.SECONDS);
             }
             case "O" -> {
                 for (int i = 0; i < 3; i++) {
                     this.powerups.add(powerup);
                 }
-                System.out.println("Obstacle");
             }
             case "PB" -> {
                 increaseBombCapacity();
@@ -282,6 +284,9 @@ public class Player extends Character {
                 increaseBombRange();
             }
             case "S" -> {
+                if (!powerups.contains(powerup)){
+                    this.powerups.add(powerup);
+                }
                 increaseSpeed();
             }
             default -> throw new AssertionError();
