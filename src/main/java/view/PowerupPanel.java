@@ -1,5 +1,6 @@
 package view;
 
+import assets.AssetLoader;
 import assets.Images;
 import model.GameEngine;
 import model.Player;
@@ -38,7 +39,9 @@ public class PowerupPanel extends JPanel {
             playerLabels[i].put("obstacles", new JLabel());
             playerLabels[i].put("powerups", new PowerupImagePanel(powerupImages));
 
-            add(new JLabel("Player " + (i + 1)));
+            JLabel playerLabel = new JLabel("Player " + (i + 1));
+            playerLabel.setFont(AssetLoader.CUSTOM_FONT);
+            add(playerLabel);
             for (JComponent component: playerLabels[i].values()) {
                 add(component);
             }

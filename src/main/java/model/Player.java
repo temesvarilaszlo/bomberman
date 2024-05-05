@@ -31,7 +31,7 @@ public class Player extends Character {
     public Player(int x, int y, int size, Image img, GameEngine game, int[] ctrls) {
         super(x, y, size, img);
         bombRange = 2;
-        bombCapacity = 3;
+        bombCapacity = 1;
         gameEngine = game;
         
         placedBombs = new ArrayList<>();

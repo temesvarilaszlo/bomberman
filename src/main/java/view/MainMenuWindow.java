@@ -52,6 +52,7 @@ public class MainMenuWindow extends JFrame {
 
         //Adding actionsListeners to buttons
         twoPlayerButton.addActionListener((ActionEvent e) -> {
+            is2PlayerGame = true;
             new GameWindow(numberToWin);
             this.dispose();
         });
