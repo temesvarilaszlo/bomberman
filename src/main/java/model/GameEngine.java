@@ -23,6 +23,7 @@ public class GameEngine {
     private final ArrayList<Monster> monsters;
     private final ArrayList<Bomb> explodedBombs;
     private final ArrayList<Drop> drops;
+    private ArrayList<int[]> characterPositions;
 
     public static int player1Wins = 0;
     public static int player2Wins = 0;
@@ -33,16 +34,21 @@ public class GameEngine {
         monsters = new ArrayList<>();
         explodedBombs = new ArrayList<>();
         drops = new ArrayList<>();
+        characterPositions = new ArrayList<>();
         
         if (is2PlayerGame)
             add2Players();
         else
             add3Players();
-        addMonsters();
+
+
 
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();
         initMap();
+        for (int i = 0; i < 3; i++) {
+            randomMonsterPosition();
+        }
     }
 
     public ArrayList<Player> getPlayers() {
@@ -119,7 +125,11 @@ public class GameEngine {
      */
     private void add2Players() {
         players.add(new Player(60, 55, GamePanel.PLAYER_PIXEL_SIZE, Images.player1Img, this, controls[0]));
+        int[] firstPlayer = {Math.floorDiv(60,50), Math.floorDiv(55,50)};
         players.add(new Player(658, 658, GamePanel.PLAYER_PIXEL_SIZE, Images.player2Img, this, controls[1]));
+        int[] secondPlayer = {Math.floorDiv(658,50), Math.floorDiv(658,50)};
+        characterPositions.add(firstPlayer);
+        characterPositions.add(secondPlayer);
     }
 
 
@@ -129,24 +139,53 @@ public class GameEngine {
     private void add3Players() {
         String map = MainMenuWindow.GetMap();
         add2Players();
+        int[] thirdPlayer = new int[2];
         if (map.equals("map1")) {
             players.add(new Player(358, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
+            thirdPlayer[0] = Math.floorDiv(358,50);
+            thirdPlayer[1] = Math.floorDiv(358,50);
         }
         else if(map.equals("map2")){
             players.add(new Player(310, 408, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
+            thirdPlayer[0] = Math.floorDiv(310,50);
+            thirdPlayer[1] = Math.floorDiv(408,50);
         }
         else{
             players.add(new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, this, controls[2]));
+            thirdPlayer[0] = Math.floorDiv(258,50);
+            thirdPlayer[1] = Math.floorDiv(358,50);
         }
+        characterPositions.add(thirdPlayer);
     }
+
+    private void randomMonsterPosition(){
+        int[] x_y = new int[2];
+        do {
+            int x = GamePanel.BLOCK_PIXEL_SIZE + (int) (Math.random() *
+                    (((GamePanel.MAP_SIZE-1) * GamePanel.BLOCK_PIXEL_SIZE - GamePanel.BLOCK_PIXEL_SIZE)));
+            int y = GamePanel.BLOCK_PIXEL_SIZE + (int) (Math.random() *
+                    (((GamePanel.MAP_SIZE-1) * GamePanel.BLOCK_PIXEL_SIZE - GamePanel.BLOCK_PIXEL_SIZE)));
+
+
+            int x_poz = Math.floorDiv(x,50)-1;
+            int y_poz = Math.floorDiv(y,50)-1;
+            x_y[0] = y_poz;
+            x_y[1] = x_poz;
+            if (mapString[y_poz][x_poz].equals("P") && !characterPositions.contains(x_y)){
+                addMonsters(x_poz*50,y_poz*50);
+                characterPositions.add(x_y);
+            }
+        }
+        while (!characterPositions.contains(x_y));
+    }
+
 
 
     /**
      * Adding monsters
      */
-    private void addMonsters() {
-        monsters.add(new Monster(650, 60, GamePanel.PLAYER_PIXEL_SIZE, Images.monsterImg, this));
-        monsters.add(new Monster(650, 120, GamePanel.PLAYER_PIXEL_SIZE, Images.monsterImg, this));
+    private void addMonsters(int x,int y) {
+        monsters.add(new Monster(x, y, GamePanel.PLAYER_PIXEL_SIZE, Images.monsterImg, this));
     }
 
     /**
