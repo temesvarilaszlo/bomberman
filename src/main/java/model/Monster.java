@@ -7,10 +7,6 @@ import java.util.Random;
 import javax.swing.Timer;
 import static model.HelpMethods.canMoveHere;
 
-/**
- *
- * @author tlasz
- */
 public class Monster extends Character{
 
     private Timer timer;
@@ -54,7 +50,7 @@ public class Monster extends Character{
     
     @Override
     public boolean move(){
-        if(direction == Direction.STOPPED)
+        if(direction == Direction.STOPPED || !this.isAlive)
             return false;
         
         for(Monster m : gameEngine.getMonsters()){

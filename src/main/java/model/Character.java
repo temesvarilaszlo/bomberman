@@ -18,6 +18,9 @@ public class Character extends Sprite{
 
     public boolean getIsAlive() { return isAlive; }
     public void setIsAlive(boolean isAlive) { this.isAlive = isAlive; }
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
     /**
      * Moves the character
@@ -39,25 +42,20 @@ public class Character extends Sprite{
     }
     
     /**
-     * Sets the direction
-     * @param direction 
-     */
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-    
-    /**
      * Checking collision with another character
      * @param c
      * @return 
      */
     @Override
     public boolean collidesWith(Character c){
-        if (!c.isAlive) return false;
+        if (!c.isAlive)
+            return false;
+
         Rectangle character = new Rectangle(x, y, size, size);
         if (this.getClass().equals(c.getClass())) {
             character = new Rectangle(x + direction.x,y + direction.y,size,size);
         }
+
         Rectangle otherCharacter = new Rectangle(c.x,c.y,c.size,c.size);
         
         return character.intersects(otherCharacter);

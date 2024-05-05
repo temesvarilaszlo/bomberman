@@ -6,10 +6,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import view.GamePanel;
 
-/**
- *
- * @author tlasz
- */
 public class Sprite {
     protected int x;
     protected int y;

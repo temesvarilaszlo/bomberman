@@ -4,6 +4,8 @@ import assets.Images;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +19,7 @@ public class PowerupImagePanel extends JPanel {
     public PowerupImagePanel(HashMap<String, Image> powerupImages) {
         super();
         imgSize = 30;
-        imgPadding = 5;
+        imgPadding = 6;
         setPreferredSize(new Dimension(5 * imgSize + 5 * imgPadding, 100));
 
         this.powerupImages = powerupImages;
@@ -32,7 +34,7 @@ public class PowerupImagePanel extends JPanel {
         int i = 0;
         for (String powerup : powerups) {
             Image img = powerupImages.get(powerup);
-            g.drawImage(img, i * imgSize + imgPadding, 0, imgSize, imgSize, null);
+            g.drawImage(img, 0, i * imgSize + imgPadding, imgSize, imgSize, null);
             i++;
         }
     }

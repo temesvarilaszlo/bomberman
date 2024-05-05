@@ -4,10 +4,6 @@ import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.Timer;
 
-/**
- *
- * @author tlasz
- */
 public class Bomb extends Block{
     private Timer timer;
     private final int explosionDelay;
@@ -26,13 +22,15 @@ public class Bomb extends Block{
         currWave = 1;
         
         if (isDetonated){
-            timer = new Timer(explosionDelay, (e) -> {
-                explode();
-            });
-            timer.start();     
+            startTimer();
         }
     }
-    
+
+    private void startTimer() {
+        timer = new Timer(explosionDelay, (e) -> explode());
+        timer.start();
+    }
+
     public void explode(){
         readyToExplode = true;
         if (timer != null){
