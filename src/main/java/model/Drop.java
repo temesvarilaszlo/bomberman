@@ -5,10 +5,6 @@ import java.awt.Image;
 import java.util.Random;
 import view.GamePanel;
 
-/**
- *
- * @author tlasz
- */
 public class Drop extends Block{
     private String type;
     

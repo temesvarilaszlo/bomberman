@@ -2,10 +2,6 @@ package model;
 
 import assets.Images;
 
-/**
- *
- * @author tlasz
- */
 public class Fire extends Block{
     public int wave;
     public boolean isActive;

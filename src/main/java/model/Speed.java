@@ -1,9 +1,5 @@
 package model;
 
-/**
- *
- * @author tlasz
- */
 public enum Speed {
     SLOW(1), NORMAL(2), FAST(3);
     
@@ -12,6 +8,5 @@ public enum Speed {
     Speed(float speed) {
         this.speed = speed;
     }
-    
-    
+
 }

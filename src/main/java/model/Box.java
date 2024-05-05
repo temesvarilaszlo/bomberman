@@ -3,10 +3,6 @@ package model;
 import java.awt.Image;
 import java.util.Random;
 
-/**
- *
- * @author tlasz
- */
 public class Box extends Block{
     private boolean containsDrop;
     

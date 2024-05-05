@@ -11,10 +11,6 @@ import static assets.AssetLoader.*;
 import static assets.Controls.controls;
 import static view.MainMenuWindow.is2PlayerGame;
 
-/**
- *
- * @author tlasz
- */
 public class GameEngine {
 
     public static String[][] mapString;

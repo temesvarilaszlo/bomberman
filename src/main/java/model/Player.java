@@ -13,10 +13,6 @@ import javax.swing.Timer;
 import view.GamePanel;
 import static model.HelpMethods.canMoveHere;
 
-/**
- *
- * @author tlasz
- */
 public class Player extends Character {
 
     private int bombRange;
@@ -78,46 +74,29 @@ public class Player extends Character {
         float ySpeed = direction.y * speed;
 
         if(!powerups.contains("G")){
-            // if the player is on their own placed bomb, don't check collision for bomb
-            if (isOnPlacedBlock(getLastPlacedBomb())) {
-                if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb())) {
-                    x += xSpeed;
-                    y += ySpeed;
-                    return true;
-                }
-                return false;
-            }
-            if (isOnPlacedBlock(getLastPlacedBox())) {
-                if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBox())) {
-                    x += xSpeed;
-                    y += ySpeed;
-                    return true;
-                }
-                return false;
-            }
-
             for (Player p : gameEngine.getPlayers()) {
                 if (p != this && this.collidesWith(p)) {
                     return false;
                 }
             }
-
-            if (canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString)) {
+            // if the player is on their own placed bomb, don't check collision for bomb
+            if ((isOnPlacedBlock(getLastPlacedBomb()) && canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb()))
+                || (isOnPlacedBlock(getLastPlacedBox()) && canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBox()))
+                || canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString)
+            ) {
                 x += xSpeed;
                 y += ySpeed;
                 return true;
             }
-            return false;
         }
         else{
             if (x + xSpeed >= 0 && x + xSpeed <= (GamePanel.BLOCK_PIXEL_SIZE * GamePanel.MAP_SIZE) - size && y + ySpeed >= 0 && y + ySpeed <= (GamePanel.BLOCK_PIXEL_SIZE * GamePanel.MAP_SIZE) - size) {
                 x += xSpeed;
                 y += ySpeed;
-                return true;  
+                return true;
             }
-            return false;
         }
-        
+        return false;
     }
 
     /**
