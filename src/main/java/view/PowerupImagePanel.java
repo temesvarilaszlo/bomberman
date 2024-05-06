@@ -1,11 +1,7 @@
 package view;
 
-import assets.Images;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,7 +23,6 @@ public class PowerupImagePanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics gr) {
-        // cast to graphics2d
         Graphics2D g = (Graphics2D) gr;
         super.paintComponent(g);
 

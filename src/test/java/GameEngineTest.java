@@ -1,4 +1,4 @@
-import assets.Controls;
+import utilz.Controls;
 import model.GameEngine;
 
 import org.junit.jupiter.api.AfterEach;

@@ -1,15 +1,15 @@
 package model;
 
-import assets.Images;
+import utilz.Images;
 import java.awt.Graphics2D;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 import view.GamePanel;
 import view.MainMenuWindow;
-import static assets.AssetLoader.*;
-import static assets.Controls.controls;
-import static view.MainMenuWindow.is2PlayerGame;
+import static utilz.AssetLoader.*;
+import static utilz.Controls.controls;
+import static view.MainMenuWindow.Is2PlayerGame;
 
 public class GameEngine {
 
@@ -32,7 +32,7 @@ public class GameEngine {
         drops = new ArrayList<>();
         characterPositions = new ArrayList<>();
         
-        if (is2PlayerGame)
+        if (Is2PlayerGame())
             add2Players();
         else
             add3Players();

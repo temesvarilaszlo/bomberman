@@ -1,7 +1,7 @@
 package view;
 
-import assets.AssetLoader;
-import assets.Images;
+import utilz.AssetLoader;
+import utilz.Images;
 import model.GameEngine;
 import model.Player;
 
@@ -50,7 +50,9 @@ public class PowerupPanel extends JPanel {
         updateLabels();
     }
 
-
+    /**
+     * Updates labels in power up panel
+     */
     public void updateLabels() {
         for (int i = 0; i < playerLabels.length; i++) {
             JLabel bombLabel = (JLabel) playerLabels[i].get("bombs");

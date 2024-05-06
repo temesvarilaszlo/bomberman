@@ -1,6 +1,6 @@
 package model;
 
-import assets.Images;
+import utilz.Images;
 import java.awt.Image;
 import java.util.Random;
 import view.GamePanel;

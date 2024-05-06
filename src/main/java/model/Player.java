@@ -1,15 +1,11 @@
 package model;
 
-import assets.Images;
+import utilz.Images;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.ImageGraphicAttribute;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
 import view.GamePanel;
 import static model.HelpMethods.canMoveHere;

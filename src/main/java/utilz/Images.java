@@ -1,7 +1,7 @@
-package assets;
+package utilz;
 
 import java.awt.Image;
-import static assets.AssetLoader.*;
+import static utilz.AssetLoader.*;
 import java.io.IOException;
 
 /**
@@ -37,7 +37,7 @@ public class Images {
     public static Image skateImg;
     
     
-    public Images() throws IOException{
+    public Images() {
         // sprites
         bombImg = loadImage("assets/bomb.png");
         boxImg = loadImage("assets/box.png");

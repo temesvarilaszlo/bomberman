@@ -1,4 +1,4 @@
-package assets;
+package utilz;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -13,45 +13,47 @@ import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 
 public class AssetLoader {
-    public static final Font CUSTOM_FONT = loadFont(15);
+    public static final Font CUSTOM_FONT = loadFont();
     
     /**
-     * Loads the game's font
-     * @param size
-     * @return 
+     * Loads the font used in the game
+     * @return Font
      */
-    private static Font loadFont(int size){
+    private static Font loadFont(){
         Font customFont = null;
         try {
             URL url = AssetLoader.class.getClassLoader().getResource("assets/bm.ttf");
             File fontfile = Paths.get(url.toURI()).toFile();
             //create the font to use. Specify the size!
-            customFont = Font.createFont(Font.TRUETYPE_FONT, fontfile).deriveFont(Font.PLAIN, size);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, fontfile).deriveFont(Font.PLAIN, 15);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             //register the font
             ge.registerFont(customFont);
             
             return customFont;
-        } catch (IOException | FontFormatException | URISyntaxException e) {}
+        } catch (IOException | FontFormatException | URISyntaxException ignored) {}
         
         return customFont;
     }
     
     /**
-     * Loads images for the game
-     * @param resName
-     * @return
-     * @throws IOException 
+     * Loads images
+     * @param resName path to the image
+     * @return Image
      */
-    public static Image loadImage(String resName) throws IOException{
+    public static Image loadImage(String resName) {
         URL url = AssetLoader.class.getClassLoader().getResource(resName);
-        return ImageIO.read(url);
+        try {
+            return ImageIO.read(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     /**
-     * Loads txts for the game
-     * @param resName
-     * @return 
+     * Loads text files
+     * @param resName path to the text file
+     * @return InputStream
      */
     public static InputStream loadTxt(String resName){
         return AssetLoader.class.getClassLoader().getResourceAsStream(resName);

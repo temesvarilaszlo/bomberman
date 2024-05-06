@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import static assets.AssetLoader.CUSTOM_FONT;
+import static utilz.AssetLoader.CUSTOM_FONT;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class HelperMethods {

@@ -1,12 +1,14 @@
-package view;
+package utilz;
+
+import view.SettingsWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import static assets.Controls.isMatchingKey;
-import static assets.Controls.updateControlsFile;
+import static utilz.Controls.isMatchingKey;
+import static utilz.Controls.updateControlsFile;
 
 public class SettingsKeyHandler implements KeyListener {
     private final SettingsWindow settings;

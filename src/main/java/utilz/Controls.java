@@ -1,4 +1,4 @@
-package assets;
+package utilz;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,10 +11,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import view.SettingsWindow;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import javax.swing.JButton;
-import static assets.AssetLoader.loadTxt;
+
+import static utilz.AssetLoader.loadTxt;
 
 public class Controls {
     public static int[][] controls;
@@ -71,7 +69,7 @@ public class Controls {
                 rowCount++;
             }
         } catch (IOException e) {
-            System.out.println("Controls.txt couldn't load correctly!");
+            System.out.println("controls.txt couldn't load correctly!");
         }
         return matrix;
     }

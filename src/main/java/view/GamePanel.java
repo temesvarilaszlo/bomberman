@@ -11,7 +11,7 @@ import model.Direction;
 import model.GameEngine;
 import model.KeyHandler;
 import model.Player;
-import static view.MainMenuWindow.is2PlayerGame;
+import static view.MainMenuWindow.Is2PlayerGame;
 
 /**
  *
@@ -24,13 +24,12 @@ public class GamePanel extends JPanel {
     public static final int MAP_SIZE = 15;
     public static final int WIDTH = BLOCK_PIXEL_SIZE * MAP_SIZE;
     public static final int HEIGHT = BLOCK_PIXEL_SIZE * MAP_SIZE;
+    private final int numberToWin;
 
     private final GameEngine engine;
-    private final Timer timer;
+    private final GameWindow gameWindow;
     private final KeyHandler keyH;
-
-    private final int numberToWin;
-    private final GameWindow GameWindow;
+    private final Timer timer;
 
     public GamePanel(GameWindow GameWindow, int numberToWin, GameEngine engine) {
         super();
@@ -41,9 +40,9 @@ public class GamePanel extends JPanel {
 
         // initialize engine related stuff
         this.engine = engine;
-        keyH = new KeyHandler(engine);
+        this.gameWindow = GameWindow;
         this.numberToWin = numberToWin;
-        this.GameWindow = GameWindow;
+        keyH = new KeyHandler(engine);
         this.addKeyListener(keyH);
 
         timer = new Timer(10, new TimerListener());
@@ -75,7 +74,7 @@ public class GamePanel extends JPanel {
                     player.setDirection(Direction.DOWN);
                 } else if (keyH.rightPressed1) {
                     player.setDirection(Direction.RIGHT);
-                } else if (keyH.leftPressed1) {
+                } else {
                     player.setDirection(Direction.LEFT);
                 }
                 player.move();
@@ -86,18 +85,18 @@ public class GamePanel extends JPanel {
                     player.setDirection(Direction.DOWN);
                 } else if (keyH.rightPressed2) {
                     player.setDirection(Direction.RIGHT);
-                } else if (keyH.leftPressed2) {
+                } else {
                     player.setDirection(Direction.LEFT);
                 }
                 player.move();
-            } else if (!is2PlayerGame && i == 2 && (keyH.upPressed3 || keyH.downPressed3 || keyH.rightPressed3 || keyH.leftPressed3)) {
+            } else if (!Is2PlayerGame() && i == 2 && (keyH.upPressed3 || keyH.downPressed3 || keyH.rightPressed3 || keyH.leftPressed3)) {
                 if (keyH.upPressed3) {
                     player.setDirection(Direction.UP);
                 } else if (keyH.downPressed3) {
                     player.setDirection(Direction.DOWN);
                 } else if (keyH.rightPressed3) {
                     player.setDirection(Direction.RIGHT);
-                } else if (keyH.leftPressed3) {
+                } else {
                     player.setDirection(Direction.LEFT);
                 }
                 player.move();
@@ -110,7 +109,7 @@ public class GamePanel extends JPanel {
     /**
      * Placing bombs
      */
-    private void placeBombs() {
+    private void placeBomb() {
         for (int i = 0; i < engine.getPlayers().size(); i++) {
             if (i == 0 && keyH.placeBomb1) {
                 engine.getPlayers().get(i).placeBomb();
@@ -118,23 +117,25 @@ public class GamePanel extends JPanel {
             } else if (i == 1 && keyH.placeBomb2) {
                 engine.getPlayers().get(i).placeBomb();
                 keyH.placeBomb2 = false;
-            } else if (!is2PlayerGame && i == 2 && keyH.placeBomb3) {
+            } else if (!Is2PlayerGame() && i == 2 && keyH.placeBomb3) {
                 engine.getPlayers().get(i).placeBomb();
                 keyH.placeBomb3 = false;
             }
         }
     }
 
-    private void placeBoxes() {
+    /**
+     * Placing boxes
+     */
+    private void placeBox() {
         for (int i = 0; i < engine.getPlayers().size(); i++) {
             if (i == 0 && keyH.placeBox1) {
                 engine.getPlayers().get(i).placeBox();
                 keyH.placeBox1 = false;
-
             } else if (i == 1 && keyH.placeBox2) {
                 engine.getPlayers().get(i).placeBox();
                 keyH.placeBox1 = false;
-            } else if (!is2PlayerGame && i == 2 && keyH.placeBox3) {
+            } else if (!Is2PlayerGame() && i == 2 && keyH.placeBox3) {
                 engine.getPlayers().get(i).placeBox();
                 keyH.placeBox1 = false;
             }
@@ -142,12 +143,60 @@ public class GamePanel extends JPanel {
 
     }
 
+    /**
+     * Return the winning player's index or -1 if draw
+     * @return int
+     */
+    private int getWinner(){
+        for (int i = 0; i < engine.getPlayers().size(); i++) {
+            if(engine.getPlayers().get(i).getIsAlive()){
+                return i + 1;
+            }
+        }
+        return -1;
+    }
+
+    private boolean checkWinner(int winnerIndex){
+        if(winnerIndex == -1)
+            return false;
+        switch (winnerIndex){
+            case 1:
+                if(GameEngine.player1Wins == numberToWin){
+                    JOptionPane.showMessageDialog(gameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
+                    gameWindow.dispose();
+                    new MainMenuWindow();
+                    GameEngine.setPlayerWinsToZero();
+                    return true;
+                }
+            break;
+            case 2:
+                if(GameEngine.player2Wins == numberToWin){
+                    JOptionPane.showMessageDialog(gameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
+                    gameWindow.dispose();
+                    new MainMenuWindow();
+                    GameEngine.setPlayerWinsToZero();
+                    return true;
+                }
+            break;
+            case 3:
+                if(GameEngine.player3Wins == numberToWin){
+                    JOptionPane.showMessageDialog(gameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
+                    gameWindow.dispose();
+                    new MainMenuWindow();
+                    GameEngine.setPlayerWinsToZero();
+                    return true;
+                }
+            break;
+        }
+        return false;
+    }
+
     class TimerListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            placeBoxes();
-            placeBombs();
+            placeBox();
+            placeBomb();
             engine.explodeBombs();
             engine.explosionEffects();
             updatePos();
@@ -155,7 +204,7 @@ public class GamePanel extends JPanel {
             engine.clearDeadMonsters();
             engine.pickupDrops();
             repaint();
-            GameWindow.getPowerupPanel().updateLabels();
+            gameWindow.getPowerupPanel().updateLabels();
 
             if (engine.isGameOver()){
                 timer.stop();
@@ -174,55 +223,11 @@ public class GamePanel extends JPanel {
                     removeKeyListener(keyH);
                     return;
                 }
-                JOptionPane.showMessageDialog(GameWindow, winnerIndex == - 1 ? "Draw! Onto the next one!"  : "Player" + winnerIndex + " won this round! Onto the next one!"  , "Next Game", JOptionPane.INFORMATION_MESSAGE);
-                GameWindow.dispose();
+                JOptionPane.showMessageDialog(gameWindow, winnerIndex == - 1 ? "Draw! Onto the next one!"  : "Player" + winnerIndex + " won this round! Onto the next one!"  , "Next Game", JOptionPane.INFORMATION_MESSAGE);
+                gameWindow.dispose();
                 new GameWindow(numberToWin);
             }
         }
 
-    }
-
-    private int getWinner(){
-        for (int i = 0; i < engine.getPlayers().size(); i++) {
-            if(engine.getPlayers().get(i).getIsAlive()){
-                return i + 1;
-            }
-        }
-        return -1;
-    }
-
-    private boolean checkWinner(int winnerIndex){
-        if(winnerIndex == -1)
-            return false;
-        switch (winnerIndex){
-            case 1:
-                if(GameEngine.player1Wins == numberToWin){
-                    JOptionPane.showMessageDialog(GameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
-                    GameWindow.dispose();
-                    new MainMenuWindow();
-                    GameEngine.setPlayerWinsToZero();
-                    return true;
-                }
-            break;
-            case 2:
-                if(GameEngine.player2Wins == numberToWin){
-                    JOptionPane.showMessageDialog(GameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
-                    GameWindow.dispose();
-                    new MainMenuWindow();
-                    GameEngine.setPlayerWinsToZero();
-                    return true;
-                }
-            break;
-            case 3:
-                if(GameEngine.player3Wins == numberToWin){
-                    JOptionPane.showMessageDialog(GameWindow, "Player" + winnerIndex + " won the game! \nThanks for playing!"  , "Game over", JOptionPane.INFORMATION_MESSAGE);
-                    GameWindow.dispose();
-                    new MainMenuWindow();
-                    GameEngine.setPlayerWinsToZero();
-                    return true;
-                }
-            break;
-        }
-        return false;
     }
 }

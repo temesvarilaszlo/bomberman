@@ -1,8 +1,9 @@
-package view;
+package main;
 
-import assets.Controls;
+import utilz.Controls;
 import java.io.IOException;
-import assets.Images;
+import utilz.Images;
+import view.MainMenuWindow;
 
 public class DetonatorDash {
 
@@ -10,12 +11,7 @@ public class DetonatorDash {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // load images
-        try {
-            new Images();
-        } catch (IOException e) {
-            System.err.println("Error while loading images!");
-        }
+        new Images();
         new Controls();
         new MainMenuWindow();
     }

@@ -1,5 +1,8 @@
 package view;
 
+import utilz.ButtonClickListener;
+import utilz.SettingsKeyHandler;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,9 +15,9 @@ import javax.swing.JPanel;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+
 import static view.HelperMethods.*;
-import static assets.Controls.*;
+import static utilz.Controls.*;
 
 public class SettingsWindow extends JFrame {
 
@@ -195,6 +198,10 @@ public class SettingsWindow extends JFrame {
         }
     }
 
+    /**
+     * Sets control buttons text
+     * @param row
+     */
     private void setButtonsText(int row){
         String text = (String) KeyEvent.getKeyText(controls[row][0]);
         upButton.setText(text);

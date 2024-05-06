@@ -2,7 +2,7 @@ package model;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import static view.MainMenuWindow.is2PlayerGame;
+import static view.MainMenuWindow.Is2PlayerGame;
 
 public class KeyHandler implements KeyListener {
 
@@ -81,7 +81,7 @@ public class KeyHandler implements KeyListener {
         }
         
 
-        if (!is2PlayerGame) {
+        if (!Is2PlayerGame()) {
             Player player3 = engine.getPlayers().get(2);
             if (code == player3.getControls().get(0)) {
                 upPressed3 = true;
@@ -136,7 +136,7 @@ public class KeyHandler implements KeyListener {
             placeBox2 = false;
         }
 
-        if (!is2PlayerGame) {
+        if (!Is2PlayerGame()) {
             Player player3 = engine.getPlayers().get(2);
             if (code == player3.getControls().get(0)) {
                 upPressed3 = false;

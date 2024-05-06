@@ -20,8 +20,8 @@ import static view.HelperMethods.setProperties;
 public class MainMenuWindow extends JFrame {
 
     private static final JComboBox<String> maps = new JComboBox<>(new String[]{"map1", "map2", "map3"});
-    public static boolean is2PlayerGame = true;
-    private int numberToWin = 1;
+    private static boolean is2PlayerGame;
+    private int numberToWin;
 
     public MainMenuWindow() {
         init(this, "Detonator Dash", 800, 750);
@@ -38,7 +38,7 @@ public class MainMenuWindow extends JFrame {
         JButton threePlayerButton = new JButton("3 players");
         JButton settingsButton = new JButton("Settings");
         JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
-
+        numberToWin = 1;
 
         //Set properties of labels, buttons etc.
         setProperties(title, 50, 210, 60, 330, 45);
@@ -69,8 +69,6 @@ public class MainMenuWindow extends JFrame {
             @Override
             public void stateChanged(ChangeEvent e) {
                 numberToWin = (int) spinner.getValue();
-                // Do something with the new value
-                System.out.println("New value: " + numberToWin);
             }
         });
 
@@ -94,7 +92,7 @@ public class MainMenuWindow extends JFrame {
         return (String) maps.getSelectedItem();
     }
 
-    public static boolean IsTwoPlayerGame(){
+    public static boolean Is2PlayerGame(){
         return is2PlayerGame;
     }
 }

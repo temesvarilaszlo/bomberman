@@ -12,13 +12,12 @@ import static view.HelperMethods.*;
  * @author tlasz
  */
 public class GameWindow extends JFrame{
-    private final GamePanel gamePanel;
     private final PowerupPanel powerupPanel;
 
     public GameWindow(int numberToWin) {
         super();
         GameEngine engine = new GameEngine();
-        gamePanel = new GamePanel(this, numberToWin, engine);
+        GamePanel gamePanel = new GamePanel(this, numberToWin, engine);
         powerupPanel = new PowerupPanel(engine);
 
         // add panel to frame

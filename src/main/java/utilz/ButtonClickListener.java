@@ -1,11 +1,13 @@
-package view;
+package utilz;
+
+import view.SettingsWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class ButtonClickListener implements ActionListener {
+public class ButtonClickListener implements ActionListener {
 
     private final SettingsWindow settings;
 

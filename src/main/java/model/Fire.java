@@ -1,6 +1,6 @@
 package model;
 
-import assets.Images;
+import utilz.Images;
 
 public class Fire extends Block{
     public int wave;
