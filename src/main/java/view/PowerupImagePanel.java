@@ -34,7 +34,7 @@ public class PowerupImagePanel extends JPanel {
         int i = 0;
         for (String powerup : powerups) {
             Image img = powerupImages.get(powerup);
-            g.drawImage(img, 0, i * imgSize + imgPadding, imgSize, imgSize, null);
+            g.drawImage(img, i * imgSize + imgPadding, 0, imgSize, imgSize, null);
             i++;
         }
     }
