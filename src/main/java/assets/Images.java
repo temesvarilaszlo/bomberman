@@ -20,7 +20,13 @@ public class Images {
     public static Image player3Img;
     public static Image wallImg;
     public static Image whiteImg;
-    
+    public static Image ghost1Img;
+    public static Image ghost2Img;
+    public static Image ghost3Img;
+    public static Image player1Inv;
+    public static Image player2Inv;
+    public static Image player3Inv;
+
     // drops
     public static Image detonatorImg;
     public static Image ghostImg;
@@ -43,6 +49,12 @@ public class Images {
         player3Img = loadImage("assets/player3.png");
         wallImg = loadImage("assets/wall.png");
         whiteImg = loadImage("assets/white.png");
+        ghost1Img = loadImage("assets/ghost1.png");
+        ghost2Img = loadImage("assets/ghost2.png");
+        ghost3Img = loadImage("assets/ghost3.png");
+        player1Inv = loadImage("assets/player1Inv.png");
+        player2Inv = loadImage("assets/player2Inv.png");
+        player3Inv = loadImage("assets/player3Inv.png");
 
         // drops
         detonatorImg = loadImage("assets/detonator.png");

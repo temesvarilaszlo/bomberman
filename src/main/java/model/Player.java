@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.ImageGraphicAttribute;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,8 +35,8 @@ public class Player extends Character {
         placedBoxes = new ArrayList<>();
         powerups = new ArrayList<>();
         controls = new ArrayList<>();
-        for (int i = 0; i < ctrls.length; i++) {
-            controls.add(ctrls[i]);
+        for (int ctrl : ctrls) {
+            controls.add(ctrl);
         }
     }
     
@@ -195,31 +196,128 @@ public class Player extends Character {
     /**
      * Ghost power up
      */
-    public void ghostPowerup(){
-        Timer timer = new Timer(3000, new ActionListener() {
+    private void ghostPowerup(){
+        if(img == Images.player1Img){
+            img = Images.ghost1Img;
+        }
+        else if(img == Images.player2Img){
+            img = Images.ghost2Img;
+        }
+        else if(img == Images.player3Img){
+            img = Images.ghost3Img;
+        }
+        Timer timer = new Timer(500, new ActionListener() {
             int elapsedTime = 0;
-            int timerDelay = 500;
-            int max = 5000;
+            int timerDelay = 200;
+            int max = 8000;
+            boolean switchImage = false;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 elapsedTime += timerDelay;
-                
+
                 if (elapsedTime >= max) {
-                    Timer s = (Timer)e.getSource();
+                    Timer s = (Timer) e.getSource();
                     removeFromPowerups("G");
                     s.stop();
                     if (!powerups.contains("G") && !canMoveHere(x + 1, y, size, size, GameEngine.mapString) &&
-                        !canMoveHere(x - 1, y, size, size, GameEngine.mapString) &&
-                        !canMoveHere(x, y + 1, size, size, GameEngine.mapString) &&
-                        !canMoveHere(x, y - 1, size, size, GameEngine.mapString) && !powerups.contains("I")) {
-                            isAlive = false;
+                            !canMoveHere(x - 1, y, size, size, GameEngine.mapString) &&
+                            !canMoveHere(x, y + 1, size, size, GameEngine.mapString) &&
+                            !canMoveHere(x, y - 1, size, size, GameEngine.mapString) && !powerups.contains("I")) {
+                        isAlive = false;
+                    }
+                } else if (elapsedTime >= max - 1800) { // Last
+                    switchImage = !switchImage;
+                    if(img == Images.ghost1Img || img == Images.player1Img) {
+                        if(switchImage){
+                            img = Images.player1Img;
                         }
-                }     
+                        else{
+                            img = Images.ghost1Img;
+                        }
+                    }
+
+                    if(img == Images.ghost2Img || img == Images.player2Img) {
+                        if(switchImage){
+                            img = Images.player2Img;
+                        }
+                        else{
+                            img = Images.ghost2Img;
+                        }
+                    }
+
+                    if(img == Images.ghost3Img|| img == Images.player3Img) {
+                        if(switchImage){
+                            img = Images.player3Img;
+                        }
+                        else{
+                            img = Images.ghost3Img;
+                        }
+                    }
+                }
             }
         });
-        timer.start();     
+        timer.start();
     }
-    
+
+    private void invincibilityPowerup(){
+        if(img == Images.player1Img){
+            img = Images.player1Inv;
+        }
+        else if(img == Images.player2Img){
+            img = Images.player2Inv;
+        }
+        else if(img == Images.player3Img){
+            img = Images.player3Inv;
+        }
+        Timer timer = new Timer(500, new ActionListener() {
+            int elapsedTime = 0;
+            int timerDelay = 200;
+            int max = 4000;
+            boolean switchImage = false;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                elapsedTime += timerDelay;
+
+                if (elapsedTime >= max) {
+                    Timer s = (Timer) e.getSource();
+                    removeFromPowerups("I");
+                    s.stop();
+                } else if (elapsedTime >= max - 1400) { // Last
+                    switchImage = !switchImage;
+                    if(img == Images.player1Inv || img == Images.player1Img) {
+                        if(switchImage){
+                            img = Images.player1Img;
+                        }
+                        else{
+                            img = Images.player1Inv;
+                        }
+                    }
+
+                    if(img == Images.player2Inv || img == Images.player2Img) {
+                        if(switchImage){
+                            img = Images.player2Img;
+                        }
+                        else{
+                            img = Images.player2Inv;
+                        }
+                    }
+
+                    if(img == Images.player3Inv|| img == Images.player3Img) {
+                        if(switchImage){
+                            img = Images.player3Img;
+                        }
+                        else{
+                            img = Images.player3Inv;
+                        }
+                    }
+                }
+            }
+        });
+        timer.start();
+    }
+
     /**
      * Increases player's speed if not increased before
      */
@@ -245,11 +343,7 @@ public class Player extends Character {
             }
             case "I" -> {
                 this.powerups.add(powerup);
-                ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.schedule(() -> {
-                    removeFromPowerups("I");
-                    executor.shutdown();
-                }, 10, TimeUnit.SECONDS);
+                invincibilityPowerup();
             }
             case "O" -> {
                 for (int i = 0; i < 3; i++) {

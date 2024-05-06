@@ -11,7 +11,7 @@ public class Box extends Block{
         
         if (mayContainDrop){
             Random r = new Random();
-            containsDrop = r.nextBoolean();
+            containsDrop = true;
         }
     }
 
