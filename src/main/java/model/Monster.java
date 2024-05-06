@@ -10,23 +10,22 @@ import static model.HelpMethods.canMoveHere;
 public class Monster extends Character{
 
     private Timer timer;
-    private TimerListener listener;
-    private GameEngine gameEngine;
+    private final TimerListener listener;
+    private final GameEngine gameEngine;
     
     public Monster(int x, int y, int size, Image img, GameEngine game) {
         super(x, y, size, img);
+        gameEngine = game;
         speed = Speed.SLOW.speed;
         direction = getRandomDirection();
         listener = new TimerListener();
         timer = new Timer(new Random().nextInt(2000, 10000), listener);
         timer.start();
-        gameEngine = game;
-        
     }
     
     /**
      * Chooses a random direction for the monster
-     * @return 
+     * @return Direction
      */
     private static Direction getRandomDirection(){
         Random random = new Random();
@@ -41,13 +40,14 @@ public class Monster extends Character{
             case 2 -> {
                 return Direction.RIGHT;
             }
-            case 3 -> {
-                return Direction.UP;
-            }
         }
-        return Direction.STOPPED;
+        return Direction.UP;
     }
-    
+
+    /**
+     * Moves the monsters
+     * @return boolean
+     */
     @Override
     public boolean move(){
         if(direction == Direction.STOPPED || !this.isAlive)
@@ -81,7 +81,6 @@ public class Monster extends Character{
             timer = new Timer(new Random().nextInt(4000, 12000), listener);
             timer.start();
         }
-            
     }
     
 }

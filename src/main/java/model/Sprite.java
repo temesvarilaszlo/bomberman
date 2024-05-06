@@ -21,7 +21,7 @@ public class Sprite {
     
     /**
      * Draws the Sprite
-     * @param g 
+     * @param g Graphics2D
      */
     public void draw(Graphics2D g){
         g.drawImage(img, x, y, size, size, null);
@@ -29,7 +29,7 @@ public class Sprite {
     
     /**
      * Return a Sprite's current positions in the matrix
-     * @return 
+     * @return Point
      */
     public Point currentMatrixPosition(){
         return new Point((y + size / 2) / GamePanel.BLOCK_PIXEL_SIZE, (x + size / 2) / GamePanel.BLOCK_PIXEL_SIZE);
@@ -37,8 +37,8 @@ public class Sprite {
     
     /**
      * Checking collision with another character
-     * @param c
-     * @return 
+     * @param c Character
+     * @return boolean
      */
     public boolean collidesWith(Character c){
         if (!c.isAlive) return false;

@@ -9,7 +9,7 @@ public class Bomb extends Block{
     private final int explosionDelay;
     private boolean readyToExplode;
     private boolean isExplosionOver;
-    private int range;
+    private final int range;
     private ArrayList<Fire> fires;
     private int currWave;
     
@@ -61,7 +61,10 @@ public class Bomb extends Block{
     public void setFires(ArrayList<Fire> fires) {
         this.fires = fires;
     }
-    
+
+    /**
+     * Makes the bomb's explosion
+     */
     public void explosion(){
         fires.get(0).isActive = true;
 

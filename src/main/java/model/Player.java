@@ -21,7 +21,7 @@ public class Player extends Character {
     private final ArrayList<String> powerups;
     private final ArrayList<Integer> controls;
 
-    public Player(int x, int y, int size, Image img, GameEngine game, int[] ctrls) {
+    public Player(int x, int y, int size, Image img, GameEngine game, int[] controls) {
         super(x, y, size, img);
         bombRange = 2;
         bombCapacity = 1;
@@ -30,9 +30,9 @@ public class Player extends Character {
         placedBombs = new ArrayList<>();
         placedBoxes = new ArrayList<>();
         powerups = new ArrayList<>();
-        controls = new ArrayList<>();
-        for (int ctrl : ctrls) {
-            controls.add(ctrl);
+        this.controls = new ArrayList<>();
+        for (int ctrl : controls) {
+            this.controls.add(ctrl);
         }
     }
     
@@ -40,10 +40,6 @@ public class Player extends Character {
     //GETTERS -------------------------------
     public ArrayList<Bomb> getPlacedBombs() {
         return placedBombs;
-    }
-
-    public ArrayList<Box> getPlacedBoxes() {
-        return placedBoxes;
     }
 
     public ArrayList<String> getPowerups() {
@@ -62,6 +58,14 @@ public class Player extends Character {
         return bombCapacity;
     }
 
+    public Bomb getLastPlacedBomb() {
+        return placedBombs.isEmpty() ? null : placedBombs.get(placedBombs.size() - 1);
+    }
+
+    public Box getLastPlacedBox() {
+        return placedBoxes.isEmpty() ? null : placedBoxes.get(placedBoxes.size() - 1);
+    }
+
     @Override
     public boolean move() {
         if (direction == Direction.STOPPED || !isAlive)
@@ -76,7 +80,7 @@ public class Player extends Character {
                     return false;
                 }
             }
-            // if the player is on their own placed bomb, don't check collision for bomb
+            // if the player is on their own placed bomb or box, don't check collision for bomb
             if ((isOnPlacedBlock(getLastPlacedBomb()) && canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBomb()))
                 || (isOnPlacedBlock(getLastPlacedBox()) && canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString, getLastPlacedBox()))
                 || canMoveHere(x + xSpeed, y + ySpeed, size, size, GameEngine.mapString)
@@ -123,6 +127,9 @@ public class Player extends Character {
         }
     }
 
+    /**
+     * Player places boxes
+     */
     public void placeBox() {
         if (isOnPlacedBlock(getLastPlacedBox())) {
             return;
@@ -143,10 +150,9 @@ public class Player extends Character {
     }
 
     /**
-     * Decides if a player is on a placed bomb by them or not
-     *
-     * @param placedBlock
-     * @return
+     * Decides if a player is on a placed block by them or not
+     * @param placedBlock Block
+     * @return boolean
      */
     public boolean isOnPlacedBlock(Block placedBlock) {
         if (placedBlock == null) {
@@ -154,25 +160,9 @@ public class Player extends Character {
         }
         //Bomb lastBomb = placedBombs.get(placedBombs.size()-1);
         Rectangle player = new Rectangle(x, y, size, size);
-        Rectangle placedBlockHitbox = new Rectangle(placedBlock.x, placedBlock.y, placedBlock.size, placedBlock.size);
+        Rectangle placedBlockHitBox = new Rectangle(placedBlock.x, placedBlock.y, placedBlock.size, placedBlock.size);
 
-        return placedBlockHitbox.intersects(player);
-    }
-
-    /**
-     * Returns the last placed bomb by a player
-     *
-     * @return
-     */
-    public Bomb getLastPlacedBomb() {
-        return placedBombs.isEmpty() ? null : placedBombs.get(placedBombs.size() - 1);
-    }
-
-    public Box getLastPlacedBox() {
-        if (placedBoxes.isEmpty()) {
-            return null;
-        }
-        return placedBoxes.get(placedBoxes.size() - 1);
+        return placedBlockHitBox.intersects(player);
     }
 
     /**
@@ -256,6 +246,9 @@ public class Player extends Character {
         timer.start();
     }
 
+    /**
+     * Invincibility power up
+     */
     private void invincibilityPowerup(){
         if(img == Images.player1Img){
             img = Images.player1Inv;
@@ -324,7 +317,7 @@ public class Player extends Character {
     
     /**
      * Chooses a power up for the player
-     * @param powerup 
+     * @param powerup String
      */
     public void powerupChooser(String powerup){
         switch (powerup) {
@@ -334,11 +327,15 @@ public class Player extends Character {
                 }
             }
             case "G" -> {
+                if (!powerups.contains(powerup)){
+                    this.powerups.add(powerup);
+                }
                 ghostPowerup();
-                this.powerups.add(powerup);
             }
             case "I" -> {
-                this.powerups.add(powerup);
+                if (!powerups.contains(powerup)){
+                    this.powerups.add(powerup);
+                }
                 invincibilityPowerup();
             }
             case "O" -> {
@@ -365,7 +362,7 @@ public class Player extends Character {
        
     /**
      * Removes the power up given in the parameter from the "powerups" arraylist
-     * @param name 
+     * @param name String
      */
     public void removeFromPowerups(String name){
         for(int i = 0; i < powerups.size();i++){

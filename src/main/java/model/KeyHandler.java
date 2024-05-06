@@ -9,7 +9,7 @@ public class KeyHandler implements KeyListener {
     public boolean upPressed1, downPressed1, leftPressed1, rightPressed1, bombReady1, placeBomb1, placeBox1;
     public boolean upPressed2, downPressed2, leftPressed2, rightPressed2, bombReady2, placeBomb2, placeBox2;
     public boolean upPressed3, downPressed3, leftPressed3, rightPressed3, bombReady3, placeBomb3, placeBox3;
-    private GameEngine engine;
+    private final GameEngine engine;
 
     public KeyHandler(GameEngine engine) {
         super();

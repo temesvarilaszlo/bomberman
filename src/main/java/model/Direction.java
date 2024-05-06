@@ -11,8 +11,8 @@ public enum Direction {
     
     /**
      * If two monster collides this send the into the opposite direction
-     * @param d
-     * @return 
+     * @param d Direction
+     * @return  Direction
      */
     public static Direction oppositeDirection(Direction d){
         if (d == null) {

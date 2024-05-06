@@ -24,7 +24,7 @@ public class Character extends Sprite{
 
     /**
      * Moves the character
-     * @return 
+     * @return boolean
      */
     public boolean move(){
         if(direction == Direction.STOPPED)
@@ -43,8 +43,8 @@ public class Character extends Sprite{
     
     /**
      * Checking collision with another character
-     * @param c
-     * @return 
+     * @param c Character
+     * @return  boolean
      */
     @Override
     public boolean collidesWith(Character c){

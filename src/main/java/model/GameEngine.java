@@ -19,7 +19,7 @@ public class GameEngine {
     private final ArrayList<Monster> monsters;
     private final ArrayList<Bomb> explodedBombs;
     private final ArrayList<Drop> drops;
-    private ArrayList<int[]> characterPositions;
+    private final ArrayList<int[]> characterPositions;
 
     public static int player1Wins = 0;
     public static int player2Wins = 0;
@@ -31,13 +31,11 @@ public class GameEngine {
         explodedBombs = new ArrayList<>();
         drops = new ArrayList<>();
         characterPositions = new ArrayList<>();
-        
+
         if (Is2PlayerGame())
             add2Players();
         else
             add3Players();
-
-
 
         gameMap = new Sprite[GamePanel.MAP_SIZE][GamePanel.MAP_SIZE];
         mapString = loadMap();
@@ -67,7 +65,6 @@ public class GameEngine {
 
     /**
      * Loads the map from the txt using loadTxt() from AssetLoader class
-     *
      * @return String[][]
      */
     private String[][] loadMap() {
@@ -154,6 +151,9 @@ public class GameEngine {
         characterPositions.add(thirdPlayer);
     }
 
+    /**
+     * Generating random positions for the monsters
+     */
     private void randomMonsterPosition(){
         int[] x_y = new int[2];
         do {
@@ -186,27 +186,12 @@ public class GameEngine {
 
     /**
      * Checks if monster catches player
-     *
      * @param monster monster
      */
     private void checkCollisionsWithPlayers(Monster monster) {
         for (Player player : players) {
             if (monster.collidesWith(player) && !player.getPowerups().contains("I")) {
                 player.isAlive = false;
-            }
-        }
-    }
-
-    /**
-     * Monster-monster collision
-     *
-     * @param monster
-     */
-    private void checkCollisionsWithMonsters(Monster monster) {
-        for (Monster m : monsters) {
-            if (m != monster && monster.collidesWith(m)) {
-                m.direction = Direction.oppositeDirection(m.direction);
-                monster.direction = Direction.oppositeDirection(monster.direction);
             }
         }
     }
@@ -217,15 +202,13 @@ public class GameEngine {
     public void moveMonsters() {
         for (Monster m : monsters) {
             m.move();
-            //két metódus
             checkCollisionsWithPlayers(m);
-            //checkCollisionsWithMonsters(m);
         }
     }
 
     /**
      * Draws players
-     * @param g
+     * @param g Graphics2D
      */
     public void drawPlayers(Graphics2D g) {
         for (Player p : players) {
@@ -237,7 +220,7 @@ public class GameEngine {
 
     /**
      * Draws monsters
-     * @param g
+     * @param g Graphics2D
      */
     public void drawMonsters(Graphics2D g) {
         for (Monster m : monsters) {
@@ -247,7 +230,7 @@ public class GameEngine {
     
     /**
      * Draws the drops
-     * @param g 
+     * @param g Graphics2D
      */    
     public void drawDrops(Graphics2D g){
         for (Drop d : drops){
@@ -257,7 +240,7 @@ public class GameEngine {
     
     /**
      * Draws the map
-     * @param g
+     * @param g Graphics2D
      */
     public void drawMap(Graphics2D g) {
         for (Sprite[] row : gameMap) {
@@ -269,7 +252,7 @@ public class GameEngine {
     
     /**
      * Draws bombs and fires
-     * @param g 
+     * @param g Graphics2D
      */
     public void drawBombsAndFires(Graphics2D g){
         for (Player p : players){
@@ -289,7 +272,7 @@ public class GameEngine {
     
     /**
      * Drawing all the sprites
-     * @param g 
+     * @param g Graphics2D
      */
     public void drawSprites(Graphics2D g){
         drawMap(g);
@@ -330,8 +313,8 @@ public class GameEngine {
     
     /**
      * Generates fires for the bomb
-     * @param bomb
-     * @return 
+     * @param bomb Bomb
+     * @return  ArrayList<Fire>
      */
     private ArrayList<Fire> generateFires(Bomb bomb){
         ArrayList<Fire> fires = new ArrayList<>();

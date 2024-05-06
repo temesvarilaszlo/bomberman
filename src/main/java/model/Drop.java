@@ -6,7 +6,7 @@ import java.util.Random;
 import view.GamePanel;
 
 public class Drop extends Block{
-    private String type;
+    private final String type;
     
     public Drop(int x, int y){
         super(x, y, GamePanel.BLOCK_PIXEL_SIZE, null);
