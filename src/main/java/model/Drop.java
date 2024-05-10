@@ -7,7 +7,7 @@ import view.GamePanel;
 
 public class Drop extends Block{
     private final String type;
-    
+
     public Drop(int x, int y){
         super(x, y, GamePanel.BLOCK_PIXEL_SIZE, null);
         Image img;
@@ -45,6 +45,16 @@ public class Drop extends Block{
             default -> throw new AssertionError();
         }
         this.img = img;
+    }
+
+
+    public Drop(int x, int y, String dropType){
+        super(x, y, GamePanel.BLOCK_PIXEL_SIZE, null);
+        Image img;
+        type = dropType;
+        img = Images.skateImg;
+        this.img = img;
+
     }
 
     public String getType() {
