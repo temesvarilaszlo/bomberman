@@ -63,6 +63,10 @@ public class GameEngine {
         GameEngine.player3Wins = 0;
     }
 
+    public ArrayList<Drop> getDrops() {
+        return drops;
+    }
+
     /**
      * Loads the map from the txt using loadTxt() from AssetLoader class
      * @return String[][]
