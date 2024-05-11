@@ -19,7 +19,7 @@ public class AssetLoader {
      * Loads the font used in the game
      * @return Font
      */
-    private static Font loadFont(){
+    public static Font loadFont(){
         Font customFont = null;
         try {
             URL url = AssetLoader.class.getClassLoader().getResource("assets/bm.ttf");

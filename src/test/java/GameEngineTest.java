@@ -10,12 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utilz.Images;
-import view.GamePanel;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static utilz.Controls.controls;
+import static utilz.AssetLoader.loadFont;
+import static utilz.AssetLoader.loadTxt;
 
 /**
  *
@@ -48,7 +49,6 @@ public class GameEngineTest {
      */
     @Test
     public void testExplodeBombs() {
-        System.out.println("explodeBombs");
         GameEngine instance = new GameEngine();
         instance.explodeBombs();
         // TODO review the generated test code and remove the default call to fail.
@@ -68,22 +68,61 @@ public class GameEngineTest {
     }
 
     /**
+     * Test if images load correctly
+     */
+    @Test
+    public void testImages(){
+        new Images();
+        Image bomb = Images.bombImg;
+        Image player1 = Images.player1Img;
+        Image ghost = Images.ghostImg;
+        Image detonator = Images.detonatorImg;
+
+        assertNotNull(bomb);
+        assertNotNull(player1);
+        assertNotNull(ghost);
+        assertNotNull(detonator);
+    }
+
+    /**
+     * Test if maps load correctly
+     */
+    @Test
+    public void testMaps(){
+        InputStream map1 = loadTxt("assets/map1.txt");
+        InputStream map2 = loadTxt("assets/map2.txt");
+        InputStream map3 = loadTxt("assets/map3.txt");
+
+        assertNotNull(map1);
+        assertNotNull(map2);
+        assertNotNull(map3);
+    }
+
+    /**
+     * Test if font load correctly
+     */
+    @Test
+    public void testFont(){
+        Font customFont = loadFont();
+        assertNotNull(customFont);
+    }
+
+    /**
      * Test of clearDeadMonsters method, of class GameEngine.
      */
     @Test
     public void testClearDeadMonsters() {
-        System.out.println("clearDeadMonsters");
         GameEngine instance = new GameEngine();
 
         Monster monster = new Monster(50, 50, 50, Images.monsterImg, instance);
         instance.getMonsters().add(monster);
 
-        assertEquals(true, instance.getMonsters().contains(monster));
+        assertTrue(instance.getMonsters().contains(monster));
 
         monster.setIsAlive(false);
         instance.clearDeadMonsters();
 
-        assertEquals(false, instance.getMonsters().contains(monster));
+        assertFalse(instance.getMonsters().contains(monster));
     }
 
 
@@ -92,14 +131,13 @@ public class GameEngineTest {
      */
     @Test
     public void testIsGameOver() {
-        System.out.println("isGameOver");
         GameEngine instance = new GameEngine();
 
-        assertEquals(false,instance.isGameOver());
+        assertFalse(instance.isGameOver());
         instance.getPlayers().get(0).setIsAlive(false);
-        assertEquals(false,instance.isGameOver());
+        assertFalse(instance.isGameOver());
         instance.getPlayers().get(2).setIsAlive(false);
-        assertEquals(true,instance.isGameOver());
+        assertTrue(instance.isGameOver());
     }
 
     /**
@@ -107,15 +145,14 @@ public class GameEngineTest {
      */
     @Test
     public void testPickupDrops() {
-        System.out.println("pickupDrops");
         GameEngine instance = new GameEngine();
 
         Drop drop = new Drop(50, 50, "S");
         instance.getDrops().add(drop);
 
-        assertEquals(true, instance.getDrops().contains(drop));
+        assertTrue(instance.getDrops().contains(drop));
         instance.pickupDrops();
-        assertEquals(false, instance.getDrops().contains(drop));
+        assertFalse(instance.getDrops().contains(drop));
 
         boolean atLeastOnePlayerHasDrop = false;
         for (Player player : instance.getPlayers()) {
@@ -125,6 +162,6 @@ public class GameEngineTest {
             }
 
         }
-        assertEquals(true, atLeastOnePlayerHasDrop);
+        assertTrue(atLeastOnePlayerHasDrop);
     }
 }
