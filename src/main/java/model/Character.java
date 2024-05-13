@@ -21,6 +21,7 @@ public class Character extends Sprite{
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+    public float getSpeed() { return speed; }
 
     /**
      * Moves the character

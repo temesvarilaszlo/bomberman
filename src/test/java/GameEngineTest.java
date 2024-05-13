@@ -1,8 +1,5 @@
-import model.Drop;
-import model.Monster;
-import model.Player;
+import model.*;
 import utilz.Controls;
-import model.GameEngine;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -10,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utilz.Images;
+import view.GamePanel;
+import view.MainMenuWindow;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -17,6 +16,7 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.*;
 import static utilz.AssetLoader.loadFont;
 import static utilz.AssetLoader.loadTxt;
+import static utilz.Controls.controls;
 
 /**
  *
@@ -51,8 +51,6 @@ public class GameEngineTest {
     public void testExplodeBombs() {
         GameEngine instance = new GameEngine();
         instance.explodeBombs();
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
     }
 
     /**
@@ -63,8 +61,6 @@ public class GameEngineTest {
         System.out.println("explosionEffects");
         GameEngine instance = new GameEngine();
         instance.explosionEffects();
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
     }
 
     /**
@@ -138,6 +134,90 @@ public class GameEngineTest {
         assertFalse(instance.isGameOver());
         instance.getPlayers().get(2).setIsAlive(false);
         assertTrue(instance.isGameOver());
+    }
+
+    /**
+     * Test of player wins start with 0
+     */
+    @Test
+    public void testWinner() {
+        assertEquals(GameEngine.player1Wins, 0);
+        assertEquals(GameEngine.player2Wins, 0);
+        assertEquals(GameEngine.player3Wins, 0);
+    }
+
+    /**
+     * Test rolleskate power up
+     */
+    @Test
+    public void testSpeedPowerUp(){
+        GameEngine instance = new GameEngine();
+        Player player = new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, instance, controls[0]);
+        player.powerupChooser("S");
+
+        assertEquals(3, player.getSpeed());
+    }
+
+    /**
+     * Test bombcapacity power up
+     */
+    @Test
+    public void testBombCapacityPowerUp(){
+        GameEngine instance = new GameEngine();
+        Player player = new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, instance, controls[0]);
+        int initialBombCapacity = player.getBombCapacity();
+        player.powerupChooser("PB");
+
+        assertEquals(initialBombCapacity + 1, player.getBombCapacity());
+    }
+
+    /**
+     * Test bombrange power up
+     */
+    @Test
+    public void testBombRangePowerUp(){
+        GameEngine instance = new GameEngine();
+        Player player = new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, instance, controls[0]);
+        int initialBombRange = player.getBombRange();
+        player.powerupChooser("PR");
+
+        assertEquals(initialBombRange + 1, player.getBombRange());
+    }
+
+    /**
+     * Test box place power up
+     */
+    @Test
+    public void testBoxPlacePowerUp(){
+        GameEngine instance = new GameEngine();
+        Player player = new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, instance, controls[0]);
+        player.powerupChooser("O");
+
+        int sum_O = 0;
+        for (int i = 0; i < player.getPowerups().size(); i++) {
+            if(player.getPowerups().get(i).equals("O")){
+                sum_O++;
+            }
+        }
+
+        assertEquals(3, sum_O);
+    }
+
+    /**
+     * Test invincibility place power up
+     */
+    @Test
+    public void testInvincibilityPowerUp(){
+        GameEngine instance = new GameEngine();
+        Player player = new Player(258, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, instance, controls[0]);
+        player.powerupChooser("I");
+        Monster monster = new Monster(278, 358, GamePanel.PLAYER_PIXEL_SIZE, Images.player3Img, instance);
+
+        if (monster.collidesWith(player) && !player.getPowerups().contains("I")) {
+            player.setIsAlive(false);
+        }
+
+        assertTrue(player.getIsAlive());
     }
 
     /**
